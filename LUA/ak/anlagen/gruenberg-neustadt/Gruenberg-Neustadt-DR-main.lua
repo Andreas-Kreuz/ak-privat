@@ -1,4 +1,4 @@
-require 'ak.eisenbahn.AkEisenbahn'
+require 'ak.schiene.AkSchiene'
 
 -- AkAusgabe.outputPath = "C:/Spiele/EEP14/LUA/"
 
