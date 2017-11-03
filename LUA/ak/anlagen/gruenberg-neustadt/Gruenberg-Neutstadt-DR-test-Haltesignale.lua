@@ -1,5 +1,5 @@
-require 'ak.eep.AkEepFunktionen'
-require 'ak.anlagen.gruenberg-neustadt.Gruenberg-Neustadt-DR-main'
+require("ak.eep.AkEepFunktionen")
+require("ak.anlagen.gruenberg-neustadt.Gruenberg-Neustadt-DR-main")
 
 print("############## Gruenberg-Neutstadt-DR-test-Haltesignale.lua ##############")
 EEPTime = 0

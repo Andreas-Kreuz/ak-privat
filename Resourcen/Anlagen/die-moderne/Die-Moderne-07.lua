@@ -8,7 +8,7 @@ AkStartMitDebug = false
 -- Zeigt erweiterte Informationen waehrend der erste Schitte an   --
 --------------------------------------------------------------------
 print("Lade EEP-13-die-Moderne-07-main ...")
-require 'ak.anlagen.die-moderne.Die-Moderne-07-main'
+require("ak.anlagen.die-moderne.Die-Moderne-07-main")
 
 --------------------------------------------------------------------
 -- Zeige erweiterte Informationen an                              --

@@ -1,4 +1,4 @@
-require 'ak.anlagen.gruenberg-neustadt.Gruenberg-Neustadt-DR-main'
+require("ak.anlagen.gruenberg-neustadt.Gruenberg-Neustadt-DR-main")
 
 [EEPLuaData]
 DS_1 = "b=false,n=Block 1 Gl1 -> GBG Gleis 2,t=-1,z=nil,"
