@@ -23,8 +23,9 @@ AkPlaner.debug = false
 AkSpeicherHilfe.debug = false
 AkAmpel.debug = false
 AkKreuzung.debug = false
-AkKreuzung.showAnforderungenAlsInfo = false
-AkKreuzung.showSchaltungAlsInfo = false
+AkKreuzung.zeigeSignalIdsAllerSignale = false
+AkKreuzung.zeigeAnforderungenAlsInfo = true
+AkKreuzung.zeigeSchaltungAlsInfo = true
 
 --------------------------------------------------------------------
 -- Erste Hilfe - normalerweise nicht notwendig                    --

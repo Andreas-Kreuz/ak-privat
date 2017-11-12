@@ -3,7 +3,6 @@
 --------------------------------
 print('Lade AkStrasse ...')
 require "ak.strasse.AkStrasse"
-AkAmpel.zeigeAnforderungen = true
 
 ------------------------------------------------
 -- Damit kommt wird die Variable "Zugname" automatisch durch EEP belegt
@@ -16,63 +15,60 @@ setmetatable(_ENV, { __index = function(_, k) local p = load(k); if p then local
 --------------------------------------------
 function KpBetritt(richtung)
     assert(richtung, "richtung darf nicht nil sein. Richtige Lua-Funktion im Kontaktpunkt?")
-    --print(richtung.name .. " betreten durch: " .. Zugname)
     richtung:betritt()
 end
 
 function KpVerlasse(richtung, signalaufrot)
     assert(richtung, "richtung darf nicht nil sein. Richtige Lua-Funktion im Kontaktpunkt?")
-    --print(richtung.name .. " verlassen von: " .. Zugname)
     richtung:verlasse(signalaufrot, Zugname)
 end
 
 --region K1-Richtungen
 k1_r1 = AkRichtung:neu("R1", 1, {
-    AkAmpel:neu(92, Ak_Ampel_3er_XXX_FG)
+    AkAmpel:neu(92, AkAmpelModell.JS2_3er_mit_FG)
 })
 k1_r2 = AkRichtung:neu("R2", 2, {
-    AkAmpel:neu(26, Ak_Ampel_3er_XXX_FG),
-    AkAmpel:neu(91, Ak_Ampel_3er_XXX)
+    AkAmpel:neu(26, AkAmpelModell.JS2_3er_mit_FG),
+    AkAmpel:neu(91, AkAmpelModell.JS2_3er_ohne_FG)
 })
 k1_r3 = AkRichtung:neu("R3", 3, {
-    AkAmpel:neu(96, Ak_Ampel_Unsichtbar, "#5528_Straba Signal Halt", "#5531_Straba Signal geradeaus", "#5529_Straba Signal anhalten", "#5530_Straba Signal A")
+    AkAmpel:neu(96, AkAmpelModell.Unsichtbar_2er, "#5528_Straba Signal Halt", "#5531_Straba Signal geradeaus", "#5529_Straba Signal anhalten", "#5530_Straba Signal A")
 }):setFahrzeugMultiplikator(15)
 k1_r4 = AkRichtung:neu("R4", 4, {
-    AkAmpel:neu(89, Ak_Ampel_3er_XXX_FG),
+    AkAmpel:neu(89, AkAmpelModell.JS2_3er_mit_FG),
 })
 k1_r5 = AkRichtung:neu("R5", 5, {
-    AkAmpel:neu(86, Ak_Ampel_3er_XXX_FG),
-    AkAmpel:neu(87, Ak_Ampel_3er_XXX),
-    AkAmpel:neu(88, Ak_Ampel_3er_XXX)
+    AkAmpel:neu(86, AkAmpelModell.JS2_3er_mit_FG),
+    AkAmpel:neu(87, AkAmpelModell.JS2_3er_ohne_FG),
+    AkAmpel:neu(88, AkAmpelModell.JS2_3er_ohne_FG)
 })
 k1_r6 = AkRichtung:neu("R6", 6, {
-    AkAmpel:neu(85, Ak_Ampel_3er_XXX)
+    AkAmpel:neu(85, AkAmpelModell.JS2_3er_ohne_FG)
 })
 k1_r7 = AkRichtung:neu("R7", 7, {
-    AkAmpel:neu(83, Ak_Ampel_3er_XXX),
-    AkAmpel:neu(84, Ak_Ampel_3er_XXX_FG)
+    AkAmpel:neu(83, AkAmpelModell.JS2_3er_ohne_FG),
+    AkAmpel:neu(84, AkAmpelModell.JS2_3er_mit_FG)
 })
-a1 = AkAmpel:neu(93, Ak_Ampel_Unsichtbar, "#5435_Straba Signal Halt", "#5521_Straba Signal geradeaus", "#5520_Straba Signal anhalten", "#5518_Straba Signal A")
-a1.debug = true
+a1 = AkAmpel:neu(93, AkAmpelModell.Unsichtbar_2er, "#5435_Straba Signal Halt", "#5521_Straba Signal geradeaus", "#5520_Straba Signal anhalten", "#5518_Straba Signal A")
 k1_r8 = AkRichtung:neu("R8", 8, {
     a1
 }):setFahrzeugMultiplikator(15)
 k1_r9 = AkRichtung:neu("R9", 9, {
-    AkAmpel:neu(93, Ak_Ampel_Unsichtbar, "#5523_Straba Signal Halt", "#5434_Straba Signal links", "#5522_Straba Signal anhalten", "#5433_Straba Signal A")
+    AkAmpel:neu(93, AkAmpelModell.Unsichtbar_2er, "#5523_Straba Signal Halt", "#5434_Straba Signal links", "#5522_Straba Signal anhalten", "#5433_Straba Signal A")
 }):setFahrzeugMultiplikator(15)
 k1_r10 = AkRichtung:neu("R10", 10, {
-    AkAmpel:neu(80, Ak_Ampel_3er_XXX_FG),
-    AkAmpel:neu(81, Ak_Ampel_3er_XXX_FG),
-    AkAmpel:neu(82, Ak_Ampel_3er_XXX)
+    AkAmpel:neu(80, AkAmpelModell.JS2_3er_mit_FG),
+    AkAmpel:neu(81, AkAmpelModell.JS2_3er_mit_FG),
+    AkAmpel:neu(82, AkAmpelModell.JS2_3er_ohne_FG)
 })
 k1_r11 = AkRichtung:neu("R11", 11, {
-    AkAmpel:neu(95, Ak_Ampel_Unsichtbar, "#5525_Straba Signal Halt", "#5436_Straba Signal rechts", "#5526_Straba Signal anhalten", "#5524_Straba Signal A")
+    AkAmpel:neu(95, AkAmpelModell.Unsichtbar_2er, "#5525_Straba Signal Halt", "#5436_Straba Signal rechts", "#5526_Straba Signal anhalten", "#5524_Straba Signal A")
 })
 
-k1_r1_fg = AkRichtung:neu("R1 FG", -1, { AkAmpel:neu(86, Ak_Ampel_3er_XXX_FG), AkAmpel:neu(89, Ak_Ampel_3er_XXX_FG) })
-k1_r4_fg = AkRichtung:neu("R4 FG", -1, { AkAmpel:neu(92, Ak_Ampel_3er_XXX_FG), AkAmpel:neu(26, Ak_Ampel_3er_XXX_FG) })
-k1_r7_fg = AkRichtung:neu("R7 FG", -1, { AkAmpel:neu(80, Ak_Ampel_3er_XXX_FG), AkAmpel:neu(81, Ak_Ampel_3er_XXX_FG) })
-k1_r10_fg = AkRichtung:neu("R10 FG", -1, { AkAmpel:neu(84, Ak_Ampel_3er_XXX_FG), AkAmpel:neu(94, Ak_Ampel_2er_FG) })
+k1_r1_fg = AkRichtung:neu("R1 FG", -1, { AkAmpel:neu(86, AkAmpelModell.JS2_3er_mit_FG), AkAmpel:neu(89, AkAmpelModell.JS2_3er_mit_FG) })
+k1_r4_fg = AkRichtung:neu("R4 FG", -1, { AkAmpel:neu(92, AkAmpelModell.JS2_3er_mit_FG), AkAmpel:neu(26, AkAmpelModell.JS2_3er_mit_FG) })
+k1_r7_fg = AkRichtung:neu("R7 FG", -1, { AkAmpel:neu(80, AkAmpelModell.JS2_3er_mit_FG), AkAmpel:neu(81, AkAmpelModell.JS2_3er_mit_FG) })
+k1_r10_fg = AkRichtung:neu("R10 FG", -1, { AkAmpel:neu(84, AkAmpelModell.JS2_3er_mit_FG), AkAmpel:neu(94, AkAmpelModell.JS2_2er_nur_FG) })
 --endregion
 --region K1-Schaltungen
 do
@@ -139,36 +135,36 @@ end
 
 --region K2-Richtungen
 k2_r1 = AkRichtung:neu("R1", 12, {
-    AkAmpel:neu(103, Ak_Ampel_3er_XXX_FG),
+    AkAmpel:neu(103, AkAmpelModell.JS2_3er_mit_FG),
 })
 k2_r2 = AkRichtung:neu("R2", 13, {
-    AkAmpel:neu(104, Ak_Ampel_3er_XXX_FG),
-    AkAmpel:neu(105, Ak_Ampel_3er_XXX),
+    AkAmpel:neu(104, AkAmpelModell.JS2_3er_mit_FG),
+    AkAmpel:neu(105, AkAmpelModell.JS2_3er_ohne_FG),
 })
 k2_r3 = AkRichtung:neu("R3/4", 14, {
-    AkAmpel:neu(107, Ak_Ampel_3er_XXX_FG),
-    AkAmpel:neu(106, Ak_Ampel_3er_XXX),
-    AkAmpel:neu(109, Ak_Ampel_3er_XXX_FG),
+    AkAmpel:neu(107, AkAmpelModell.JS2_3er_mit_FG),
+    AkAmpel:neu(106, AkAmpelModell.JS2_3er_ohne_FG),
+    AkAmpel:neu(109, AkAmpelModell.JS2_3er_mit_FG),
 })
 k2_r5 = AkRichtung:neu("R5", 15, {
-    AkAmpel:neu(108, Ak_Ampel_Unsichtbar, "#5537_Straba Signal Halt", "#5538_Straba Signal links", "#5539_Straba Signal anhalten", "#5540_Straba Signal A"),
+    AkAmpel:neu(108, AkAmpelModell.Unsichtbar_2er, "#5537_Straba Signal Halt", "#5538_Straba Signal links", "#5539_Straba Signal anhalten", "#5540_Straba Signal A"),
 }):setFahrzeugMultiplikator(15)
 k2_r6 = AkRichtung:neu("R6", 16, {
-    AkAmpel:neu(110, Ak_Ampel_Unsichtbar, "#5535_Straba Signal Halt", "#5536_Straba Signal rechts", "#5534_Straba Signal anhalten", "#5533_Straba Signal A"),
+    AkAmpel:neu(110, AkAmpelModell.Unsichtbar_2er, "#5535_Straba Signal Halt", "#5536_Straba Signal rechts", "#5534_Straba Signal anhalten", "#5533_Straba Signal A"),
 }):setFahrzeugMultiplikator(15)
 k2_r7 = AkRichtung:neu("R7", 17, {
-    AkAmpel:neu(97, Ak_Ampel_3er_XXX_FG),
-    AkAmpel:neu(100, Ak_Ampel_3er_XXX),
+    AkAmpel:neu(97, AkAmpelModell.JS2_3er_mit_FG),
+    AkAmpel:neu(100, AkAmpelModell.JS2_3er_ohne_FG),
 })
 k2_r8 = AkRichtung:neu("R8", 18, {
-    AkAmpel:neu(98, Ak_Ampel_3er_XXX_FG),
-    AkAmpel:neu(99, Ak_Ampel_3er_XXX),
+    AkAmpel:neu(98, AkAmpelModell.JS2_3er_mit_FG),
+    AkAmpel:neu(99, AkAmpelModell.JS2_3er_ohne_FG),
 })
-k2_r1_fg = AkRichtung:neu("R1 FG", -1, { AkAmpel:neu(101, Ak_Ampel_2er_FG), AkAmpel:neu(102, Ak_Ampel_2er_FG) })
-k2_r1a_fg = AkRichtung:neu("R1a FG", -1, { AkAmpel:neu(97, Ak_Ampel_3er_XXX_FG), AkAmpel:neu(98, Ak_Ampel_3er_XXX_FG) })
-k2_r1b_fg = AkRichtung:neu("R10 FG", -1, { AkAmpel:neu(107, Ak_Ampel_3er_XXX_FG), AkAmpel:neu(109, Ak_Ampel_2er_FG) })
-k2_r3_fg = AkRichtung:neu("R3 FG", -1, { AkAmpel:neu(103, Ak_Ampel_3er_XXX_FG), AkAmpel:neu(104, Ak_Ampel_3er_XXX_FG) })
-k2_r7_fg = AkRichtung:neu("R7 FG", -1, { AkAmpel:neu(111, Ak_Ampel_2er_FG), AkAmpel:neu(112, Ak_Ampel_2er_FG) })
+k2_r1_fg = AkRichtung:neu("R1 FG", -1, { AkAmpel:neu(101, AkAmpelModell.JS2_2er_nur_FG), AkAmpel:neu(102, AkAmpelModell.JS2_2er_nur_FG) })
+k2_r1a_fg = AkRichtung:neu("R1a FG", -1, { AkAmpel:neu(97, AkAmpelModell.JS2_3er_mit_FG), AkAmpel:neu(98, AkAmpelModell.JS2_3er_mit_FG) })
+k2_r1b_fg = AkRichtung:neu("R10 FG", -1, { AkAmpel:neu(107, AkAmpelModell.JS2_3er_mit_FG), AkAmpel:neu(109, AkAmpelModell.JS2_2er_nur_FG) })
+k2_r3_fg = AkRichtung:neu("R3 FG", -1, { AkAmpel:neu(103, AkAmpelModell.JS2_3er_mit_FG), AkAmpel:neu(104, AkAmpelModell.JS2_3er_mit_FG) })
+k2_r7_fg = AkRichtung:neu("R7 FG", -1, { AkAmpel:neu(111, AkAmpelModell.JS2_2er_nur_FG), AkAmpel:neu(112, AkAmpelModell.JS2_2er_nur_FG) })
 --endregion
 --region K2-Schaltungen
 do
@@ -179,12 +175,14 @@ do
     k2_schaltung1:fuegeRichtungFuerFussgaengerHinzu(k2_r1a_fg)
     k2_schaltung1:fuegeRichtungFuerFussgaengerHinzu(k2_r1b_fg)
 
+    --- Kreuzung 2: Schaltung 1a
     local k2_schaltung1a = AkKreuzungsSchaltung:neu("Schaltung 1a")
     k2_schaltung1a:fuegeRichtungHinzu(k2_r1)
     k2_schaltung1a:fuegeRichtungHinzu(k2_r2)
     k2_schaltung1a:fuegeRichtungFuerFussgaengerHinzu(k2_r1_fg)
     k2_schaltung1a:fuegeRichtungFuerFussgaengerHinzu(k2_r1a_fg)
 
+    --- Kreuzung 2: Schaltung 1b
     local k2_schaltung1b = AkKreuzungsSchaltung:neu("Schaltung 1b")
     k2_schaltung1b:fuegeRichtungHinzu(k2_r1)
     k2_schaltung1b:fuegeRichtungHinzu(k2_r6) -- strab
@@ -199,13 +197,14 @@ do
     k2_schaltung2:fuegeRichtungFuerFussgaengerHinzu(k2_r3_fg)
     k2_schaltung2:fuegeRichtungFuerFussgaengerHinzu(k2_r1a_fg)
 
+    --- Kreuzung 2: Schaltung 2a
     local k2_schaltung2a = AkKreuzungsSchaltung:neu("Schaltung 2a")
     k2_schaltung2a:fuegeRichtungHinzu(k2_r3)
     k2_schaltung2a:fuegeRichtungHinzu(k2_r7)
     k2_schaltung2a:fuegeRichtungFuerFussgaengerHinzu(k2_r3_fg)
     k2_schaltung2a:fuegeRichtungFuerFussgaengerHinzu(k2_r7_fg)
 
-    --- Kreuzung 2: Schaltung 2a
+    --- Kreuzung 2: Schaltung 3
     local k2_schaltung3 = AkKreuzungsSchaltung:neu("Schaltung 3")
     k2_schaltung3:fuegeRichtungHinzu(k2_r8)
     k2_schaltung3:fuegeRichtungHinzu(k2_r5) -- strab
@@ -213,7 +212,7 @@ do
     k2_schaltung3:fuegeRichtungFuerFussgaengerHinzu(k2_r1_fg)
 
 
-    --- Kreuzung 2: Schaltung 2a
+    --- Kreuzung 2: Schaltung 3a
     local k2_schaltung3a = AkKreuzungsSchaltung:neu("Schaltung 3a")
     k2_schaltung3a:fuegeRichtungHinzu(k2_r8)
     k2_schaltung3a:fuegeRichtungHinzu(k2_r7)
@@ -234,7 +233,7 @@ end
 
 function EEPMain()
     --print("Speicher: " .. collectgarbage("count"))
-    AkSchaltungStart()
+    AkKreuzung:planeSchaltungenEin()
     AkPlaner:fuehreGeplanteAktionenAus()
     return 1
 end
