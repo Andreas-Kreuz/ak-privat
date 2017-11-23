@@ -1,5 +1,13 @@
-require("ak.anlagen.gruenberg-neustadt.Gruenberg-Neustadt-DR-main")
+I=0
+clearlog()
 
+print("Hey let's start, EEP Version is: ", EEPVer)
+
+function EEPMain()
+    print("Counter: ",I)
+    I=I+1
+    return 1
+end
 [EEPLuaData]
 DS_1 = "b=false,n=Block 1 Gl1 -> GBG Gleis 2,t=-1,z=nil,"
 DS_2 = "b=false,n=Block 1 Gl1 -> GBG Gleis 3,t=-1,z=nil,"
