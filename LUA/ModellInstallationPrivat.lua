@@ -8,7 +8,8 @@ print("Suche Installationsdateien in Verzeichnis \"" .. aktuellerOrdner .. "\"")
 -----------------------------------------
 -- Paket: Skripte von Andreas Kreuz
 -----------------------------------------
-local paket0 = AkModellPaket:neu(14, "Skriptsammlung von Andreas Kreuz", "Diverse Lua-Skripte")
+local paket0 = AkModellPaket:neu("13,2", "Lua-Bibliothek von Andreas Kreuz",
+    "Lua-Bibliothek mit Verkehrssteuerung, Aufgabenplanung und Modell-Installation")
 paket0:fuegeDateienHinzu(aktuellerOrdner, "", "LUA\\ak\\eep", { "README.md" })
 paket0:fuegeDateienHinzu(aktuellerOrdner, "", "LUA\\ak\\schiene", { "README.md" })
 paket0:fuegeDateienHinzu(aktuellerOrdner, "", "LUA\\ak\\planer", { "README.md" })
@@ -20,7 +21,7 @@ do
     local paket1 = AkModellPaket:neu(14, "Anlage: Andreas Kreuz - Die Moderne", "Eine Anlage, die in der heutigen Zeit angesiedelt ist. Dokumentation für Strassenverkehr enthalten. Erfordert Skriptsammlung.")
     paket1:fuegeDateienHinzu(aktuellerOrdner, "", "LUA\\ak\\anlagen\\die-moderne", { "README.md" })
     paket1:fuegeDateienHinzu(aktuellerOrdner .. "\\..\\ak-privat", "", "Resourcen\\Anlagen\\die-moderne", { ".dds", "README.md" })
-    paket1:fuegeDateienHinzu(aktuellerOrdner .. "\\..\\ak-privat", "", "Resourcen\\Doc\\die-moderne", { ".dds", "README.md" })
+    --paket1:fuegeDateienHinzu(aktuellerOrdner .. "\\..\\ak-privat", "", "Resourcen\\Doc\\die-moderne", { ".dds", "README.md" })
 
     print(paket0.deutscherName)
     print(paket1.deutscherName)
