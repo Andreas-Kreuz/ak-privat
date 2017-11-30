@@ -10,6 +10,8 @@ clearlog()
 --------------------------------------------------------------------
 AkStartMitDebug = false
 
+
+
 --------------------------------------------------------------------
 -- Zeigt erweiterte Informationen waehrend der erste Schitte an   --
 --------------------------------------------------------------------
@@ -21,7 +23,7 @@ require("ak.anlagen.die-moderne.Die-Moderne-07-main")
 --------------------------------------------------------------------
 AkPlaner.debug = false
 AkSpeicherHilfe.debug = false
-AkAmpel.debug = false
+AkAmpel.debug = true
 AkKreuzung.debug = false
 AkKreuzung.zeigeSignalIdsAllerSignale = false
 AkKreuzung.zeigeAnforderungenAlsInfo = true

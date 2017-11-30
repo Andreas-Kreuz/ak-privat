@@ -160,7 +160,10 @@ k2_r8 = AkRichtung:neu("R8", 18, {
     AkAmpel:neu(98, AkAmpelModell.JS2_3er_mit_FG),
     AkAmpel:neu(99, AkAmpelModell.JS2_3er_ohne_FG),
 })
-k2_r1_fg = AkRichtung:neu("R1 FG", -1, { AkAmpel:neu(101, AkAmpelModell.JS2_2er_nur_FG), AkAmpel:neu(102, AkAmpelModell.JS2_2er_nur_FG) })
+k2_r1_fg = AkRichtung:neu("R1 FG", -1, {
+    AkAmpel:neu(101, AkAmpelModell.JS2_2er_nur_FG):fuegeAchsenImmoHinzu("#5816_Warnblink Fußgänger rechts", "Blinklicht", 0, nil, nil, nil, 50),
+    AkAmpel:neu(102, AkAmpelModell.JS2_2er_nur_FG):fuegeAchsenImmoHinzu("#5815_Warnblink Fußgänger links", "Blinklicht", 0, nil, nil, nil, 50)
+})
 k2_r1a_fg = AkRichtung:neu("R1a FG", -1, { AkAmpel:neu(97, AkAmpelModell.JS2_3er_mit_FG), AkAmpel:neu(98, AkAmpelModell.JS2_3er_mit_FG) })
 k2_r1b_fg = AkRichtung:neu("R10 FG", -1, { AkAmpel:neu(107, AkAmpelModell.JS2_3er_mit_FG), AkAmpel:neu(109, AkAmpelModell.JS2_2er_nur_FG) })
 k2_r3_fg = AkRichtung:neu("R3 FG", -1, { AkAmpel:neu(103, AkAmpelModell.JS2_3er_mit_FG), AkAmpel:neu(104, AkAmpelModell.JS2_3er_mit_FG) })
