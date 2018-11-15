@@ -2,6 +2,14 @@ Zugname = "#PLATZHALTER"
 
 print("Lade AkEepFunctions ...")
 require("ak.eep.AkEepFunktionen")
+
+AkEEPHilfe.setzeZugAufGleis(5, "Tuff Tuff Zug")
+AkEEPHilfe.setzeZugAufGleis(7, "Zoom Zoom Zug")
+AkEEPHilfe.setzeZugAufStrasse(3, "Tatütata")
+AkEEPHilfe.setzeZugAufStrasse(4, "Tram")
+AkEEPHilfe.setzeZugAufStrasse(5, "Tram")
+AkEEPHilfe.setzeZugAufStrasse(6, "Tram")
+
 -- endregion
 
 clearlog()
@@ -33,6 +41,8 @@ AkKreuzung.zeigeSchaltungAlsInfo = true
 -- Erste Hilfe - normalerweise nicht notwendig                    --
 --------------------------------------------------------------------
 -- AkKreuzung.zaehlerZuruecksetzen()
+
+
 
 
 

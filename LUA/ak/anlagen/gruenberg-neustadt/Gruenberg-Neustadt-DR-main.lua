@@ -4,6 +4,38 @@ require("ak.schiene.AkSchiene")
 
 --require 'PrintToFile_BH2' { file = AkAusgabe.outputPath .. "output.txt" }
 
+myFile =io.open("C:\\Users\\Jens\\Documents\\Andreas_Kreuz\\ak-privat\\Resourcen\\Anlagen\\gruenberg-neustadt\\Gruenberg-Neustadt-DR.anl3",r)
+io.input(myFile)
+AllData = io.read("*all")
+io.close()
+P1,P2,Fuhrpark = string.find(AllData,"<Fuhrpark.-(<Zugverband.-)</Fuhrpark>")
+AllData = nil
+myTable = {}
+print("\nDer String Fuhrpark besteht aus ",tostring(#Fuhrpark,"%d+")," Zeichen")
+print()
+Number = 0
+for p in string.gmatch(Fuhrpark,"<Zugverband.-</Zugverband>") do
+    Number = Number + 1
+    -- print("p ist ",p)
+    Ausgabe1 , Ausgabe2 , Ausgabe3 =
+    string.match(p,"ZugID%=%\"(%d+).-Geschwindigkeit%=%\"(-?%d+).-name%=%\"(.-)\"%sLight")
+    Laenge = 0
+    Anzahl = 0
+    for q in string.gmatch(p,"<Rollmaterial.-vUeberhang%=%\"%d+.-hUeberhang%=%\"%d+") do
+        Laenge1, Laenge2 = string.match(q,"vUeberhang%=%\"(%d+).-hUeberhang%=%\"(%d+)")
+        Laenge = Laenge + Laenge1 + Laenge2
+        Anzahl = Anzahl + 1
+    end
+    if Laenge > 1600 then
+        print("ID: " , Ausgabe1 , " - Geschwindigkeit: " , Ausgabe2 * 3.6 , " km/h - Name: " , Ausgabe3 , " - Fahrzeuge: " , Anzahl , " - Gesamtlänge: " , Laenge/100 , " Meter")
+    end
+end
+print("\nAnzahl Züge auf dieser Anlage: ",Number)
+Number = nil
+Fuhrpark = nil
+print()
+
+
 -- SignalStellung
 S = {}
 S.Hp0 = 1 -- Halt

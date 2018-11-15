@@ -1,8 +1,16 @@
 --------------------------------
 -- Lade Funktionen fuer Ampeln
 --------------------------------
+print('Lade AkCommunicator ...')
+require "ak.io.AkCommunicator"
+AkCommunicator.setOutputDirectory("C:\\Spiele\\Andreas_Kreuz\\out")
+
 print('Lade AkStrasse ...')
 require "ak.strasse.AkStrasse"
+print('Lade AkStatistik ...')
+require "ak.io.AkStatistik"
+
+
 
 ------------------------------------------------
 -- Damit kommt wird die Variable "Zugname" automatisch durch EEP belegt
@@ -26,44 +34,44 @@ end
 --region K1-Richtungen
 k1_r1 = AkRichtung:neu("R1", 1, {
     AkAmpel:neu(92, AkAmpelModell.JS2_3er_mit_FG)
-})
+}, { 'STRAIGHT' })
 k1_r2 = AkRichtung:neu("R2", 2, {
     AkAmpel:neu(26, AkAmpelModell.JS2_3er_mit_FG),
     AkAmpel:neu(91, AkAmpelModell.JS2_3er_ohne_FG)
-})
+}, { 'LEFT' })
 k1_r3 = AkRichtung:neu("R3", 3, {
     AkAmpel:neu(96, AkAmpelModell.Unsichtbar_2er, "#5528_Straba Signal Halt", "#5531_Straba Signal geradeaus", "#5529_Straba Signal anhalten", "#5530_Straba Signal A")
-}):setFahrzeugMultiplikator(15)
+}, { 'STRAIGHT' }, 'TRAM'):setFahrzeugMultiplikator(15)
 k1_r4 = AkRichtung:neu("R4", 4, {
     AkAmpel:neu(89, AkAmpelModell.JS2_3er_mit_FG),
-})
+}, { 'STRAIGHT', 'RIGHT' })
 k1_r5 = AkRichtung:neu("R5", 5, {
     AkAmpel:neu(86, AkAmpelModell.JS2_3er_mit_FG),
     AkAmpel:neu(87, AkAmpelModell.JS2_3er_ohne_FG),
     AkAmpel:neu(88, AkAmpelModell.JS2_3er_ohne_FG)
-})
+}, { 'LEFT', 'LEFT' })
 k1_r6 = AkRichtung:neu("R6", 6, {
     AkAmpel:neu(85, AkAmpelModell.JS2_3er_ohne_FG)
-})
+}, { 'RIGHT' })
 k1_r7 = AkRichtung:neu("R7", 7, {
     AkAmpel:neu(83, AkAmpelModell.JS2_3er_ohne_FG),
     AkAmpel:neu(84, AkAmpelModell.JS2_3er_mit_FG)
-})
+}, { 'STRAIGHT' })
 a1 = AkAmpel:neu(93, AkAmpelModell.Unsichtbar_2er, "#5435_Straba Signal Halt", "#5521_Straba Signal geradeaus", "#5520_Straba Signal anhalten", "#5518_Straba Signal A")
 k1_r8 = AkRichtung:neu("R8", 8, {
     a1
-}):setFahrzeugMultiplikator(15)
+}, { 'STRAIGHT' }, 'TRAM'):setFahrzeugMultiplikator(15)
 k1_r9 = AkRichtung:neu("R9", 9, {
     AkAmpel:neu(93, AkAmpelModell.Unsichtbar_2er, "#5523_Straba Signal Halt", "#5434_Straba Signal links", "#5522_Straba Signal anhalten", "#5433_Straba Signal A")
-}):setFahrzeugMultiplikator(15)
+}, { 'LEFT' }, 'TRAM'):setFahrzeugMultiplikator(15)
 k1_r10 = AkRichtung:neu("R10", 10, {
     AkAmpel:neu(80, AkAmpelModell.JS2_3er_mit_FG),
     AkAmpel:neu(81, AkAmpelModell.JS2_3er_mit_FG),
     AkAmpel:neu(82, AkAmpelModell.JS2_3er_ohne_FG)
-})
+}, { 'LEFT', 'STRAIGHT', 'RIGHT' })
 k1_r11 = AkRichtung:neu("R11", 11, {
     AkAmpel:neu(95, AkAmpelModell.Unsichtbar_2er, "#5525_Straba Signal Halt", "#5436_Straba Signal rechts", "#5526_Straba Signal anhalten", "#5524_Straba Signal A")
-})
+}, { 'RIGHT' }, 'TRAM')
 
 k1_r1_fg = AkRichtung:neu("R1 FG", -1, { AkAmpel:neu(86, AkAmpelModell.JS2_3er_mit_FG), AkAmpel:neu(89, AkAmpelModell.JS2_3er_mit_FG) })
 k1_r4_fg = AkRichtung:neu("R4 FG", -1, { AkAmpel:neu(92, AkAmpelModell.JS2_3er_mit_FG), AkAmpel:neu(26, AkAmpelModell.JS2_3er_mit_FG) })
@@ -73,7 +81,7 @@ k1_r10_fg = AkRichtung:neu("R10 FG", -1, { AkAmpel:neu(84, AkAmpelModell.JS2_3er
 --region K1-Schaltungen
 do
     --- Kreuzung 1: Schaltung 1
-    local k1_schaltung1 = AkKreuzungsSchaltung:neu("Schaltung 1")
+    local k1_schaltung1 = AkKreuzungsSchaltung:neu("S1")
     k1_schaltung1:fuegeRichtungHinzu(k1_r1)
     k1_schaltung1:fuegeRichtungHinzu(k1_r3)
     k1_schaltung1:fuegeRichtungHinzu(k1_r7)
@@ -81,7 +89,7 @@ do
     k1_schaltung1:fuegeRichtungFuerFussgaengerHinzu(k1_r1_fg)
     k1_schaltung1:fuegeRichtungFuerFussgaengerHinzu(k1_r7_fg)
 
-    local k1_schaltung1a = AkKreuzungsSchaltung:neu("Schaltung 1a")
+    local k1_schaltung1a = AkKreuzungsSchaltung:neu("S1a")
     k1_schaltung1a:fuegeRichtungHinzu(k1_r1)
     k1_schaltung1a:fuegeRichtungHinzu(k1_r3)
     k1_schaltung1a:fuegeRichtungHinzu(k1_r6)
@@ -90,31 +98,31 @@ do
     k1_schaltung1a:fuegeRichtungFuerFussgaengerHinzu(k1_r7_fg)
 
     --- Kreuzung 1: Schaltung 2
-    local k1_schaltung2 = AkKreuzungsSchaltung:neu("Schaltung 2")
+    local k1_schaltung2 = AkKreuzungsSchaltung:neu("S2")
     k1_schaltung2:fuegeRichtungHinzu(k1_r2)
     k1_schaltung2:addRichtungMitAnforderung(k1_r9)
     k1_schaltung2:fuegeRichtungHinzu(k1_r11)
 
     --- Kreuzung 1: Schaltung 3
-    local k1_schaltung3 = AkKreuzungsSchaltung:neu("Schaltung 3")
+    local k1_schaltung3 = AkKreuzungsSchaltung:neu("S3")
     k1_schaltung3:fuegeRichtungHinzu(k1_r4)
     k1_schaltung3:fuegeRichtungHinzu(k1_r5)
     k1_schaltung3:fuegeRichtungHinzu(k1_r6)
 
-    local k1_schaltung3a = AkKreuzungsSchaltung:neu("Schaltung 3a")
+    local k1_schaltung3a = AkKreuzungsSchaltung:neu("S3a")
     k1_schaltung3a:fuegeRichtungHinzu(k1_r4)
     k1_schaltung3a:fuegeRichtungHinzu(k1_r10)
     k1_schaltung3a:fuegeRichtungFuerFussgaengerHinzu(k1_r4_fg)
     k1_schaltung3a:fuegeRichtungFuerFussgaengerHinzu(k1_r10_fg)
 
     --- Kreuzung 1: Schaltung 4
-    local k1_schaltung4 = AkKreuzungsSchaltung:neu("Schaltung 4")
+    local k1_schaltung4 = AkKreuzungsSchaltung:neu("S4")
     k1_schaltung4:fuegeRichtungHinzu(k1_r6)
     k1_schaltung4:fuegeRichtungHinzu(k1_r7)
     k1_schaltung4:addRichtungMitAnforderung(k1_r8)
     k1_schaltung4:fuegeRichtungHinzu(k1_r11)
 
-    local k1_schaltung4a = AkKreuzungsSchaltung:neu("Schaltung 4a")
+    local k1_schaltung4a = AkKreuzungsSchaltung:neu("S4a")
     k1_schaltung4a:fuegeRichtungHinzu(k1_r6)
     k1_schaltung4a:fuegeRichtungHinzu(k1_r7)
     k1_schaltung4a:addRichtungMitAnforderung(k1_r9)
@@ -172,28 +180,28 @@ k2_r7_fg = AkRichtung:neu("R7 FG", -1, { AkAmpel:neu(111, AkAmpelModell.JS2_2er_
 --region K2-Schaltungen
 do
     --- Kreuzung 2: Schaltung 1
-    local k2_schaltung1 = AkKreuzungsSchaltung:neu("Schaltung 1")
+    local k2_schaltung1 = AkKreuzungsSchaltung:neu("S1")
     k2_schaltung1:fuegeRichtungHinzu(k2_r1)
     k2_schaltung1:fuegeRichtungFuerFussgaengerHinzu(k2_r1_fg)
     k2_schaltung1:fuegeRichtungFuerFussgaengerHinzu(k2_r1a_fg)
     k2_schaltung1:fuegeRichtungFuerFussgaengerHinzu(k2_r1b_fg)
 
     --- Kreuzung 2: Schaltung 1a
-    local k2_schaltung1a = AkKreuzungsSchaltung:neu("Schaltung 1a")
+    local k2_schaltung1a = AkKreuzungsSchaltung:neu("S1a")
     k2_schaltung1a:fuegeRichtungHinzu(k2_r1)
     k2_schaltung1a:fuegeRichtungHinzu(k2_r2)
     k2_schaltung1a:fuegeRichtungFuerFussgaengerHinzu(k2_r1_fg)
     k2_schaltung1a:fuegeRichtungFuerFussgaengerHinzu(k2_r1a_fg)
 
     --- Kreuzung 2: Schaltung 1b
-    local k2_schaltung1b = AkKreuzungsSchaltung:neu("Schaltung 1b")
+    local k2_schaltung1b = AkKreuzungsSchaltung:neu("S1b")
     k2_schaltung1b:fuegeRichtungHinzu(k2_r1)
     k2_schaltung1b:fuegeRichtungHinzu(k2_r6) -- strab
     k2_schaltung1b:fuegeRichtungFuerFussgaengerHinzu(k2_r1_fg)
     k2_schaltung1b:fuegeRichtungFuerFussgaengerHinzu(k2_r1a_fg)
 
     --- Kreuzung 2: Schaltung 2
-    local k2_schaltung2 = AkKreuzungsSchaltung:neu("Schaltung 2")
+    local k2_schaltung2 = AkKreuzungsSchaltung:neu("S2")
     k2_schaltung2:fuegeRichtungHinzu(k2_r3)
     k2_schaltung2:fuegeRichtungHinzu(k2_r5) -- strab
     k2_schaltung2:fuegeRichtungHinzu(k2_r6) -- strab
@@ -201,14 +209,14 @@ do
     k2_schaltung2:fuegeRichtungFuerFussgaengerHinzu(k2_r1a_fg)
 
     --- Kreuzung 2: Schaltung 2a
-    local k2_schaltung2a = AkKreuzungsSchaltung:neu("Schaltung 2a")
+    local k2_schaltung2a = AkKreuzungsSchaltung:neu("S2a")
     k2_schaltung2a:fuegeRichtungHinzu(k2_r3)
     k2_schaltung2a:fuegeRichtungHinzu(k2_r7)
     k2_schaltung2a:fuegeRichtungFuerFussgaengerHinzu(k2_r3_fg)
     k2_schaltung2a:fuegeRichtungFuerFussgaengerHinzu(k2_r7_fg)
 
     --- Kreuzung 2: Schaltung 3
-    local k2_schaltung3 = AkKreuzungsSchaltung:neu("Schaltung 3")
+    local k2_schaltung3 = AkKreuzungsSchaltung:neu("S3")
     k2_schaltung3:fuegeRichtungHinzu(k2_r8)
     k2_schaltung3:fuegeRichtungHinzu(k2_r5) -- strab
     k2_schaltung3:fuegeRichtungHinzu(k2_r6) -- strab
@@ -216,7 +224,7 @@ do
 
 
     --- Kreuzung 2: Schaltung 3a
-    local k2_schaltung3a = AkKreuzungsSchaltung:neu("Schaltung 3a")
+    local k2_schaltung3a = AkKreuzungsSchaltung:neu("S3a")
     k2_schaltung3a:fuegeRichtungHinzu(k2_r8)
     k2_schaltung3a:fuegeRichtungHinzu(k2_r7)
     k2_schaltung3a:fuegeRichtungFuerFussgaengerHinzu(k2_r1_fg)
@@ -233,10 +241,10 @@ do
 end
 --endregion
 
-
 function EEPMain()
     --print("Speicher: " .. collectgarbage("count"))
     AkKreuzung:planeSchaltungenEin()
     AkPlaner:fuehreGeplanteAktionenAus()
+    AkStatistik:statistikAusgabe()
     return 1
 end
