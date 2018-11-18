@@ -1,14 +1,14 @@
 --------------------------------
 -- Lade Funktionen fuer Ampeln
 --------------------------------
-print('Lade AkCommunicator ...')
-require "ak.io.AkCommunicator"
-AkCommunicator.setOutputDirectory("C:\\Spiele\\Andreas_Kreuz\\out")
+print('Lade AkWebServerIo ...')
+require "ak.io.AkWebServerIo"
+--AkWebServerIo.setOutputDirectory("C:\\Spiele\\Andreas_Kreuz\\out")
+print('Lade AkStatistik ...')
+require "ak.io.AkStatistik"
 
 print('Lade AkStrasse ...')
 require "ak.strasse.AkStrasse"
-print('Lade AkStatistik ...')
-require "ak.io.AkStatistik"
 
 
 

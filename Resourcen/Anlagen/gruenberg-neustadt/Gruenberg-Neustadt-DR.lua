@@ -1,18 +1,37 @@
-I=0
 clearlog()
+--------------------------------------------------------------------
+-- Zeigt erweiterte Informationen waehrend der Initialisierung an --
+--------------------------------------------------------------------
+AkStartMitDebug = false
 
-print("Hey let's start, EEP Version is: ", EEPVer)
+--------------------------------------------------------------------
+-- Zeigt erweiterte Informationen waehrend der erste Schitte an   --
+--------------------------------------------------------------------
+print("Lade Gruenberg-Neustadt-DR-main.lua ...")
+require("ak.anlagen.gruenberg-neustadt.Gruenberg-Neustadt-DR-main")
 
-function EEPMain()
-    print("Counter: ",I)
-    I=I+1
-    return 1
-end
+--------------------------------------------------------------------
+-- Zeige erweiterte Informationen an                              --
+--------------------------------------------------------------------
+-- AkPlaner.debug = false
+-- AkSpeicherHilfe.debug = false
+-- AkAmpel.debug = false
+-- AkKreuzung.debug = false
+-- AkKreuzung.zeigeSignalIdsAllerSignale = false
+-- AkKreuzung.zeigeAnforderungenAlsInfo = false
+-- AkKreuzung.zeigeSchaltungAlsInfo = false
+
+--------------------------------------------------------------------
+-- Erste Hilfe - normalerweise nicht notwendig                    --
+--------------------------------------------------------------------
+-- AkKreuzung.zaehlerZuruecksetzen()
+
+
 [EEPLuaData]
 DS_1 = "b=false,n=Block 1 Gl1 -> GBG Gleis 2,t=-1,z=nil,"
 DS_2 = "b=false,n=Block 1 Gl1 -> GBG Gleis 3,t=-1,z=nil,"
 DS_3 = "b=false,n=Block 1 Gl1 -> GBG Gleis 4,t=-1,z=nil,"
-DS_4 = "b=false,n=GBG Gleis 2 -> Block 2 Gl1,t=-1,z=nil,"
+DS_4 = "b=true,n=GBG Gleis 2 -> Block 2 Gl1,t=-1,z=#DDR - Gueterzug - Fernverkehr - DR254 gemischter G�terzug,"
 DS_5 = "b=false,n=GBG Gleis 3 -> Block 2 Gl1,t=-1,z=nil,"
 DS_6 = "b=false,n=GBG Gleis 4 -> Block 2 Gl1,t=-1,z=nil,"
 DS_7 = "b=false,n=Block 2 Gl1 -> NST Gleis 1,t=-1,z=nil,"
@@ -27,7 +46,7 @@ DS_15 = "b=false,n=Block 3 Gl1 -> Block 4 Gl1,t=-1,z=nil,"
 DS_20 = "b=false,n=Block Sb West -> Block 3 Gl2,t=-1,z=nil,"
 DS_21 = "b=false,n=Block 3 Gl2 -> NST Gleis 3,t=-1,z=nil,"
 DS_22 = "b=false,n=Block 3 Gl2 -> NST Gleis 4,t=-1,z=nil,"
-DS_25 = "b=false,n=NST Gleis 3 -> Block 2 Gl2,t=-1,z=nil,"
+DS_25 = "b=true,n=NST Gleis 3 -> Block 2 Gl2,t=-1,z=#DDR - Personenzug - Fernverkehr - BR 132 Express,"
 DS_26 = "b=false,n=NST Gleis 4 -> Block 2 Gl2,t=-1,z=nil,"
 DS_28 = "b=false,n=Block 2 Gl2 -> GBG Gleis 1,t=-1,z=nil,"
 DS_29 = "b=false,n=Block 2 Gl2 -> GBG Gleis 3,t=-1,z=nil,"
@@ -39,18 +58,18 @@ DS_34 = "b=false,n=Block 1 Gl2 -> Block Sb Ost,t=-1,z=nil,"
 DS_100 = "b=false,n=Block Sb Ost,"
 DS_101 = "b=false,n=Block 1 Gl1,"
 DS_102 = "b=false,n=GBG Gleis 1,"
-DS_103 = "b=false,n=GBG Gleis 2,"
+DS_103 = "b=true,n=GBG Gleis 2,r=West,z=#DDR - Gueterzug - Fernverkehr - DR254 gemischter G�terzug,"
 DS_104 = "b=false,n=GBG Gleis 3,"
 DS_105 = "b=false,n=GBG Gleis 4,"
-DS_106 = "b=false,n=Block 2 Gl1,"
+DS_106 = "b=true,n=Block 2 Gl1,z=#DDR - Gueterzug - Fernverkehr - DR254 gemischter G�terzug,"
 DS_107 = "b=false,n=NST Gleis 1,"
 DS_108 = "b=false,n=NST Gleis 2,"
-DS_109 = "b=false,n=NST Gleis 3,"
+DS_109 = "b=true,n=NST Gleis 3,r=Ost,z=#DDR - Personenzug - Fernverkehr - BR 132 Express,"
 DS_110 = "b=false,n=NST Gleis 4,"
 DS_111 = "b=false,n=NST Gleis 5,"
 DS_114 = "b=false,n=Block 3 Gl1,"
 DS_115 = "b=false,n=Block 4 Gl1,"
 DS_116 = "b=false,n=Block 1 Gl2,"
-DS_117 = "b=false,n=Block 2 Gl2,"
+DS_117 = "b=true,n=Block 2 Gl2,z=#DDR - Personenzug - Fernverkehr - BR 132 Express,"
 DS_118 = "b=false,n=Block 3 Gl2,"
-DS_119 = "b=false,n=Block Sb West,"
+DS_119 = "b=true,n=Block Sb West,r=Ost,z=#DDR - Gueterzug - Fernverkehr - DR 243 gemischte Gueter,"
