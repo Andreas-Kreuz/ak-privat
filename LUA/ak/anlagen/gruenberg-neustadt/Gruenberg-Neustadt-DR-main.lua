@@ -1,10 +1,5 @@
-print('Lade AkWebServerIo ...')
 require "ak.io.AkWebServerIo"
---AkWebServerIo.setOutputDirectory("C:\\Spiele\\Andreas_Kreuz\\out")
-print('Lade AkStatistik ...')
 require "ak.io.AkStatistik"
-
-
 require("ak.schiene.AkSchiene")
 
 
