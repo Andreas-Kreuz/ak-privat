@@ -1,10 +1,22 @@
 --------------------------------
 -- Lade Funktionen fuer Ampeln
 --------------------------------
-require "ak.io.AkWebServerIo"
-require "ak.io.AkStatistik"
-require "ak.strasse.AkStrasse"
-
+-- Planer
+local AkPlaner = require("ak.planer.AkPlaner")
+-- IO
+local AkStatistik = require("ak.io.AkStatistik")
+-- Strasse
+local AkStrabWeiche = require("ak.strasse.AkStrabWeiche")
+local AkAmpelModell = require("ak.strasse.AkAmpelModell")
+local AkAchsenImmoAmpel = require("ak.strasse.AkAchsenImmoAmpel")
+local AkLichtImmoAmpel = require("ak.strasse.AkLichtImmoAmpel")
+local AkAmpel = require("ak.strasse.AkAmpel")
+local AkRichtung = require("ak.strasse.AkRichtung")
+local AkKreuzung = require("ak.strasse.AkKreuzung")
+local AkKreuzungsSchaltung = require("ak.strasse.AkKreuzungsSchaltung")
+-- Speicher
+local AkSpeicherHilfe = require("ak.speicher.AkSpeicher")
+local fmt = require("ak.text.AkFormat")
 
 
 ------------------------------------------------

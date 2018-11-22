@@ -1,7 +1,24 @@
 Zugname = "#PLATZHALTER"
 
-print("Lade AkEepFunctions ...")
-require("ak.eep.AkEepFunktionen")
+local AkEEPHilfe = require("ak.eep.AkEepFunktionen")
+-- Planer
+local AkPlaner = require("ak.planer.AkPlaner")
+-- IO
+local AkStatistik = require("ak.io.AkStatistik")
+-- Strasse
+local AkStrabWeiche = require("ak.strasse.AkStrabWeiche")
+local AkAmpelModell = require("ak.strasse.AkAmpelModell")
+local AkAchsenImmoAmpel = require("ak.strasse.AkAchsenImmoAmpel")
+local AkLichtImmoAmpel = require("ak.strasse.AkLichtImmoAmpel")
+local AkAmpel = require("ak.strasse.AkAmpel")
+local AkRichtung = require("ak.strasse.AkRichtung")
+local AkKreuzung = require("ak.strasse.AkKreuzung")
+local AkKreuzungsSchaltung = require("ak.strasse.AkKreuzungsSchaltung")
+-- Speicher
+local AkSpeicherHilfe = require("ak.speicher.AkSpeicher")
+local fmt = require("ak.text.AkFormat")
+local slotTable, SlotMapping, SlotFuncs = require('SlotNames_BH2')()
+
 
 AkEEPHilfe.setzeZugAufGleis(5, "Tuff Tuff Zug")
 AkEEPHilfe.setzeZugAufGleis(7, "Zoom Zoom Zug")
@@ -11,6 +28,15 @@ AkEEPHilfe.setzeZugAufStrasse(5, "Tram")
 AkEEPHilfe.setzeZugAufStrasse(6, "Tram")
 
 -- endregion
+
+SlotMapping.Kreuzung1 = {}
+SlotMapping.Kreuzung1.Richtung1 = 1
+SlotMapping.Kreuzung1.Richtung2 = 2
+SlotMapping.k1_r3 = 3
+SlotMapping.k1_r4 = 4
+SlotMapping.k1_r5 = 5
+SlotMapping.k1_r6 = 6
+SlotMapping.k1_r7 = 7
 
 clearlog()
 --------------------------------------------------------------------
