@@ -254,6 +254,6 @@ function EEPMain()
     --print("Speicher: " .. collectgarbage("count"))
     AkKreuzung:planeSchaltungenEin()
     AkPlaner:fuehreGeplanteAktionenAus()
-    -- AkStatistik:statistikAusgabe()
+    AkStatistik:statistikAusgabe()
     return 1
 end
