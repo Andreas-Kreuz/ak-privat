@@ -1,6 +1,6 @@
-require "ak.io.AkWebServerIo"
-require "ak.io.AkStatistik"
-require("ak.schiene.AkSchiene")
+local AkWebServerIo = require "ak.io.AkWebServerIo"
+local AkStatistik = require "ak.io.AkStatistik"
+local AkSchiene = require("ak.schiene.AkSchiene")
 
 
 -- AkAusgabe.outputPath = "C:/Spiele/EEP14/LUA/"
@@ -372,9 +372,6 @@ function V_BL1_2_OST(trainName) AkTrainControl.clearRoutes(trainName, { block1Gl
 
 function B_BL_SB_OST(trainName) AkTrainControl.clearRoutes(trainName, { block1Gl2ToBlockSbOst }) end
 
-
-
-clearlog()
 local i = -1
 --- Wird alle 200 ms aufgerufen, muss 1 zurueckgeben
 --

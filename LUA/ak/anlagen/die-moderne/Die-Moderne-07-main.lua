@@ -248,8 +248,6 @@ do
 end
 --endregion
 
-clearlog()
-
 function EEPMain()
     --print("Speicher: " .. collectgarbage("count"))
     AkKreuzung:planeSchaltungenEin()
