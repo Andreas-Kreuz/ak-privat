@@ -144,6 +144,8 @@ do
     k1:fuegeSchaltungHinzu(k1_schaltung4)
     k1:fuegeSchaltungHinzu(k1_schaltung4a)
 
+    k1:fuegeStatischeKameraHinzu('Kreuzung 1 (von oben)')
+
     AkStrabWeiche.new(38, "#5543_Straba Signal Weiche W11", "#5544_Straba Signal Weiche W13")
 end
 --endregion
@@ -252,6 +254,6 @@ function EEPMain()
     --print("Speicher: " .. collectgarbage("count"))
     AkKreuzung:planeSchaltungenEin()
     AkPlaner:fuehreGeplanteAktionenAus()
-    AkStatistik:statistikAusgabe()
+    AkStatistik:statistikAusgabe(1)
     return 1
 end
