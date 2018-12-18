@@ -145,6 +145,10 @@ do
     k1:fuegeSchaltungHinzu(k1_schaltung4a)
 
     k1:fuegeStatischeKameraHinzu('Kreuzung 1 (von oben)')
+    k1:fuegeStatischeKameraHinzu('K1 - Richtungen 3 (Strab), 2, 1')
+    k1:fuegeStatischeKameraHinzu('K1 - Richtungen 5, 4')
+    k1:fuegeStatischeKameraHinzu('K1 - Richtungen 9 (Strab links), 8 (Strab gerade), 7, 6')
+    k1:fuegeStatischeKameraHinzu('K1 - Richtungen 11 (Strab), 10')
 
     AkStrabWeiche.new(38, "#5543_Straba Signal Weiche W11", "#5544_Straba Signal Weiche W13")
 end
