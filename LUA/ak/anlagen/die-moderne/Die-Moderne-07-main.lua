@@ -135,7 +135,7 @@ do
     k1_schaltung4a:addRichtungMitAnforderung(k1_r9)
     k1_schaltung4a:fuegeRichtungHinzu(k1_r11)
 
-    k1 = AkKreuzung:neu("Kreuzung 1")
+    k1 = AkKreuzung:neu("Bahnhofstr. - Hauptstr.")
     k1:fuegeSchaltungHinzu(k1_schaltung1)
     k1:fuegeSchaltungHinzu(k1_schaltung1a)
     k1:fuegeSchaltungHinzu(k1_schaltung2)
@@ -182,8 +182,8 @@ k2_r8 = AkRichtung:neu("R8", 18, {
     AkAmpel:neu(99, AkAmpelModell.JS2_3er_ohne_FG),
 })
 k2_r1_fg = AkRichtung:neu("R1 FG", -1, {
-    AkAmpel:neu(101, AkAmpelModell.JS2_2er_nur_FG):fuegeAchsenImmoHinzu("#5816_Warnblink Fu√üg√§nger rechts", "Blinklicht", 0, nil, nil, nil, 50),
-    AkAmpel:neu(102, AkAmpelModell.JS2_2er_nur_FG):fuegeAchsenImmoHinzu("#5815_Warnblink Fu√üg√§nger links", "Blinklicht", 0, nil, nil, nil, 50)
+    AkAmpel:neu(101, AkAmpelModell.JS2_2er_nur_FG):fuegeAchsenImmoHinzu("#5816_Warnblink Fuﬂg‰nger rechts", "Blinklicht", 0, nil, nil, nil, 50),
+    AkAmpel:neu(102, AkAmpelModell.JS2_2er_nur_FG):fuegeAchsenImmoHinzu("#5815_Warnblink Fuﬂg‰nger links", "Blinklicht", 0, nil, nil, nil, 50)
 })
 k2_r1a_fg = AkRichtung:neu("R1a FG", -1, { AkAmpel:neu(97, AkAmpelModell.JS2_3er_mit_FG), AkAmpel:neu(98, AkAmpelModell.JS2_3er_mit_FG) })
 k2_r1b_fg = AkRichtung:neu("R10 FG", -1, { AkAmpel:neu(107, AkAmpelModell.JS2_3er_mit_FG), AkAmpel:neu(109, AkAmpelModell.JS2_2er_nur_FG) })
@@ -258,6 +258,6 @@ function EEPMain()
     --print("Speicher: " .. collectgarbage("count"))
     AkKreuzung:planeSchaltungenEin()
     AkPlaner:fuehreGeplanteAktionenAus()
-    AkStatistik:statistikAusgabe(1)
+    AkStatistik.statistikAusgabe(1)
     return 1
 end
