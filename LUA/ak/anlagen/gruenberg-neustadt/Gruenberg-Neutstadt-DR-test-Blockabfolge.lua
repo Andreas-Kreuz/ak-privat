@@ -99,4 +99,23 @@ assert(block2Gl1.trainName == trainName2)
 
 AkTrainControl.reset()
 
+run(); B_BL3_2_OST(trainName2); run()
+assert(block3Gl2.trainName == trainName2)
+assert(neustadtGleis2.trainName == nil)
+assert(neustadtGleis3.trainName == trainName2)
+assert(neustadtGleis4.trainName == nil)
+
+
+run(); B_NST_GL_3_OST(trainName2); run()
+assert(block3Gl2.trainName == trainName2)
+assert(neustadtGleis2.trainName == nil)
+assert(neustadtGleis3.trainName == trainName2)
+assert(neustadtGleis4.trainName == nil)
+
+run(); V_BL3_2_NST_GL_3_OST(trainName2); run()
+assert(block3Gl2.trainName == nil)
+assert(neustadtGleis2.trainName == nil)
+assert(neustadtGleis3.trainName == trainName2)
+assert(neustadtGleis4.trainName == nil)
+
 print("Test bestanden!")
