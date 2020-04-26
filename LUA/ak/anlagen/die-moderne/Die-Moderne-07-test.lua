@@ -18,10 +18,9 @@ local AkKreuzungsSchaltung = require("ak.strasse.AkKreuzungsSchaltung")
 local AkSpeicherHilfe = require("ak.speicher.AkSpeicher")
 local fmt = require("ak.text.AkFormat")
 
-
 AkEEPHilfe.setzeZugAufGleis(5, "Tuff Tuff Zug")
 AkEEPHilfe.setzeZugAufGleis(7, "Zoom Zoom Zug")
-AkEEPHilfe.setzeZugAufStrasse(3, "Tatütata")
+AkEEPHilfe.setzeZugAufStrasse(3, "Tatï¿½tata")
 AkEEPHilfe.setzeZugAufStrasse(4, "Tram")
 AkEEPHilfe.setzeZugAufStrasse(5, "Tram")
 AkEEPHilfe.setzeZugAufStrasse(6, "Tram")
@@ -79,7 +78,9 @@ end
 
 local function k1Print()
     list = {}
-    for k, v in pairs(k1:getSchaltungen()) do table.insert(list, k) end
+    for k, v in pairs(k1:getSchaltungen()) do
+        table.insert(list, k)
+    end
     table.sort(list, AkKreuzungsSchaltung.hoeherePrioAls)
 
     for k, v in ipairs(list) do
@@ -95,6 +96,6 @@ for i = 1, 10 do
     run()
     run()
     print("Verlasse Block")
-    KpVerlasse(k1_r8,true)
+    KpVerlasse(k1_r8, true)
     run()
 end

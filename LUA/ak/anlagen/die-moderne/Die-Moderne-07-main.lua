@@ -3,8 +3,6 @@
 --------------------------------
 -- Planer
 local AkPlaner = require("ak.planer.AkPlaner")
--- IO
-local AkStatistik = require("ak.io.AkStatistik")
 -- Strasse
 local AkStrabWeiche = require("ak.strasse.AkStrabWeiche")
 local AkAmpelModell = require("ak.strasse.AkAmpelModell")
@@ -16,14 +14,33 @@ local AkKreuzung = require("ak.strasse.AkKreuzung")
 local AkKreuzungsSchaltung = require("ak.strasse.AkKreuzungsSchaltung")
 -- Speicher
 local AkSpeicherHilfe = require("ak.speicher.AkSpeicher")
-local fmt = require("ak.text.AkFormat")
+local fmt = require("ak.core.eep.AkTippTextFormat")
 
+local ModuleRegistry = require("ak.core.ModuleRegistry")
+  ModuleRegistry.registerModules(
+      require("ak.core.CoreLuaModule"),
+      require("ak.data.DataLuaModule"),
+      require("ak.strasse.KreuzungLuaModul")
+  )
 
 ------------------------------------------------
 -- Damit kommt wird die Variable "Zugname" automatisch durch EEP belegt
 -- http://emaps-eep.de/lua/code-schnipsel
 ------------------------------------------------
-setmetatable(_ENV, { __index = function(_, k) local p = load(k); if p then local f = function(z) local s = Zugname; Zugname = z; p(); Zugname = s end; _ENV[k] = f; return f end; return nil end })
+setmetatable(_ENV, { __index = function(_, k)
+    local p = load(k);
+    if p then
+        local f = function(z)
+            local s = Zugname;
+            Zugname = z;
+            p();
+            Zugname = s
+        end;
+        _ENV[k] = f;
+        return f
+    end ;
+    return nil
+end })
 
 --------------------------------------------
 -- Definiere Funktionen fuer Kontaktpunkte
@@ -46,7 +63,7 @@ k1_r2 = AkRichtung:neu("R2", 2, {
     AkAmpel:neu(26, AkAmpelModell.JS2_3er_mit_FG),
     AkAmpel:neu(91, AkAmpelModell.JS2_3er_ohne_FG)
 }, { 'LEFT' })
-k1_r3 = AkRichtung:neu("R3", 3, {
+k1_r3 = AkRichtung        :neu("R3", 3, {
     AkAmpel:neu(96, AkAmpelModell.Unsichtbar_2er, "#5528_Straba Signal Halt", "#5531_Straba Signal geradeaus", "#5529_Straba Signal anhalten", "#5530_Straba Signal A")
 }, { 'STRAIGHT' }, 'TRAM'):setFahrzeugMultiplikator(15)
 k1_r4 = AkRichtung:neu("R4", 4, {
@@ -65,10 +82,10 @@ k1_r7 = AkRichtung:neu("R7", 7, {
     AkAmpel:neu(84, AkAmpelModell.JS2_3er_mit_FG)
 }, { 'STRAIGHT' })
 a1 = AkAmpel:neu(93, AkAmpelModell.Unsichtbar_2er, "#5435_Straba Signal Halt", "#5521_Straba Signal geradeaus", "#5520_Straba Signal anhalten", "#5518_Straba Signal A")
-k1_r8 = AkRichtung:neu("R8", 8, {
+k1_r8 = AkRichtung        :neu("R8", 8, {
     a1
 }, { 'STRAIGHT' }, 'TRAM'):setFahrzeugMultiplikator(15)
-k1_r9 = AkRichtung:neu("R9", 9, {
+k1_r9 = AkRichtung    :neu("R9", 9, {
     AkAmpel:neu(93, AkAmpelModell.Unsichtbar_2er, "#5523_Straba Signal Halt", "#5434_Straba Signal links", "#5522_Straba Signal anhalten", "#5433_Straba Signal A")
 }, { 'LEFT' }, 'TRAM'):setFahrzeugMultiplikator(15)
 k1_r10 = AkRichtung:neu("R10", 10, {
@@ -169,10 +186,10 @@ k2_r3 = AkRichtung:neu("R3/4", 14, {
 })
 k2_r5 = AkRichtung:neu("R5", 15, {
     AkAmpel:neu(108, AkAmpelModell.Unsichtbar_2er, "#5537_Straba Signal Halt", "#5538_Straba Signal links", "#5539_Straba Signal anhalten", "#5540_Straba Signal A"),
-}):setFahrzeugMultiplikator(15)
+})                :setFahrzeugMultiplikator(15)
 k2_r6 = AkRichtung:neu("R6", 16, {
     AkAmpel:neu(110, AkAmpelModell.Unsichtbar_2er, "#5535_Straba Signal Halt", "#5536_Straba Signal rechts", "#5534_Straba Signal anhalten", "#5533_Straba Signal A"),
-}):setFahrzeugMultiplikator(15)
+})                :setFahrzeugMultiplikator(15)
 k2_r7 = AkRichtung:neu("R7", 17, {
     AkAmpel:neu(97, AkAmpelModell.JS2_3er_mit_FG),
     AkAmpel:neu(100, AkAmpelModell.JS2_3er_ohne_FG),
@@ -182,8 +199,8 @@ k2_r8 = AkRichtung:neu("R8", 18, {
     AkAmpel:neu(99, AkAmpelModell.JS2_3er_ohne_FG),
 })
 k2_r1_fg = AkRichtung:neu("R1 FG", -1, {
-    AkAmpel:neu(101, AkAmpelModell.JS2_2er_nur_FG):fuegeAchsenImmoHinzu("#5816_Warnblink Fußgänger rechts", "Blinklicht", 0, nil, nil, nil, 50),
-    AkAmpel:neu(102, AkAmpelModell.JS2_2er_nur_FG):fuegeAchsenImmoHinzu("#5815_Warnblink Fußgänger links", "Blinklicht", 0, nil, nil, nil, 50)
+    AkAmpel:neu(101, AkAmpelModell.JS2_2er_nur_FG):fuegeAchsenImmoHinzu("#5816_Warnblink Fuï¿½gï¿½nger rechts", "Blinklicht", 0, nil, nil, nil, 50),
+    AkAmpel:neu(102, AkAmpelModell.JS2_2er_nur_FG):fuegeAchsenImmoHinzu("#5815_Warnblink Fuï¿½gï¿½nger links", "Blinklicht", 0, nil, nil, nil, 50)
 })
 k2_r1a_fg = AkRichtung:neu("R1a FG", -1, { AkAmpel:neu(97, AkAmpelModell.JS2_3er_mit_FG), AkAmpel:neu(98, AkAmpelModell.JS2_3er_mit_FG) })
 k2_r1b_fg = AkRichtung:neu("R10 FG", -1, { AkAmpel:neu(107, AkAmpelModell.JS2_3er_mit_FG), AkAmpel:neu(109, AkAmpelModell.JS2_2er_nur_FG) })
@@ -235,7 +252,6 @@ do
     k2_schaltung3:fuegeRichtungHinzu(k2_r6) -- strab
     k2_schaltung3:fuegeRichtungFuerFussgaengerHinzu(k2_r1_fg)
 
-
     --- Kreuzung 2: Schaltung 3a
     local k2_schaltung3a = AkKreuzungsSchaltung:neu("S3a")
     k2_schaltung3a:fuegeRichtungHinzu(k2_r8)
@@ -256,8 +272,6 @@ end
 
 function EEPMain()
     --print("Speicher: " .. collectgarbage("count"))
-    AkKreuzung:planeSchaltungenEin()
-    AkPlaner:fuehreGeplanteAktionenAus()
-    AkStatistik.statistikAusgabe(1)
+    ModuleRegistry.runTasks()
     return 1
 end
