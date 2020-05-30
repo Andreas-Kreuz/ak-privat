@@ -62,39 +62,42 @@ function KpVerlasse(lane, switchToRed)
 end
 
 -- region K1-Richtungen
-k1_r1 = Lane:new("K1 - Fahrspur 1", 1, {TrafficLight:new(92, TrafficLightModel.JS2_3er_mit_FG)}, {"STRAIGHT"})
+k1_r1 = Lane:new("K1 - Fahrspur 1", 1, {TrafficLight:new(92, TrafficLightModel.JS2_3er_mit_FG)},
+                 {Lane.Directions.STRAIGHT})
 k1_r2 = Lane:new("K1 - Fahrspur 2", 2, {
     TrafficLight:new(26, TrafficLightModel.JS2_3er_mit_FG), TrafficLight:new(91, TrafficLightModel.JS2_3er_ohne_FG)
-}, {"LEFT"})
+}, {Lane.Directions.LEFT})
 k1_r3 = Lane:new("K1 - Fahrspur 3", 3, {
     TrafficLight:new(96, TrafficLightModel.Unsichtbar_2er, "#5528_Straba Signal Halt",
                      "#5531_Straba Signal geradeaus", "#5529_Straba Signal anhalten", "#5530_Straba Signal A")
-}, {"STRAIGHT"}, "TRAM"):setFahrzeugMultiplikator(15)
-k1_r4 =
-    Lane:new("K1 - Fahrspur 4", 4, {TrafficLight:new(89, TrafficLightModel.JS2_3er_mit_FG)}, {"STRAIGHT", "RIGHT"})
-k1_r5 = Lane:new("K1 - Fahrspur 5", 5, {TrafficLight:new(88, TrafficLightModel.JS2_3er_ohne_FG)}, {"LEFT"})
+}, {Lane.Directions.STRAIGHT}, Lane.Type.TRAM):setFahrzeugMultiplikator(15)
+k1_r4 = Lane:new("K1 - Fahrspur 4", 4, {TrafficLight:new(89, TrafficLightModel.JS2_3er_mit_FG)},
+                 {Lane.Directions.STRAIGHT, Lane.Directions.RIGHT})
+k1_r5 = Lane:new("K1 - Fahrspur 5", 5, {TrafficLight:new(88, TrafficLightModel.JS2_3er_ohne_FG)},
+                 {Lane.Directions.LEFT})
 k1_r5a = Lane:new("K1 - Fahrspur 5a", 19, {
     TrafficLight:new(86, TrafficLightModel.JS2_3er_mit_FG), TrafficLight:new(87, TrafficLightModel.JS2_3er_ohne_FG)
-}, {"LEFT"})
-k1_r6 = Lane:new("K1 - Fahrspur 6", 6, {TrafficLight:new(85, TrafficLightModel.JS2_3er_ohne_FG)}, {"RIGHT"})
+}, {Lane.Directions.LEFT})
+k1_r6 = Lane:new("K1 - Fahrspur 6", 6, {TrafficLight:new(85, TrafficLightModel.JS2_3er_ohne_FG)},
+                 {Lane.Directions.RIGHT})
 k1_r7 = Lane:new("K1 - Fahrspur 7", 7, {
     TrafficLight:new(83, TrafficLightModel.JS2_3er_ohne_FG), TrafficLight:new(84, TrafficLightModel.JS2_3er_mit_FG)
-}, {"STRAIGHT"})
+}, {Lane.Directions.STRAIGHT})
 a1 = TrafficLight:new(93, TrafficLightModel.Unsichtbar_2er, "#5435_Straba Signal Halt",
                       "#5521_Straba Signal geradeaus", "#5520_Straba Signal anhalten", "#5518_Straba Signal A")
-k1_r8 = Lane:new("K1 - Fahrspur 8", 8, {a1}, {"STRAIGHT"}, "TRAM"):setFahrzeugMultiplikator(15)
+k1_r8 = Lane:new("K1 - Fahrspur 8", 8, {a1}, {Lane.Directions.STRAIGHT}, Lane.Type.TRAM):setFahrzeugMultiplikator(15)
 k1_r9 = Lane:new("K1 - Fahrspur 9", 9, {
     TrafficLight:new(93, TrafficLightModel.Unsichtbar_2er, "#5523_Straba Signal Halt", "#5434_Straba Signal links",
                      "#5522_Straba Signal anhalten", "#5433_Straba Signal A")
-}, {"LEFT"}, "TRAM"):setFahrzeugMultiplikator(15)
+}, {Lane.Directions.LEFT}, Lane.Type.TRAM):setFahrzeugMultiplikator(15)
 k1_r10 = Lane:new("K1 - Fahrspur 10", 10, {
     TrafficLight:new(80, TrafficLightModel.JS2_3er_mit_FG), TrafficLight:new(81, TrafficLightModel.JS2_3er_mit_FG),
     TrafficLight:new(82, TrafficLightModel.JS2_3er_ohne_FG)
-}, {"LEFT", "STRAIGHT", "RIGHT"})
+}, {Lane.Directions.LEFT, Lane.Directions.STRAIGHT, Lane.Directions.RIGHT})
 k1_r11 = Lane:new("K1 - Fahrspur 11", 11, {
     TrafficLight:new(95, TrafficLightModel.Unsichtbar_2er, "#5525_Straba Signal Halt", "#5436_Straba Signal rechts",
                      "#5526_Straba Signal anhalten", "#5524_Straba Signal A")
-}, {"RIGHT"}, "TRAM")
+}, {Lane.Directions.RIGHT}, Lane.Type.TRAM)
 
 k1_r1_fg = Lane:new("K1 - Furt 1 FG", -1, {
     TrafficLight:new(86, TrafficLightModel.JS2_3er_mit_FG), TrafficLight:new(89, TrafficLightModel.JS2_3er_mit_FG)
@@ -180,45 +183,49 @@ end
 -- endregion
 
 -- region K2-Richtungen
-k2_r1 = Lane:new("K2 - Fahrspur 1", 12, {TrafficLight:new(103, TrafficLightModel.JS2_3er_mit_FG)})
+k2_r1 = Lane:new("K2 - Fahrspur 1", 12, {TrafficLight:new(103, TrafficLightModel.JS2_3er_mit_FG)},
+                 {Lane.Directions.RIGHT})
 k2_r2 = Lane:new("K2 - Fahrspur 2", 13, {
     TrafficLight:new(104, TrafficLightModel.JS2_3er_mit_FG), TrafficLight:new(105, TrafficLightModel.JS2_3er_ohne_FG)
-})
-k2_r3 = Lane:new("K2 - Fahrspur 3", 14, {TrafficLight:new(107, TrafficLightModel.JS2_3er_mit_FG)})
+}, {Lane.Directions.LEFT})
+k2_r3 = Lane:new("K2 - Fahrspur 3", 14, {TrafficLight:new(107, TrafficLightModel.JS2_3er_mit_FG)},
+                 {Lane.Directions.STRAIGHT, Lane.Directions.RIGHT})
 k2_r4 = Lane:new("K2 - Fahrspur 4", 20, {
     TrafficLight:new(106, TrafficLightModel.JS2_3er_ohne_FG), TrafficLight:new(109, TrafficLightModel.JS2_3er_mit_FG)
-})
+}, {Lane.Directions.STRAIGHT})
 k2_r5 = Lane:new("K2 - Fahrspur 5", 15, {
     TrafficLight:new(108, TrafficLightModel.Unsichtbar_2er, "#5537_Straba Signal Halt", "#5538_Straba Signal links",
                      "#5539_Straba Signal anhalten", "#5540_Straba Signal A")
-}):setFahrzeugMultiplikator(15)
+}, {Lane.Directions.LEFT}, Lane.Type.TRAM):setFahrzeugMultiplikator(15)
 k2_r6 = Lane:new("K2 - Fahrspur 6", 16, {
     TrafficLight:new(110, TrafficLightModel.Unsichtbar_2er, "#5535_Straba Signal Halt", "#5536_Straba Signal rechts",
                      "#5534_Straba Signal anhalten", "#5533_Straba Signal A")
-}):setFahrzeugMultiplikator(15)
-k2_r7 = Lane:new("K2 - Fahrspur 7", 17, {TrafficLight:new(97, TrafficLightModel.JS2_3er_mit_FG)})
-k2_r7a = Lane:new("K2 - Fahrspur 7", 21, {TrafficLight:new(100, TrafficLightModel.JS2_3er_ohne_FG)})
+}, {Lane.Directions.RIGHT}, Lane.Type.TRAM):setFahrzeugMultiplikator(15)
+k2_r7 = Lane:new("K2 - Fahrspur 7", 17, {TrafficLight:new(97, TrafficLightModel.JS2_3er_mit_FG)},
+                 {Lane.Directions.STRAIGHT})
+k2_r7a = Lane:new("K2 - Fahrspur 7a", 21, {TrafficLight:new(100, TrafficLightModel.JS2_3er_ohne_FG)},
+                  {Lane.Directions.STRAIGHT})
 k2_r8 = Lane:new("K2 - Fahrspur 8", 18, {
     TrafficLight:new(98, TrafficLightModel.JS2_3er_mit_FG), TrafficLight:new(99, TrafficLightModel.JS2_3er_ohne_FG)
-})
-k2_r1_fg = Lane:new("K2 - Fahrspur 1 FG", -1, {
+}, {Lane.Directions.LEFT})
+k2_r1_fg = Lane:new("K2 - Furt 1 FG", -1, {
     TrafficLight:new(101, TrafficLightModel.JS2_2er_nur_FG):addAxisStructure("#5816_Warnblink Fuﬂg‰nger rechts",
                                                                              "Blinklicht", 0, nil, nil, nil, 50),
     TrafficLight:new(102, TrafficLightModel.JS2_2er_nur_FG):addAxisStructure("#5815_Warnblink Fuﬂg‰nger links",
                                                                              "Blinklicht", 0, nil, nil, nil, 50)
-})
+}, {Lane.Directions.STRAIGHT}, Lane.Type.PEDESTRIAN)
 k2_r1a_fg = Lane:new("K2 - Furt 1a FG", -1, {
     TrafficLight:new(97, TrafficLightModel.JS2_3er_mit_FG), TrafficLight:new(98, TrafficLightModel.JS2_3er_mit_FG)
-})
-k2_r1b_fg = Lane:new("K2 - Furt 10 FG", -1, {
+}, {Lane.Directions.STRAIGHT}, Lane.Type.PEDESTRIAN)
+k2_r1b_fg = Lane:new("K2 - Furt 1b FG", -1, {
     TrafficLight:new(107, TrafficLightModel.JS2_3er_mit_FG), TrafficLight:new(109, TrafficLightModel.JS2_3er_mit_FG)
-})
+}, {Lane.Directions.STRAIGHT}, Lane.Type.PEDESTRIAN)
 k2_r3_fg = Lane:new("K2 - Furt 3 FG", -1, {
     TrafficLight:new(103, TrafficLightModel.JS2_3er_mit_FG), TrafficLight:new(104, TrafficLightModel.JS2_3er_mit_FG)
-})
+}, {Lane.Directions.STRAIGHT}, Lane.Type.PEDESTRIAN)
 k2_r7_fg = Lane:new("K2 - Furt 7 FG", -1, {
     TrafficLight:new(111, TrafficLightModel.JS2_2er_nur_FG), TrafficLight:new(112, TrafficLightModel.JS2_2er_nur_FG)
-})
+}, {Lane.Directions.STRAIGHT}, Lane.Type.PEDESTRIAN)
 -- endregion
 -- region K2-Schaltungen
 do
