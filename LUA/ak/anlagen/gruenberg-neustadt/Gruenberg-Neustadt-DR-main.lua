@@ -1,9 +1,9 @@
-local AkSchiene = require("ak.schiene.AkSchiene")
+local Rail = require("ak.rail.Rail")
 local ModuleRegistry = require("ak.core.ModuleRegistry")
   ModuleRegistry.registerModules(
-      require("ak.core.CoreLuaModule"),
-      require("ak.data.DataLuaModule"),
-      require("ak.strasse.KreuzungLuaModul")
+    --   require("ak.core.CoreLuaModule"),
+    --   require("ak.data.DataLuaModule"),
+    -- require("ak.road.CrossingLuaModul")
   )
 
 -- AkAusgabe.outputPath = "C:/Spiele/EEP14/LUA/"
@@ -461,7 +461,7 @@ local i = -1
 function EEPMain()
     i = i + 1
     AkTrainControl.calculateRoutes()
-    ModuleRegistry.runTasks()
+    ModuleRegistry.runTasks(1)
     return 1
 end
 
@@ -473,6 +473,7 @@ function EEPOnSignal_714(x)
 end
 
 EEPRegisterSignal(241)
+local stellung = EEPGetSignal(241)
 dbg.fs_schaltung = stellung == 2
 EEPChangeInfoSignal(241, "<c>Debug Fahrstrassenschaltung\n<j>Gruen: an, Rot: aus")
 function EEPOnSignal_241(stellung)
@@ -480,6 +481,7 @@ function EEPOnSignal_241(stellung)
 end
 
 EEPRegisterSignal(242)
+local stellung = EEPGetSignal(242)
 dbg.fs_pruefung = stellung == 2
 EEPChangeInfoSignal(242, "<c>Debug Fahrstrassenpruefung\n<j>Gruen: an, Rot: aus")
 function EEPOnSignal_242(stellung)
@@ -487,6 +489,7 @@ function EEPOnSignal_242(stellung)
 end
 
 EEPRegisterSignal(243)
+local stellung = EEPGetSignal(243)
 dbg.anforderung = stellung == 2
 EEPChangeInfoSignal(243, "<c>Debug Anforderungen\n<j>Gruen: an, Rot: aus")
 function EEPOnSignal_243(stellung)
