@@ -1,22 +1,13 @@
 Zugname = "#PLATZHALTER"
 
-local AkEEPHilfe = require("ak.eep.AkEepFunktionen")
--- Planer
+local AkEEPHilfe = require("ak.core.eep.AkEepFunktionen")
 local Scheduler = require("ak.scheduler.Scheduler")
--- IO
-local AkStatistik = require("ak.io.AkStatistik")
--- Strasse
-local TramSwitch = require("ak.road.TramSwitch")
-local TrafficLightModel = require("ak.road.TrafficLightModel")
-local AxisStructureTrafficLight = require("ak.road.AxisStructureTrafficLight")
-local LightStructureTrafficLight = require("ak.road.LightStructureTrafficLight")
 local TrafficLight = require("ak.road.TrafficLight")
-local Lane = require("ak.road.Lane")
 local Crossing = require("ak.road.Crossing")
 local CrossingCircuit = require("ak.road.CrossingCircuit")
 -- Speicher
 local StorageUtility = require("ak.storage.StorageUtility")
-local fmt = require("ak.text.AkFormat")
+local fmt = require("ak.core.eep.AkTippTextFormat")
 
 AkEEPHilfe.setzeZugAufGleis(5, "Tuff Tuff Zug")
 AkEEPHilfe.setzeZugAufGleis(7, "Zoom Zoom Zug")
@@ -65,11 +56,11 @@ Crossing.zeigeSchaltungAlsInfo = true
 
 -------------------------------------------------------------------
 --Crossing.debug = true
-KpBetritt(k1_r8)
-KpBetritt(k1_r8)
-assert(k1_r8.vehicleCount == 2, k1_r8.anzahlFahrzeuge)
+KpBetritt(c1Lane8)
+KpBetritt(c1Lane8)
+assert(c1Lane8.vehicleCount == 2, c1Lane8.anzahlFahrzeuge)
 Crossing.zaehlerZuruecksetzen()
-assert(k1_r8.vehicleCount == 0)
+assert(c1Lane8.vehicleCount == 0)
 -------------------------------------------------------------------
 local function run()
     EEPTime = EEPTime + 20
@@ -90,12 +81,12 @@ end
 
 for i = 1, 10 do
     print("Betritt Block")
-    KpBetritt(k1_r8)
+    KpBetritt(c1Lane8)
     run()
     run()
     run()
     run()
     print("Verlasse Block")
-    KpVerlasse(k1_r8, true)
+    KpVerlasse(c1Lane8, true)
     run()
 end
