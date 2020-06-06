@@ -9,7 +9,7 @@ local LightStructureTrafficLight = require("ak.road.LightStructureTrafficLight")
 local TrafficLight = require("ak.road.TrafficLight")
 local Lane = require("ak.road.Lane")
 local Crossing = require("ak.road.Crossing")
-local CrossingCircuit = require("ak.road.CrossingCircuit")
+local CrossingSequence = require("ak.road.CrossingSequence")
 -- Speicher
 local StorageUtility = require("ak.storage.StorageUtility")
 local fmt = require("ak.core.eep.AkTippTextFormat")
@@ -18,6 +18,7 @@ local ModuleRegistry = require("ak.core.ModuleRegistry")
 ModuleRegistry.registerModules(require("ak.core.CoreLuaModule"), require("ak.data.DataLuaModule"),
                                require("ak.road.CrossingLuaModul"))
 ModuleRegistry.useDlls(true)
+Crossing.loadSettingsFromSlot(22)
 
 function EEPMain()
     -- print("Speicher: " .. collectgarbage("count"))
@@ -65,34 +66,37 @@ do
     local K1 = TrafficLight:new(92, TrafficLightModel.JS2_3er_mit_FG)
     local K2 = TrafficLight:new(91, TrafficLightModel.JS2_3er_ohne_FG)
     local K3 = TrafficLight:new(26, TrafficLightModel.JS2_3er_mit_FG)
+    local K4 = TrafficLight:new(142, TrafficLightModel.JS2_3er_mit_FG)
+    local K5 = TrafficLight:new(140, TrafficLightModel.JS2_2er_OFF_YELLOW_GREEN) -- right on K4
+    local K6 = TrafficLight:new(88, TrafficLightModel.JS2_3er_ohne_FG)
+    local K7 = TrafficLight:new(86, TrafficLightModel.JS2_3er_mit_FG)
+    local K8 = TrafficLight:new(87, TrafficLightModel.JS2_3er_ohne_FG)
+    local K9 = TrafficLight:new(85, TrafficLightModel.JS2_3er_ohne_FG)
+    local K10 = TrafficLight:new(83, TrafficLightModel.JS2_3er_ohne_FG)
+    local K11 = TrafficLight:new(84, TrafficLightModel.JS2_3er_mit_FG)
+    local K12 = TrafficLight:new(80, TrafficLightModel.JS2_3er_mit_FG)
+    local K13 = TrafficLight:new(81, TrafficLightModel.JS2_3er_mit_FG)
+    local K14 = TrafficLight:new(82, TrafficLightModel.JS2_3er_ohne_FG)
     local S1 = TrafficLight:new(96, TrafficLightModel.Unsichtbar_2er, "#5528_Straba Signal Halt",
                                 "#5531_Straba Signal geradeaus", "#5529_Straba Signal anhalten",
                                 "#5530_Straba Signal A")
-    local K4 = TrafficLight:new(89, TrafficLightModel.JS2_3er_mit_FG)
-    local K5 = TrafficLight:new(88, TrafficLightModel.JS2_3er_ohne_FG)
-    local K6 = TrafficLight:new(86, TrafficLightModel.JS2_3er_mit_FG)
-    local K7 = TrafficLight:new(87, TrafficLightModel.JS2_3er_ohne_FG)
-    local K8 = TrafficLight:new(85, TrafficLightModel.JS2_3er_ohne_FG)
-    local K9 = TrafficLight:new(83, TrafficLightModel.JS2_3er_ohne_FG)
-    local K10 = TrafficLight:new(84, TrafficLightModel.JS2_3er_mit_FG)
-    local S2 = TrafficLight:new(93, TrafficLightModel.Unsichtbar_2er, "#5435_Straba Signal Halt",
+    local S2 = TrafficLight:new(-1, TrafficLightModel.NONE, "#5435_Straba Signal Halt",
                                 "#5521_Straba Signal geradeaus", "#5520_Straba Signal anhalten",
                                 "#5518_Straba Signal A")
-    local S3 = TrafficLight:new(93, TrafficLightModel.Unsichtbar_2er, "#5523_Straba Signal Halt",
-                                "#5434_Straba Signal links", "#5522_Straba Signal anhalten", "#5433_Straba Signal A")
-    local K11 = TrafficLight:new(80, TrafficLightModel.JS2_3er_mit_FG)
-    local K12 = TrafficLight:new(81, TrafficLightModel.JS2_3er_mit_FG)
-    local K13 = TrafficLight:new(82, TrafficLightModel.JS2_3er_ohne_FG)
+    local S3 = TrafficLight:new(-1, TrafficLightModel.NONE, "#5523_Straba Signal Halt", "#5434_Straba Signal links",
+                                "#5522_Straba Signal anhalten", "#5433_Straba Signal A")
     local S4 = TrafficLight:new(95, TrafficLightModel.Unsichtbar_2er, "#5525_Straba Signal Halt",
                                 "#5436_Straba Signal rechts", "#5526_Straba Signal anhalten", "#5524_Straba Signal A")
+    local lane4Sig = TrafficLight:new(89, TrafficLightModel.Unsichtbar_2er)
+    local lane8sig = TrafficLight:new(93, TrafficLightModel.Unsichtbar_2er)
 
-    local F1 = K6
+    local F1 = K7
     local F2 = K4
     local F3 = K1
     local F4 = K3
-    local F5 = K11
-    local F6 = K12
-    local F7 = K10
+    local F5 = K12
+    local F6 = K13
+    local F7 = K11
     local F8 = TrafficLight:new(94, TrafficLightModel.JS2_2er_nur_FG)
 
     -- region K1-Richtungen
@@ -100,15 +104,14 @@ do
     c1Lane2 = Lane:new("K1 - Fahrspur 2", 2, K2, {Lane.Directions.LEFT})
     c1Lane3 = Lane:new("K1 - Fahrspur 3", 3, S1, {Lane.Directions.STRAIGHT}, Lane.Type.TRAM):setFahrzeugMultiplikator(
                   15)
-    c1Lane4 = Lane:new("K1 - Fahrspur 4", 4, K4, {Lane.Directions.STRAIGHT, Lane.Directions.RIGHT})
-    c1Lane5 = Lane:new("K1 - Fahrspur 5", 5, K5, {Lane.Directions.LEFT})
-    c1Lane5a = Lane:new("K1 - Fahrspur 5a", 19, K6, {Lane.Directions.LEFT})
-    c1Lane6 = Lane:new("K1 - Fahrspur 6", 6, K8, {Lane.Directions.RIGHT})
-    c1Lane7 = Lane:new("K1 - Fahrspur 7", 7, K9, {Lane.Directions.STRAIGHT})
-    ---@type Lane
-    c1Lane8 = Lane:new("K1 - Fahrspur 8", 8, S2, {Lane.Directions.LEFT, Lane.Directions.STRAIGHT}, Lane.Type.TRAM)
-                  :setFahrzeugMultiplikator(15)
-    c1Lane10 = Lane:new("K1 - Fahrspur 10", 10, K11,
+    c1Lane4 = Lane:new("K1 - Fahrspur 4", 4, lane4Sig, {Lane.Directions.STRAIGHT, Lane.Directions.RIGHT})
+    c1Lane5 = Lane:new("K1 - Fahrspur 5", 5, K6, {Lane.Directions.LEFT})
+    c1Lane5a = Lane:new("K1 - Fahrspur 5a", 19, K7, {Lane.Directions.LEFT})
+    c1Lane6 = Lane:new("K1 - Fahrspur 6", 6, K9, {Lane.Directions.RIGHT})
+    c1Lane7 = Lane:new("K1 - Fahrspur 7", 7, K10, {Lane.Directions.STRAIGHT})
+    c1Lane8 = Lane:new("K1 - Fahrspur 8", 8, lane8sig, {Lane.Directions.LEFT, Lane.Directions.STRAIGHT},
+                       Lane.Type.TRAM):setFahrzeugMultiplikator(15)
+    c1Lane10 = Lane:new("K1 - Fahrspur 10", 10, K12,
                         {Lane.Directions.LEFT, Lane.Directions.STRAIGHT, Lane.Directions.RIGHT})
     c1Lane11 = Lane:new("K1 - Fahrspur 11", 11, S4, {Lane.Directions.RIGHT}, Lane.Type.TRAM)
 
@@ -118,8 +121,10 @@ do
     c1 = Crossing:new("Bahnhofstr. - Hauptstr.")
 
     c1Lane3:showRequestsOn(S1)
-    c1Lane8:showRequestsOn(S2, "Strabalinie 10")
-    c1Lane8:showRequestsOn(S3, "Strabalinie 04")
+    c1Lane4:driveOn(K4)
+    c1Lane4:driveOn(K5)
+    c1Lane8:driveOn(S2, "Strabalinie 10"):showRequestsOn(S2, "Strabalinie 10")
+    c1Lane8:driveOn(S3, "Strabalinie 04"):showRequestsOn(S3, "Strabalinie 04")
     c1Lane11:showRequestsOn(S4)
 
     do
@@ -130,9 +135,9 @@ do
         c1Switching1:addLane(c1Lane3)
         c1Switching1:addTrafficLight(S1)
         c1Switching1:addLane(c1Lane7)
-        c1Switching1:addTrafficLight(K9)
         c1Switching1:addTrafficLight(K10)
-        c1Switching1:addLane(c1Lane8, {Lane.Directions.STRAIGHT}, {"Strabalinie 10"}, Lane.SchaltungsTyp.ANFORDERUNG)
+        c1Switching1:addTrafficLight(K11)
+        c1Switching1:addLane(c1Lane8)
         c1Switching1:addTrafficLight(S2)
         c1Switching1:addPedestrianLight(F1)
         c1Switching1:addPedestrianLight(F2)
@@ -146,11 +151,11 @@ do
         c1Switching1a:addTrafficLight(K1)
         c1Switching1a:addLane(c1Lane3)
         c1Switching1a:addLane(c1Lane6)
-        c1Switching1a:addTrafficLight(K8)
-        c1Switching1a:addLane(c1Lane7)
         c1Switching1a:addTrafficLight(K9)
+        c1Switching1a:addLane(c1Lane7)
         c1Switching1a:addTrafficLight(K10)
-        c1Switching1a:addLane(c1Lane8, {Lane.Directions.STRAIGHT}, {"Strabalinie 10"}, Lane.SchaltungsTyp.ANFORDERUNG)
+        c1Switching1a:addTrafficLight(K11)
+        c1Switching1a:addLane(c1Lane8)
         c1Switching1a:addTrafficLight(S2)
         c1Switching1a:addPedestrianLight(F5)
         c1Switching1a:addPedestrianLight(F6)
@@ -158,14 +163,15 @@ do
 
     do
         --- Kreuzung 1: Schaltung 2
-        ---@type CrossingCircuit
+        ---@type CrossingSequence
         local c1Switching2 = c1:newSequence("S2")
         c1Switching2:addLane(c1Lane2)
         c1Switching2:addTrafficLight(K2)
         c1Switching2:addTrafficLight(K3)
+        c1Switching2:addTrafficLight(K5)
         c1Switching2:addLane(c1Lane11)
         c1Switching2:addTrafficLight(S4)
-        c1Switching2:addLane(c1Lane8, {Lane.Directions.LEFT}, {"Strabalinie 04"}, Lane.SchaltungsTyp.ANFORDERUNG)
+        c1Switching2:addLane(c1Lane8)
         c1Switching2:addTrafficLight(S3)
     end
 
@@ -175,12 +181,12 @@ do
         c1Switching3:addLane(c1Lane4)
         c1Switching3:addTrafficLight(K4)
         c1Switching3:addLane(c1Lane5)
-        c1Switching3:addTrafficLight(K5)
-        c1Switching3:addLane(c1Lane5a)
         c1Switching3:addTrafficLight(K6)
+        c1Switching3:addLane(c1Lane5a)
         c1Switching3:addTrafficLight(K7)
-        c1Switching3:addLane(c1Lane6)
         c1Switching3:addTrafficLight(K8)
+        c1Switching3:addLane(c1Lane6)
+        c1Switching3:addTrafficLight(K9)
     end
 
     do
@@ -188,9 +194,9 @@ do
         c1Switching3a:addLane(c1Lane4)
         c1Switching3a:addTrafficLight(K4)
         c1Switching3a:addLane(c1Lane10)
-        c1Switching3a:addTrafficLight(K11)
         c1Switching3a:addTrafficLight(K12)
         c1Switching3a:addTrafficLight(K13)
+        c1Switching3a:addTrafficLight(K14)
         c1Switching3a:addPedestrianLight(F3)
         c1Switching3a:addPedestrianLight(F4)
         c1Switching3a:addPedestrianLight(F7)
@@ -201,11 +207,11 @@ do
         --- Kreuzung 1: Schaltung 4
         local c1Switching4 = c1:newSequence("S4")
         c1Switching4:addLane(c1Lane6)
-        c1Switching4:addTrafficLight(K8)
-        c1Switching4:addLane(c1Lane7)
         c1Switching4:addTrafficLight(K9)
+        c1Switching4:addLane(c1Lane7)
         c1Switching4:addTrafficLight(K10)
-        c1Switching4:addLane(c1Lane8, {Lane.Directions.STRAIGHT}, {"Strabalinie 10"}, Lane.SchaltungsTyp.ANFORDERUNG)
+        c1Switching4:addTrafficLight(K11)
+        c1Switching4:addLane(c1Lane8)
         c1Switching4:addTrafficLight(S2)
         c1Switching4:addLane(c1Lane11)
         c1Switching4:addTrafficLight(S4)
@@ -214,21 +220,21 @@ do
     do
         local c1Switching4a = c1:newSequence("S4a")
         c1Switching4a:addLane(c1Lane6)
-        c1Switching4a:addTrafficLight(K8)
-        c1Switching4a:addLane(c1Lane7)
         c1Switching4a:addTrafficLight(K9)
+        c1Switching4a:addLane(c1Lane7)
         c1Switching4a:addTrafficLight(K10)
-        c1Switching4a:addLane(c1Lane8, {Lane.Directions.LEFT}, {"Strabalinie 04"}, Lane.SchaltungsTyp.ANFORDERUNG)
+        c1Switching4a:addTrafficLight(K11)
+        c1Switching4a:addLane(c1Lane8, {Lane.Directions.LEFT}, {"Strabalinie 04"}, Lane.RequestType.ANFORDERUNG)
         c1Switching4a:addTrafficLight(S3)
         c1Switching4a:addLane(c1Lane11)
         c1Switching4a:addTrafficLight(S4)
     end
 
-    c1:fuegeStatischeKameraHinzu("Kreuzung 1 (von oben)")
-    c1:fuegeStatischeKameraHinzu("K1 - Richtungen 3 (Strab), 2, 1")
-    c1:fuegeStatischeKameraHinzu("K1 - Richtungen 5, 4")
-    c1:fuegeStatischeKameraHinzu("K1 - Richtungen 9 (Strab links), 8 (Strab gerade), 7, 6")
-    c1:fuegeStatischeKameraHinzu("K1 - Richtungen 11 (Strab), 10")
+    c1:addStaticCam("Kreuzung 1 (von oben)")
+    c1:addStaticCam("K1 - Richtungen 3 (Strab), 2, 1")
+    c1:addStaticCam("K1 - Richtungen 5, 4")
+    c1:addStaticCam("K1 - Richtungen 9 (Strab links), 8 (Strab gerade), 7, 6")
+    c1:addStaticCam("K1 - Richtungen 11 (Strab), 10")
 
     TramSwitch.new(38, "#5543_Straba Signal Weiche W11", "#5544_Straba Signal Weiche W13")
 end

@@ -4,7 +4,7 @@ local AkEEPHilfe = require("ak.core.eep.AkEepFunktionen")
 local Scheduler = require("ak.scheduler.Scheduler")
 local TrafficLight = require("ak.road.TrafficLight")
 local Crossing = require("ak.road.Crossing")
-local CrossingCircuit = require("ak.road.CrossingCircuit")
+local CrossingSequence = require("ak.road.CrossingSequence")
 -- Speicher
 local StorageUtility = require("ak.storage.StorageUtility")
 local fmt = require("ak.core.eep.AkTippTextFormat")
@@ -46,7 +46,7 @@ Crossing.zeigeSchaltungAlsInfo = true
 --------------------------------------------------------------------
 -- Erste Hilfe - normalerweise nicht notwendig                    --
 --------------------------------------------------------------------
--- Crossing.zaehlerZuruecksetzen()
+-- Crossing.resetVehicles()
 
 
 
@@ -59,7 +59,7 @@ Crossing.zeigeSchaltungAlsInfo = true
 KpBetritt(c1Lane8)
 KpBetritt(c1Lane8)
 assert(c1Lane8.vehicleCount == 2, c1Lane8.anzahlFahrzeuge)
-Crossing.zaehlerZuruecksetzen()
+Crossing.resetVehicles()
 assert(c1Lane8.vehicleCount == 0)
 -------------------------------------------------------------------
 local function run()
@@ -69,10 +69,10 @@ end
 
 local function k1Print()
     list = {}
-    for k, v in pairs(k1:getSchaltungen()) do
+    for k, v in pairs(k1:getSequences()) do
         table.insert(list, k)
     end
-    table.sort(list, CrossingCircuit.hoeherePrioAls)
+    table.sort(list, CrossingSequence.sequencePriorityComparator)
 
     for k, v in ipairs(list) do
         print(k .. ": " .. v:getName() .. " - Prio: " .. v:calculatePriority())
