@@ -1,20 +1,20 @@
 Zugname = "#PLATZHALTER"
 
-local AkEEPHilfe = require("ak.core.eep.AkEepFunktionen")
+local EepSimulator = require("ak.core.eep.EepSimulator")
 local Scheduler = require("ak.scheduler.Scheduler")
 local TrafficLight = require("ak.road.TrafficLight")
 local Crossing = require("ak.road.Crossing")
 local CrossingSequence = require("ak.road.CrossingSequence")
 -- Speicher
 local StorageUtility = require("ak.storage.StorageUtility")
-local fmt = require("ak.core.eep.AkTippTextFormat")
+local fmt = require("ak.core.eep.TippTextFormatter")
 
-AkEEPHilfe.setzeZugAufGleis(5, "Tuff Tuff Zug")
-AkEEPHilfe.setzeZugAufGleis(7, "Zoom Zoom Zug")
-AkEEPHilfe.setzeZugAufStrasse(3, "Tat�tata")
-AkEEPHilfe.setzeZugAufStrasse(4, "Tram")
-AkEEPHilfe.setzeZugAufStrasse(5, "Tram")
-AkEEPHilfe.setzeZugAufStrasse(6, "Tram")
+EepSimulator.setzeZugAufGleis(5, "Tuff Tuff Zug")
+EepSimulator.setzeZugAufGleis(7, "Zoom Zoom Zug")
+EepSimulator.setzeZugAufStrasse(3, "Tat�tata")
+EepSimulator.setzeZugAufStrasse(4, "Tram")
+EepSimulator.setzeZugAufStrasse(5, "Tram")
+EepSimulator.setzeZugAufStrasse(6, "Tram")
 
 -- endregion
 
@@ -24,7 +24,31 @@ clearlog()
 --------------------------------------------------------------------
 AkStartMitDebug = false
 
+EEPStructureSetLight("#5528_Straba Signal Halt", false)
+EEPStructureSetLight("#5531_Straba Signal geradeaus", false)
+EEPStructureSetLight("#5529_Straba Signal anhalten", false)
+EEPStructureSetLight("#5530_Straba Signal A", false)
+EEPStructureSetLight("#5435_Straba Signal Halt", false)
+EEPStructureSetLight("#5521_Straba Signal geradeaus", false)
+EEPStructureSetLight("#5520_Straba Signal anhalten", false)
+EEPStructureSetLight("#5518_Straba Signal A", false)
+EEPStructureSetLight("#5523_Straba Signal Halt", false)
+EEPStructureSetLight("#5434_Straba Signal links", false)
+EEPStructureSetLight("#5522_Straba Signal anhalten", false)
+EEPStructureSetLight("#5433_Straba Signal A", false)
+EEPStructureSetLight("#5525_Straba Signal Halt", false)
+EEPStructureSetLight("#5436_Straba Signal rechts", false)
+EEPStructureSetLight("#5526_Straba Signal anhalten", false)
+EEPStructureSetLight("#5524_Straba Signal A", false)
 
+EEPStructureSetLight("#5537_Straba Signal Halt", false)
+EEPStructureSetLight("#5538_Straba Signal links", false)
+EEPStructureSetLight("#5539_Straba Signal anhalten", false)
+EEPStructureSetLight("#5540_Straba Signal A", false)
+EEPStructureSetLight("#5535_Straba Signal Halt", false)
+EEPStructureSetLight("#5536_Straba Signal rechts", false)
+EEPStructureSetLight("#5534_Straba Signal anhalten", false)
+EEPStructureSetLight("#5533_Straba Signal A", false)
 
 --------------------------------------------------------------------
 -- Zeigt erweiterte Informationen waehrend der erste Schitte an   --
@@ -48,14 +72,8 @@ Crossing.zeigeSchaltungAlsInfo = true
 --------------------------------------------------------------------
 -- Crossing.resetVehicles()
 
-
-
-
-
-
-
 -------------------------------------------------------------------
---Crossing.debug = true
+Crossing.initSequences()
 KpBetritt(c1Lane8)
 KpBetritt(c1Lane8)
 assert(c1Lane8.vehicleCount == 2, c1Lane8.anzahlFahrzeuge)
@@ -69,14 +87,10 @@ end
 
 local function k1Print()
     list = {}
-    for k, v in pairs(k1:getSequences()) do
-        table.insert(list, k)
-    end
+    for k, v in pairs(k1:getSequences()) do table.insert(list, k) end
     table.sort(list, CrossingSequence.sequencePriorityComparator)
 
-    for k, v in ipairs(list) do
-        print(k .. ": " .. v:getName() .. " - Prio: " .. v:calculatePriority())
-    end
+    for k, v in ipairs(list) do print(k .. ": " .. v:getName() .. " - Prio: " .. v:calculatePriority()) end
 end
 
 for i = 1, 10 do

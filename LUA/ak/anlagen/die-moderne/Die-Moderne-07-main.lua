@@ -12,7 +12,7 @@ local Crossing = require("ak.road.Crossing")
 local CrossingSequence = require("ak.road.CrossingSequence")
 -- Speicher
 local StorageUtility = require("ak.storage.StorageUtility")
-local fmt = require("ak.core.eep.AkTippTextFormat")
+local fmt = require("ak.core.eep.TippTextFormatter")
 
 local ModuleRegistry = require("ak.core.ModuleRegistry")
 ModuleRegistry.registerModules(require("ak.core.CoreLuaModule"), require("ak.data.DataLuaModule"),
@@ -120,114 +120,91 @@ do
     ---@type Crossing
     c1 = Crossing:new("Bahnhofstr. - Hauptstr.")
 
+    K4:applyToLane(c1Lane4)
+    K5:applyToLane(c1Lane4)
+    S2:applyToLane(c1Lane8, "Strabalinie 10")
+    S3:applyToLane(c1Lane8, "Strabalinie 04")
+
     c1Lane3:showRequestsOn(S1)
-    c1Lane4:driveOn(K4)
-    c1Lane4:driveOn(K5)
-    c1Lane8:driveOn(S2, "Strabalinie 10"):showRequestsOn(S2, "Strabalinie 10")
-    c1Lane8:driveOn(S3, "Strabalinie 04"):showRequestsOn(S3, "Strabalinie 04")
+    c1Lane8:showRequestsOn(S2, "Strabalinie 10")
+    c1Lane8:showRequestsOn(S3, "Strabalinie 04")
     c1Lane11:showRequestsOn(S4)
 
     do
         --- Kreuzung 1: Schaltung 1
         local c1Switching1 = c1:newSequence("S1")
-        c1Switching1:addLane(c1Lane1)
-        c1Switching1:addTrafficLight(K1)
-        c1Switching1:addLane(c1Lane3)
-        c1Switching1:addTrafficLight(S1)
-        c1Switching1:addLane(c1Lane7)
-        c1Switching1:addTrafficLight(K10)
-        c1Switching1:addTrafficLight(K11)
-        c1Switching1:addLane(c1Lane8)
-        c1Switching1:addTrafficLight(S2)
-        c1Switching1:addPedestrianLight(F1)
-        c1Switching1:addPedestrianLight(F2)
-        c1Switching1:addPedestrianLight(F5)
-        c1Switching1:addPedestrianLight(F6)
+        c1Switching1:addTrafficLights(K1)
+        c1Switching1:addTrafficLights(S1)
+        c1Switching1:addTrafficLights(K10)
+        c1Switching1:addTrafficLights(K11)
+        c1Switching1:addTrafficLights(S2)
+        c1Switching1:addPedestrianLights(F1)
+        c1Switching1:addPedestrianLights(F2)
+        c1Switching1:addPedestrianLights(F5)
+        c1Switching1:addPedestrianLights(F6)
     end
 
     do
         local c1Switching1a = c1:newSequence("S1a")
-        c1Switching1a:addLane(c1Lane1)
-        c1Switching1a:addTrafficLight(K1)
-        c1Switching1a:addLane(c1Lane3)
-        c1Switching1a:addLane(c1Lane6)
-        c1Switching1a:addTrafficLight(K9)
-        c1Switching1a:addLane(c1Lane7)
-        c1Switching1a:addTrafficLight(K10)
-        c1Switching1a:addTrafficLight(K11)
-        c1Switching1a:addLane(c1Lane8)
-        c1Switching1a:addTrafficLight(S2)
-        c1Switching1a:addPedestrianLight(F5)
-        c1Switching1a:addPedestrianLight(F6)
+        c1Switching1a:addTrafficLights(K1)
+        c1Switching1a:addTrafficLights(K9)
+        c1Switching1a:addTrafficLights(K10)
+        c1Switching1a:addTrafficLights(K11)
+        c1Switching1a:addTrafficLights(S2)
+        c1Switching1a:addPedestrianLights(F5)
+        c1Switching1a:addPedestrianLights(F6)
     end
 
     do
         --- Kreuzung 1: Schaltung 2
         ---@type CrossingSequence
         local c1Switching2 = c1:newSequence("S2")
-        c1Switching2:addLane(c1Lane2)
-        c1Switching2:addTrafficLight(K2)
-        c1Switching2:addTrafficLight(K3)
-        c1Switching2:addTrafficLight(K5)
-        c1Switching2:addLane(c1Lane11)
-        c1Switching2:addTrafficLight(S4)
-        c1Switching2:addLane(c1Lane8)
-        c1Switching2:addTrafficLight(S3)
+        c1Switching2:addTrafficLights(K2)
+        c1Switching2:addTrafficLights(K3)
+        c1Switching2:addTrafficLights(K5)
+        c1Switching2:addTrafficLights(S4)
+        c1Switching2:addTrafficLights(S3)
     end
 
     do
         --- Kreuzung 1: Schaltung 3
         local c1Switching3 = c1:newSequence("S3")
-        c1Switching3:addLane(c1Lane4)
-        c1Switching3:addTrafficLight(K4)
-        c1Switching3:addLane(c1Lane5)
-        c1Switching3:addTrafficLight(K6)
-        c1Switching3:addLane(c1Lane5a)
-        c1Switching3:addTrafficLight(K7)
-        c1Switching3:addTrafficLight(K8)
-        c1Switching3:addLane(c1Lane6)
-        c1Switching3:addTrafficLight(K9)
+        c1Switching3:addTrafficLights(K4)
+        c1Switching3:addTrafficLights(K6)
+        c1Switching3:addTrafficLights(K7)
+        c1Switching3:addTrafficLights(K8)
+        c1Switching3:addTrafficLights(K9)
     end
 
     do
         local c1Switching3a = c1:newSequence("S3a")
-        c1Switching3a:addLane(c1Lane4)
-        c1Switching3a:addTrafficLight(K4)
-        c1Switching3a:addLane(c1Lane10)
-        c1Switching3a:addTrafficLight(K12)
-        c1Switching3a:addTrafficLight(K13)
-        c1Switching3a:addTrafficLight(K14)
-        c1Switching3a:addPedestrianLight(F3)
-        c1Switching3a:addPedestrianLight(F4)
-        c1Switching3a:addPedestrianLight(F7)
-        c1Switching3a:addPedestrianLight(F8)
+        c1Switching3a:addTrafficLights(K4)
+        c1Switching3a:addTrafficLights(K12)
+        c1Switching3a:addTrafficLights(K13)
+        c1Switching3a:addTrafficLights(K14)
+        c1Switching3a:addPedestrianLights(F3)
+        c1Switching3a:addPedestrianLights(F4)
+        c1Switching3a:addPedestrianLights(F7)
+        c1Switching3a:addPedestrianLights(F8)
     end
 
     do
         --- Kreuzung 1: Schaltung 4
         local c1Switching4 = c1:newSequence("S4")
-        c1Switching4:addLane(c1Lane6)
-        c1Switching4:addTrafficLight(K9)
-        c1Switching4:addLane(c1Lane7)
-        c1Switching4:addTrafficLight(K10)
-        c1Switching4:addTrafficLight(K11)
-        c1Switching4:addLane(c1Lane8)
-        c1Switching4:addTrafficLight(S2)
-        c1Switching4:addLane(c1Lane11)
-        c1Switching4:addTrafficLight(S4)
+        c1Switching4:addTrafficLights(K9)
+        c1Switching4:addTrafficLights(K10)
+        c1Switching4:addTrafficLights(K11)
+        c1Switching4:addTrafficLights(S2)
+        c1Switching4:addTrafficLights(S4)
     end
 
     do
         local c1Switching4a = c1:newSequence("S4a")
-        c1Switching4a:addLane(c1Lane6)
-        c1Switching4a:addTrafficLight(K9)
-        c1Switching4a:addLane(c1Lane7)
-        c1Switching4a:addTrafficLight(K10)
-        c1Switching4a:addTrafficLight(K11)
-        c1Switching4a:addLane(c1Lane8, {Lane.Directions.LEFT}, {"Strabalinie 04"}, Lane.RequestType.ANFORDERUNG)
-        c1Switching4a:addTrafficLight(S3)
-        c1Switching4a:addLane(c1Lane11)
-        c1Switching4a:addTrafficLight(S4)
+        c1Switching4a:addTrafficLights(K9)
+        c1Switching4a:addTrafficLights(K10)
+        c1Switching4a:addTrafficLights(K11)
+        c1Switching4a:addTrafficLights(S3)
+        c1Switching4a:addTrafficLights(S4)
     end
 
     c1:addStaticCam("Kreuzung 1 (von oben)")
@@ -270,7 +247,7 @@ do
     local F9 = TrafficLight:new(111, TrafficLightModel.JS2_2er_nur_FG)
     local F10 = TrafficLight:new(112, TrafficLightModel.JS2_2er_nur_FG)
 
-    c2Lane1 = Lane:new("K2 - Fahrspur 1", 12, K1, {Lane.Directions.RIGHT})
+    c2Lane1 = Lane:new("K2 - Fahrspur 1", 12, K2, {Lane.Directions.RIGHT})
     c2Lane2 = Lane:new("K2 - Fahrspur 2", 13, K3, {Lane.Directions.LEFT})
     c2Lane3 = Lane:new("K2 - Fahrspur 3", 14, K4, {Lane.Directions.STRAIGHT, Lane.Directions.RIGHT})
     c2Lane4 = Lane:new("K2 - Fahrspur 4", 20, K5, {Lane.Directions.STRAIGHT})
@@ -287,78 +264,59 @@ do
 
     --- Kreuzung 2: Schaltung 1
     local c2Switching1 = c2:newSequence("S1")
-    c2Switching1:addLane(c2Lane1)
-    c2Switching1:addTrafficLight(K2)
-    c2Switching1:addPedestrianLight(F3, F4)
-    c2Switching1:addPedestrianLight(F5, F6)
+    c2Switching1:addTrafficLights(K2)
+    c2Switching1:addPedestrianLights(F3, F4)
+    c2Switching1:addPedestrianLights(F5, F6)
 
     --- Kreuzung 2: Schaltung 1a
     local c2Switching1a = c2:newSequence("S1a")
-    c2Switching1a:addLane(c2Lane1)
-    c2Switching1a:addTrafficLight(K2)
-    c2Switching1a:addLane(c2Lane2)
-    c2Switching1a:addTrafficLight(K3)
-    c2Switching1a:addPedestrianLight(F1, F2)
-    c2Switching1a:addPedestrianLight(F3, F4)
+    c2Switching1a:addTrafficLights(K2)
+    c2Switching1a:addTrafficLights(K3)
+    c2Switching1a:addPedestrianLights(F1, F2)
+    c2Switching1a:addPedestrianLights(F3, F4)
 
     --- Kreuzung 2: Schaltung 1b
     local c2Switching1b = c2:newSequence("S1b")
-    c2Switching1b:addLane(c2Lane1)
-    c2Switching1b:addTrafficLight(K1)
-    c2Switching1b:addLane(c2Lane6) -- strab
-    c2Switching1b:addTrafficLight(S2)
-    c2Switching1b:addPedestrianLight(F1, F2)
-    c2Switching1b:addPedestrianLight(F3, F4)
+    c2Switching1b:addTrafficLights(K1)
+    c2Switching1b:addTrafficLights(S2)
+    c2Switching1b:addPedestrianLights(F1, F2)
+    c2Switching1b:addPedestrianLights(F3, F4)
 
     --- Kreuzung 2: Schaltung 2
     local c2Switching2 = c2:newSequence("S2")
-    c2Switching2:addLane(c2Lane3)
-    c2Switching2:addTrafficLight(K4)
-    c2Switching2:addLane(c2Lane4)
-    c2Switching2:addTrafficLight(K5)
-    c2Switching2:addTrafficLight(K6)
-    c2Switching2:addLane(c2Lane5) -- strab
-    c2Switching2:addTrafficLight(S1)
-    c2Switching2:addLane(c2Lane6) -- strab
-    c2Switching2:addTrafficLight(S2)
-    c2Switching2:addPedestrianLight(F7, F8)
-    c2Switching2:addPedestrianLight(F3, F4)
+    c2Switching2:addTrafficLights(K4)
+    c2Switching2:addTrafficLights(K5)
+    c2Switching2:addTrafficLights(K6)
+    c2Switching2:addTrafficLights(S1)
+    c2Switching2:addTrafficLights(S2)
+    c2Switching2:addPedestrianLights(F7, F8)
+    c2Switching2:addPedestrianLights(F3, F4)
 
     --- Kreuzung 2: Schaltung 2a
     local c2Switching2a = c2:newSequence("S2a")
-    c2Switching2a:addLane(c2Lane3)
-    c2Switching2a:addTrafficLight(K4)
-    c2Switching2a:addLane(c2Lane4)
-    c2Switching2a:addTrafficLight(K5)
-    c2Switching2a:addTrafficLight(K6)
-    c2Switching2a:addLane(c2Lane7)
-    c2Switching2a:addTrafficLight(K7)
-    c2Switching2a:addLane(c2Lane7a)
-    c2Switching2a:addTrafficLight(K8)
-    c2Switching2a:addPedestrianLight(F7, F8)
-    c2Switching2a:addPedestrianLight(F9, F10)
+    c2Switching2a:addTrafficLights(K4)
+    c2Switching2a:addTrafficLights(K5)
+    c2Switching2a:addTrafficLights(K6)
+    c2Switching2a:addTrafficLights(K7)
+    c2Switching2a:addTrafficLights(K8)
+    c2Switching2a:addPedestrianLights(F7, F8)
+    c2Switching2a:addPedestrianLights(F9, F10)
 
     --- Kreuzung 2: Schaltung 3
     local c2Switching3 = c2:newSequence("S3")
-    c2Switching3:addLane(c2Lane8)
-    c2Switching3:addTrafficLight(K9)
-    c2Switching3:addTrafficLight(K10)
-    c2Switching3:addLane(c2Lane5) -- strab
-    c2Switching3:addTrafficLight(S1) -- strab
-    c2Switching3:addLane(c2Lane6) -- strab
-    c2Switching3:addTrafficLight(S2) -- strab
-    c2Switching3:addPedestrianLight(F1, F2)
+    c2Switching3:addTrafficLights(K9)
+    c2Switching3:addTrafficLights(K10)
+    c2Switching3:addTrafficLights(S1) -- strab
+    c2Switching3:addTrafficLights(S2) -- strab
+    c2Switching3:addPedestrianLights(F1, F2)
 
     --- Kreuzung 2: Schaltung 3a
     local c2Switching3a = c2:newSequence("S3a")
-    c2Switching3a:addLane(c2Lane8)
-    c2Switching3a:addTrafficLight(K9)
-    c2Switching3a:addTrafficLight(K10)
-    c2Switching3a:addLane(c2Lane7)
-    c2Switching3a:addTrafficLight(K7)
-    c2Switching3a:addLane(c2Lane7a)
-    c2Switching3a:addTrafficLight(K8)
-    c2Switching3a:addPedestrianLight(F1, F2)
-    c2Switching3a:addPedestrianLight(F9, F10)
+    c2Switching3a:addTrafficLights(K9)
+    c2Switching3a:addTrafficLights(K10)
+    c2Switching3a:addTrafficLights(K7)
+    c2Switching3a:addTrafficLights(K8)
+    c2Switching3a:addPedestrianLights(F1, F2)
+    c2Switching3a:addPedestrianLights(F9, F10)
 end
 -- endregion
