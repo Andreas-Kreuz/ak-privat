@@ -63,32 +63,32 @@ function KpVerlasse(lane)
 end
 
 do
-    local K1 = TrafficLight:new(92, TrafficLightModel.JS2_3er_mit_FG)
-    local K2 = TrafficLight:new(91, TrafficLightModel.JS2_3er_ohne_FG)
-    local K3 = TrafficLight:new(26, TrafficLightModel.JS2_3er_mit_FG)
-    local K4 = TrafficLight:new(142, TrafficLightModel.JS2_3er_mit_FG)
-    local K5 = TrafficLight:new(140, TrafficLightModel.JS2_2er_OFF_YELLOW_GREEN) -- right on K4
-    local K6 = TrafficLight:new(88, TrafficLightModel.JS2_3er_ohne_FG)
-    local K7 = TrafficLight:new(86, TrafficLightModel.JS2_3er_mit_FG)
-    local K8 = TrafficLight:new(87, TrafficLightModel.JS2_3er_ohne_FG)
-    local K9 = TrafficLight:new(85, TrafficLightModel.JS2_3er_ohne_FG)
-    local K10 = TrafficLight:new(83, TrafficLightModel.JS2_3er_ohne_FG)
-    local K11 = TrafficLight:new(84, TrafficLightModel.JS2_3er_mit_FG)
-    local K12 = TrafficLight:new(80, TrafficLightModel.JS2_3er_mit_FG)
-    local K13 = TrafficLight:new(81, TrafficLightModel.JS2_3er_mit_FG)
-    local K14 = TrafficLight:new(82, TrafficLightModel.JS2_3er_ohne_FG)
-    local S1 = TrafficLight:new(96, TrafficLightModel.Unsichtbar_2er, "#5528_Straba Signal Halt",
+    local K1 = TrafficLight:new("K1", 92, TrafficLightModel.JS2_3er_mit_FG)
+    local K2 = TrafficLight:new("K2", 91, TrafficLightModel.JS2_3er_ohne_FG)
+    local K3 = TrafficLight:new("K3", 26, TrafficLightModel.JS2_3er_mit_FG)
+    local K4 = TrafficLight:new("K4", 142, TrafficLightModel.JS2_3er_mit_FG)
+    local K5 = TrafficLight:new("K5", 140, TrafficLightModel.JS2_2er_OFF_YELLOW_GREEN) -- right on K4
+    local K6 = TrafficLight:new("K6", 88, TrafficLightModel.JS2_3er_ohne_FG)
+    local K7 = TrafficLight:new("K7", 86, TrafficLightModel.JS2_3er_mit_FG)
+    local K8 = TrafficLight:new("K8", 87, TrafficLightModel.JS2_3er_ohne_FG)
+    local K9 = TrafficLight:new("K9", 85, TrafficLightModel.JS2_3er_ohne_FG)
+    local K10 = TrafficLight:new("K10", 83, TrafficLightModel.JS2_3er_ohne_FG)
+    local K11 = TrafficLight:new("K11", 84, TrafficLightModel.JS2_3er_mit_FG)
+    local K12 = TrafficLight:new("K12", 80, TrafficLightModel.JS2_3er_mit_FG)
+    local K13 = TrafficLight:new("K13", 81, TrafficLightModel.JS2_3er_mit_FG)
+    local K14 = TrafficLight:new("K14", 82, TrafficLightModel.JS2_3er_ohne_FG)
+    local S1 = TrafficLight:new("S1", 96, TrafficLightModel.Unsichtbar_2er, "#5528_Straba Signal Halt",
                                 "#5531_Straba Signal geradeaus", "#5529_Straba Signal anhalten",
                                 "#5530_Straba Signal A")
-    local S2 = TrafficLight:new(-1, TrafficLightModel.NONE, "#5435_Straba Signal Halt",
+    local S2 = TrafficLight:new("S2", -1, TrafficLightModel.NONE, "#5435_Straba Signal Halt",
                                 "#5521_Straba Signal geradeaus", "#5520_Straba Signal anhalten",
                                 "#5518_Straba Signal A")
-    local S3 = TrafficLight:new(-1, TrafficLightModel.NONE, "#5523_Straba Signal Halt", "#5434_Straba Signal links",
+    local S3 = TrafficLight:new("S3", -1, TrafficLightModel.NONE, "#5523_Straba Signal Halt", "#5434_Straba Signal links",
                                 "#5522_Straba Signal anhalten", "#5433_Straba Signal A")
-    local S4 = TrafficLight:new(95, TrafficLightModel.Unsichtbar_2er, "#5525_Straba Signal Halt",
+    local S4 = TrafficLight:new("S4", 95, TrafficLightModel.Unsichtbar_2er, "#5525_Straba Signal Halt",
                                 "#5436_Straba Signal rechts", "#5526_Straba Signal anhalten", "#5524_Straba Signal A")
-    local lane4Sig = TrafficLight:new(89, TrafficLightModel.Unsichtbar_2er)
-    local lane8sig = TrafficLight:new(93, TrafficLightModel.Unsichtbar_2er)
+    local lane4Sig = TrafficLight:new("lane4Sig", 89, TrafficLightModel.Unsichtbar_2er)
+    local lane8sig = TrafficLight:new("lane8sig", 93, TrafficLightModel.Unsichtbar_2er)
 
     local F1 = K7
     local F2 = K4
@@ -97,7 +97,7 @@ do
     local F5 = K12
     local F6 = K13
     local F7 = K11
-    local F8 = TrafficLight:new(94, TrafficLightModel.JS2_2er_nur_FG)
+    local F8 = TrafficLight:new("F8", 94, TrafficLightModel.JS2_2er_nur_FG)
 
     -- region K1-Richtungen
     c1Lane1 = Lane:new("K1 - Fahrspur 1", 1, K1, {Lane.Directions.STRAIGHT})
@@ -119,6 +119,7 @@ do
     -- region K1-Schaltungen
     ---@type Crossing
     c1 = Crossing:new("Bahnhofstr. - Hauptstr.")
+    -- c1:setSwitchInStrictOrder(true)
 
     K4:applyToLane(c1Lane4)
     K5:applyToLane(c1Lane4)
@@ -219,24 +220,24 @@ end
 
 -- region K2-Richtungen
 do
-    local K1 = TrafficLight:new(103, TrafficLightModel.JS2_3er_mit_FG)
-    local K2 = TrafficLight:new(104, TrafficLightModel.JS2_3er_mit_FG)
-    local K3 = TrafficLight:new(105, TrafficLightModel.JS2_3er_ohne_FG)
-    local K4 = TrafficLight:new(107, TrafficLightModel.JS2_3er_mit_FG)
-    local K5 = TrafficLight:new(106, TrafficLightModel.JS2_3er_ohne_FG)
-    local K6 = TrafficLight:new(109, TrafficLightModel.JS2_3er_mit_FG)
-    local K7 = TrafficLight:new(97, TrafficLightModel.JS2_3er_mit_FG)
-    local K8 = TrafficLight:new(100, TrafficLightModel.JS2_3er_ohne_FG)
-    local K9 = TrafficLight:new(98, TrafficLightModel.JS2_3er_mit_FG)
-    local K10 = TrafficLight:new(99, TrafficLightModel.JS2_3er_ohne_FG)
-    local S1 = TrafficLight:new(108, TrafficLightModel.Unsichtbar_2er, "#5537_Straba Signal Halt",
+    local K1 = TrafficLight:new("K1", 103, TrafficLightModel.JS2_3er_mit_FG)
+    local K2 = TrafficLight:new("K2", 104, TrafficLightModel.JS2_3er_mit_FG)
+    local K3 = TrafficLight:new("K3", 105, TrafficLightModel.JS2_3er_ohne_FG)
+    local K4 = TrafficLight:new("K4", 107, TrafficLightModel.JS2_3er_mit_FG)
+    local K5 = TrafficLight:new("K5", 106, TrafficLightModel.JS2_3er_ohne_FG)
+    local K6 = TrafficLight:new("K6", 109, TrafficLightModel.JS2_3er_mit_FG)
+    local K7 = TrafficLight:new("K7", 97, TrafficLightModel.JS2_3er_mit_FG)
+    local K8 = TrafficLight:new("K8", 100, TrafficLightModel.JS2_3er_ohne_FG)
+    local K9 = TrafficLight:new("K9", 98, TrafficLightModel.JS2_3er_mit_FG)
+    local K10 = TrafficLight:new("K10", 99, TrafficLightModel.JS2_3er_ohne_FG)
+    local S1 = TrafficLight:new("S1", 108, TrafficLightModel.Unsichtbar_2er, "#5537_Straba Signal Halt",
                                 "#5538_Straba Signal links", "#5539_Straba Signal anhalten", "#5540_Straba Signal A")
-    local S2 = TrafficLight:new(110, TrafficLightModel.Unsichtbar_2er, "#5535_Straba Signal Halt",
+    local S2 = TrafficLight:new("S2", 110, TrafficLightModel.Unsichtbar_2er, "#5535_Straba Signal Halt",
                                 "#5536_Straba Signal rechts", "#5534_Straba Signal anhalten", "#5533_Straba Signal A")
 
-    local F1 = TrafficLight:new(101, TrafficLightModel.JS2_2er_nur_FG):addAxisStructure(
+    local F1 = TrafficLight:new("F1", 101, TrafficLightModel.JS2_2er_nur_FG):addAxisStructure(
                    "#5816_Warnblink Fuﬂg‰nger rechts", "Blinklicht", 0, nil, nil, nil, 50)
-    local F2 = TrafficLight:new(102, TrafficLightModel.JS2_2er_nur_FG):addAxisStructure(
+    local F2 = TrafficLight:new("F2", 102, TrafficLightModel.JS2_2er_nur_FG):addAxisStructure(
                    "#5815_Warnblink Fuﬂg‰nger links", "Blinklicht", 0, nil, nil, nil, 50)
     local F3 = K7
     local F4 = K9
@@ -244,8 +245,8 @@ do
     local F6 = K6
     local F7 = K1
     local F8 = K2
-    local F9 = TrafficLight:new(111, TrafficLightModel.JS2_2er_nur_FG)
-    local F10 = TrafficLight:new(112, TrafficLightModel.JS2_2er_nur_FG)
+    local F9 = TrafficLight:new("F9", 111, TrafficLightModel.JS2_2er_nur_FG)
+    local F10 = TrafficLight:new("F10", 112, TrafficLightModel.JS2_2er_nur_FG)
 
     c2Lane1 = Lane:new("K2 - Fahrspur 1", 12, K2, {Lane.Directions.RIGHT})
     c2Lane2 = Lane:new("K2 - Fahrspur 2", 13, K3, {Lane.Directions.LEFT})

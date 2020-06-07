@@ -1,4 +1,4 @@
-require("ak.eep.AkEepFunktionen")
+require("ak.core.eep.EepSimulator")
 require("ak.anlagen.gruenberg-neustadt.Gruenberg-Neustadt-DR-main")
 
 print("############## Gruenberg-Neutstadt-DR-test-Blockabfolge.lua ##############")
