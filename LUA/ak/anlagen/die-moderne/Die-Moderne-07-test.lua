@@ -11,7 +11,7 @@ local fmt = require("ak.core.eep.TippTextFormatter")
 
 EepSimulator.setzeZugAufGleis(5, "Tuff Tuff Zug")
 EepSimulator.setzeZugAufGleis(7, "Zoom Zoom Zug")
-EepSimulator.setzeZugAufStrasse(3, "Tatï¿½tata")
+EepSimulator.setzeZugAufStrasse(3, "Tatütata")
 EepSimulator.setzeZugAufStrasse(4, "Tram")
 EepSimulator.setzeZugAufStrasse(5, "Tram")
 EepSimulator.setzeZugAufStrasse(6, "Tram")
@@ -22,7 +22,7 @@ clearlog()
 --------------------------------------------------------------------
 -- Zeigt erweiterte Informationen waehrend der Initialisierung an --
 --------------------------------------------------------------------
-AkStartMitDebug = false
+AkStartWithDebug = false
 
 EEPStructureSetLight("#5528_Straba Signal Halt", false)
 EEPStructureSetLight("#5531_Straba Signal geradeaus", false)
