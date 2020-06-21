@@ -74,8 +74,8 @@ Crossing.zeigeSchaltungAlsInfo = true
 
 -------------------------------------------------------------------
 Crossing.initSequences()
-KpBetritt(c1Lane8)
-KpBetritt(c1Lane8)
+enterLane(Zugname, c1Lane8)
+enterLane(Zugname, c1Lane8)
 assert(c1Lane8.vehicleCount == 2, c1Lane8.anzahlFahrzeuge)
 Crossing.resetVehicles()
 assert(c1Lane8.vehicleCount == 0)
@@ -95,12 +95,12 @@ end
 
 for i = 1, 10 do
     print("Betritt Block")
-    KpBetritt(c1Lane8)
+    enterLane(Zugname, c1Lane8)
     run()
     run()
     run()
     run()
     print("Verlasse Block")
-    KpVerlasse(c1Lane8, true)
+    leaveLane(Zugname, c1Lane8, true)
     run()
 end
