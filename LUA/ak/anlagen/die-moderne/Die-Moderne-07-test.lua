@@ -8,6 +8,7 @@ local CrossingSequence = require("ak.road.CrossingSequence")
 -- Speicher
 local StorageUtility = require("ak.storage.StorageUtility")
 local fmt = require("ak.core.eep.TippTextFormatter")
+local Destinations = require("ak.road.station.Destinations")
 
 EepSimulator.setzeZugAufGleis(5, "Tuff Tuff Zug")
 EepSimulator.setzeZugAufGleis(7, "Zoom Zoom Zug")
@@ -96,11 +97,16 @@ end
 for i = 1, 10 do
     print("Betritt Block")
     enterLane(Zugname, c1Lane8)
+    stationArrivalPlanned(Zugname, sMainStation, 5)
     run()
+    stationArrivalPlanned(Zugname, sMainStation, 4)
     run()
+    stationArrivalPlanned(Zugname, sMainStation, 3)
+    Destinations.changeFor(Zugname, "MainStation")
     run()
     run()
     print("Verlasse Block")
     leaveLane(Zugname, c1Lane8, true)
+    stationLeft(Zugname, sMainStation)
     run()
 end

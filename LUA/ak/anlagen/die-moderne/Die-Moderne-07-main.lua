@@ -10,6 +10,10 @@ local TrafficLight = require("ak.road.TrafficLight")
 local Lane = require("ak.road.Lane")
 local Crossing = require("ak.road.Crossing")
 local CrossingSequence = require("ak.road.CrossingSequence")
+local RoadStation = require("ak.road.station.RoadStation")
+local RoadStationDisplayModel = require("ak.road.station.RoadStationDisplayModel")
+local Destinations = require("ak.road.station.Destinations")
+
 -- Speicher
 local StorageUtility = require("ak.storage.StorageUtility")
 local fmt = require("ak.core.eep.TippTextFormatter")
@@ -51,15 +55,15 @@ setmetatable(_ENV, {
 -- Definiere Funktionen fuer Kontaktpunkte
 --------------------------------------------
 ---@param lane Lane
-function enterLane(Zugname, lane)
+function enterLane(trainName, lane)
     assert(lane, "richtung darf nicht nil sein. Richtige Lua-Funktion im Kontaktpunkt?")
-    lane:vehicleEntered(Zugname)
+    lane:vehicleEntered(trainName)
 end
 
 ---@param lane Lane
-function leaveLane(Zugname, lane)
+function leaveLane(trainName, lane)
     assert(lane, "richtung darf nicht nil sein. Richtige Lua-Funktion im Kontaktpunkt?")
-    lane:vehicleLeft(Zugname)
+    lane:vehicleLeft(trainName)
 end
 
 do
@@ -321,3 +325,37 @@ do
     c2Switching3a:addPedestrianLights(F9, F10)
 end
 -- endregion
+
+
+---@param trainName string
+---@param station RoadStation
+function stationLeft(trainName, station)
+    station:stationLeft(trainName)
+end
+
+---@param trainName string
+---@param station RoadStation
+---@param timeInMinutes number
+---@param platform string
+function stationArrivalPlanned(trainName, station, timeInMinutes, platform)
+    station:stationArrivalPlanned(trainName, timeInMinutes, platform)
+end
+
+sMainStation = RoadStation:new("Hauptbahnhof", -1)
+sMainStation:setPlatform(04, "Laubegast", 1)
+sMainStation:setPlatform(10, "Messe Dresden", 2)
+sMainStation:setPlatform(04, "Radebeul West", 2)
+sMainStation:setPlatform(10, "Striesen", 1)
+sMainStation:addDisplay("#207_Tram Schild Gelb DL1", RoadStationDisplayModel.Tram_Schild_DL1, 1)
+sMainStation:addDisplay("#155_Tram Schild Gelb DL1", RoadStationDisplayModel.Tram_Schild_DL1, 2)
+
+sMesseStation = RoadStation:new("Messe Dresden", -1)
+
+Destinations.changeOn("MainStation", "Strabalinie 04", "Radebeul West", 04, "Zielanzeige", 0)
+Destinations.changeOn("MainStation", "Strabalinie 10", "Messe Dresden", 10, "Zielanzeige", 0)
+Destinations.changeOn("Laubegast", "Strabalinie 04", "Laubegast", 04, "Zielanzeige", 40)
+Destinations.changeOn("Messe Dresden", "Strabalinie 10", "Striesen", 10, "Zielanzeige", 40)
+
+function changeDestination(trainName, station)
+    Destinations.changeFor(trainName, station)
+end
