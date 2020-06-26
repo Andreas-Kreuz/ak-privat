@@ -326,36 +326,55 @@ do
 end
 -- endregion
 
-
+-- Kontaktpunktfunktion für "Das Fahrzeug hat die Haltestelle verlassen"
 ---@param trainName string
 ---@param station RoadStation
 function stationLeft(trainName, station)
     station:stationLeft(trainName)
 end
 
+-- Kontaktpunktfunktion für "Das Fahrzeug erreicht die Haltestelle in X minuten"
 ---@param trainName string
 ---@param station RoadStation
 ---@param timeInMinutes number
----@param platform string
-function stationArrivalPlanned(trainName, station, timeInMinutes, platform)
-    station:stationArrivalPlanned(trainName, timeInMinutes, platform)
+function stationArrivalPlanned(trainName, station, timeInMinutes)
+    station:stationArrivalPlanned(trainName, timeInMinutes)
 end
 
+-- Haltestelle Hauptbahnhof
 sMainStation = RoadStation:new("Hauptbahnhof", -1)
-sMainStation:setPlatform(04, "Laubegast", 1)
-sMainStation:setPlatform(10, "Messe Dresden", 2)
-sMainStation:setPlatform(04, "Radebeul West", 2)
-sMainStation:setPlatform(10, "Striesen", 1)
-sMainStation:addDisplay("#207_Tram Schild Gelb DL1", RoadStationDisplayModel.Tram_Schild_DL1, 1)
-sMainStation:addDisplay("#155_Tram Schild Gelb DL1", RoadStationDisplayModel.Tram_Schild_DL1, 2)
+sMainStation:setPlatform(04, "Laubegast", 1)      -- Bahnsteig 1 wird genutzt von Line  4 Richtung Laubegast
+sMainStation:setPlatform(10, "Striesen", 1)       -- Bahnsteig 1 wird genutzt von Line 10 Richtung Striesen
+sMainStation:setPlatform(04, "Radebeul West", 2)  -- Bahnsteig 1 wird genutzt von Line  4 Richtung Radebeul West
+sMainStation:setPlatform(10, "Messe Dresden", 2)  -- Bahnsteig 1 wird genutzt von Line 10 Richtung Messe Dresden
+sMainStation:addDisplay("#207_Tram Schild Gelb DL1", RoadStationDisplayModel.Tram_Schild_DL1, 1) -- Display für Steig 1
+sMainStation:addDisplay("#155_Tram Schild Gelb DL1", RoadStationDisplayModel.Tram_Schild_DL1, 2) -- Display für Steig 2
 
 sMesseStation = RoadStation:new("Messe Dresden", -1)
 
+-- Haltestelle Feuerwehrgasse
+sFeuerwehrgasse = RoadStation:new("Feuerwehrgasse", -1)
+sFeuerwehrgasse:setPlatform(10, "Striesen", 1)
+sFeuerwehrgasse:setPlatform(10, "Messe Dresden", 2)
+sFeuerwehrgasse:addDisplay("#273_BusHSdfi_RG3", RoadStationDisplayModel.BusHSdfi_RG3, 2)
+-- sMainStation:addDisplay("#273_BusHSdfi_RG3", RoadStationDisplayModel.BusHSdfi_RG3, 1)
+
+
+-- Geplante Linienaenderungen, wenn eine Linie die Kontaktpunktfunktion "changeDestination" aufruft
+-- 1. Parameter: Stationsname an dem der Wechsel durchgeführt wird
+-- 2. Parameter: Route für die das Ziel geändert werden soll
+-- 3. Parameter: neue Zielhaltestelle
+-- 4. Parameter: neue Liniennummer
+-- 5. Parameter: WIRD ENTFALLEN MÜSSEN, WEIL FAHRZEUGBEZOGEN - Achse für den Wechsel der Fahrtanzeige
+-- 6. Parameter: WIRD ENTFALLEN MÜSSEN, WEIL FAHRZEUGBEZOGEN - Achsstellung für den Wechsel der Fahrtanzeige
 Destinations.changeOn("MainStation", "Strabalinie 04", "Radebeul West", 04, "Zielanzeige", 0)
 Destinations.changeOn("MainStation", "Strabalinie 10", "Messe Dresden", 10, "Zielanzeige", 0)
 Destinations.changeOn("Laubegast", "Strabalinie 04", "Laubegast", 04, "Zielanzeige", 40)
 Destinations.changeOn("Messe Dresden", "Strabalinie 10", "Striesen", 10, "Zielanzeige", 40)
 
+-- Kontaktpunktfunktion 
+-- 1. Parameter: Zugname aus Bennys EEP-Schnipsel
+-- 2. Parameter: Stationsname wie in Destinations.changeOn() hinterlegt
 function changeDestination(trainName, station)
     Destinations.changeFor(trainName, station)
 end
