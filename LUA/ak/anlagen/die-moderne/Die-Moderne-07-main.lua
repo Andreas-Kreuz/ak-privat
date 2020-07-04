@@ -10,7 +10,7 @@ local TrafficLight = require("ak.road.TrafficLight")
 local Lane = require("ak.road.Lane")
 local Crossing = require("ak.road.Crossing")
 local CrossingSequence = require("ak.road.CrossingSequence")
-local RoadStation = require("ak.road.station.RoadStation")
+local RoadStation = require("ak.road.line.RoadStation")
 local RoadStationDisplayModel = require("ak.road.station.RoadStationDisplayModel")
 local Destinations = require("ak.road.station.Destinations")
 
@@ -330,7 +330,7 @@ end
 ---@param trainName string
 ---@param station RoadStation
 function stationLeft(trainName, station)
-    station:stationLeft(trainName)
+    station:trainLeft(trainName)
 end
 
 -- Kontaktpunktfunktion für "Das Fahrzeug erreicht die Haltestelle in X minuten"
@@ -372,7 +372,7 @@ Destinations.changeOn("MainStation", "Strabalinie 10", "Messe Dresden", 10, "Zie
 Destinations.changeOn("Laubegast", "Strabalinie 04", "Laubegast", 04, "Zielanzeige", 40)
 Destinations.changeOn("Messe Dresden", "Strabalinie 10", "Striesen", 10, "Zielanzeige", 40)
 
--- Kontaktpunktfunktion 
+-- Kontaktpunktfunktion
 -- 1. Parameter: Zugname aus Bennys EEP-Schnipsel
 -- 2. Parameter: Stationsname wie in Destinations.changeOn() hinterlegt
 function changeDestination(trainName, station)
