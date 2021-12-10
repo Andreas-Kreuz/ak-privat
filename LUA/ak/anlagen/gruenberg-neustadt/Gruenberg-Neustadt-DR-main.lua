@@ -1,26 +1,23 @@
 local Rail = require("ak.rail.Rail")
 local ModuleRegistry = require("ak.core.ModuleRegistry")
-  ModuleRegistry.registerModules(
-    --   require("ak.core.CoreLuaModule"),
-    --   require("ak.data.DataLuaModule"),
-    -- require("ak.road.CrossingLuaModul")
-  )
+ModuleRegistry.registerModules(require("ak.core.CoreLuaModule"), require("ak.data.DataLuaModule"),
+                               require("ak.road.CrossingLuaModul"))
 
 -- AkAusgabe.outputPath = "C:/Spiele/EEP14/LUA/"
 
---require 'PrintToFile_BH2' { file = AkAusgabe.outputPath .. "output.txt" }
+-- require 'PrintToFile_BH2' { file = AkAusgabe.outputPath .. "output.txt" }
 
---myFile =io.open("C:\\Users\\Jens\\Documents\\Andreas_Kreuz\\ak-privat\\Resourcen\\Anlagen\\gruenberg-neustadt\\Gruenberg-Neustadt-DR.anl3",r)
---io.input(myFile)
---AllData = io.read("*all")
---io.close()
---P1,P2,Fuhrpark = string.find(AllData,"<Fuhrpark.-(<Zugverband.-)</Fuhrpark>")
---AllData = nil
---myTable = {}
---print("\nDer String Fuhrpark besteht aus ",tostring(#Fuhrpark,"%d+")," Zeichen")
---print()
---Number = 0
---for p in string.gmatch(Fuhrpark,"<Zugverband.-</Zugverband>") do
+-- myFile =io.open("C:\\Users\\Jens\\Documents\\Andreas_Kreuz\\ak-privat\\Resourcen\\Anlagen\\gruenberg-neustadt\\Gruenberg-Neustadt-DR.anl3",r)
+-- io.input(myFile)
+-- AllData = io.read("*all")
+-- io.close()
+-- P1,P2,Fuhrpark = string.find(AllData,"<Fuhrpark.-(<Zugverband.-)</Fuhrpark>")
+-- AllData = nil
+-- myTable = {}
+-- print("\nDer String Fuhrpark besteht aus ",tostring(#Fuhrpark,"%d+")," Zeichen")
+-- print()
+-- Number = 0
+-- for p in string.gmatch(Fuhrpark,"<Zugverband.-</Zugverband>") do
 --    Number = Number + 1
 --    -- print("p ist ",p)
 --    Ausgabe1 , Ausgabe2 , Ausgabe3 =
@@ -35,19 +32,18 @@ local ModuleRegistry = require("ak.core.ModuleRegistry")
 --    if Laenge > 1600 then
 --        print("ID: " , Ausgabe1 , " - Geschwindigkeit: " , Ausgabe2 * 3.6 , " km/h - Name: " , Ausgabe3 , " - Fahrzeuge: " , Anzahl , " - Gesamtlänge: " , Laenge/100 , " Meter")
 --    end
---end
---print("\nAnzahl Züge auf dieser Anlage: ",Number)
---Number = nil
---Fuhrpark = nil
---print()
-
+-- end
+-- print("\nAnzahl Züge auf dieser Anlage: ",Number)
+-- Number = nil
+-- Fuhrpark = nil
+-- print()
 
 -- SignalStellung
 S = {}
 S.Hp0 = 1 -- Halt
 S.Hp1 = 2 -- Fahrt mit Hoechstgeschwindigkeit
 S.Hp2 = 2 -- Fahrt mit 40 km/h
-S.Halt = 2  -- Haltetafel Halt
+S.Halt = 2 -- Haltetafel Halt
 S.Fahrt = 1 -- Haltetafel Fahrt
 
 local trainDirection = {}
@@ -98,129 +94,130 @@ local crossingNeustadt = AkCrossing.new(273, 280, 3, 1, 11)
 
 -- Fahrstrassen Hauptstrecke Richtung Westen
 local block1Gl1ToGruenbergGleis2 = AkRoute.new(1, trainDirection.WST, block1Gl1, gruenbergGleis2,
-        { AkFsSignal.new(14, S.Hp2, S.Hp0), },
-        { AkFsSwitch.new(62, 4, 4), },
-        { crossingGruenberg })
+                                               {AkFsSignal.new(14, S.Hp2, S.Hp0)}, {AkFsSwitch.new(62, 4, 4)},
+                                               {crossingGruenberg})
 block1Gl1ToGruenbergGleis2:addShortTrainStopMarker(AkFsSignal.new(253, S.Fahrt, S.Halt), eepRoute.Pers_Nah_Kurz)
 block1Gl1ToGruenbergGleis2:addShortTrainStopMarker(AkFsSignal.new(253, S.Fahrt, S.Halt), eepRoute.Pers_Frn_Kurz)
 block1Gl1ToGruenbergGleis2:addShortTrainStopMarker(AkFsSignal.new(118, S.Fahrt, S.Halt), eepRoute.Pers_Frn_Norm)
 
 local block1Gl1ToGruenbergGleis3 = AkRoute.new(2, trainDirection.WST, block1Gl1, gruenbergGleis3,
-        { AkFsSignal.new(14, S.Hp2, S.Hp0), },
-        { AkFsSwitch.new(62, 3, 4), AkFsSwitch.new(9, 1, 1), AkFsSwitch.new(4, 1, 1), AkFsSwitch.new(10, 2, 1), },
-        { crossingGruenberg })
+                                               {AkFsSignal.new(14, S.Hp2, S.Hp0)}, {
+    AkFsSwitch.new(62, 3, 4), AkFsSwitch.new(9, 1, 1), AkFsSwitch.new(4, 1, 1), AkFsSwitch.new(10, 2, 1)
+}, {crossingGruenberg})
 block1Gl1ToGruenbergGleis3:addShortTrainStopMarker(AkFsSignal.new(252, S.Fahrt, S.Halt), eepRoute.Pers_Nah_Kurz)
 block1Gl1ToGruenbergGleis3:addShortTrainStopMarker(AkFsSignal.new(252, S.Fahrt, S.Halt), eepRoute.Pers_Frn_Kurz)
 block1Gl1ToGruenbergGleis3:addShortTrainStopMarker(AkFsSignal.new(254, S.Fahrt, S.Halt), eepRoute.Pers_Frn_Norm)
 
 local block1Gl1ToGruenbergGleis4 = AkRoute.new(3, trainDirection.WST, block1Gl1, gruenbergGleis4,
-        { AkFsSignal.new(14, S.Hp2, S.Hp0), },
-        { AkFsSwitch.new(62, 3, 4), AkFsSwitch.new(9, 1, 1), AkFsSwitch.new(4, 1, 1), AkFsSwitch.new(10, 1, 1), AkFsSwitch.new(8, 1, 1), },
-        { crossingGruenberg })
+                                               {AkFsSignal.new(14, S.Hp2, S.Hp0)}, {
+    AkFsSwitch.new(62, 3, 4), AkFsSwitch.new(9, 1, 1), AkFsSwitch.new(4, 1, 1), AkFsSwitch.new(10, 1, 1),
+    AkFsSwitch.new(8, 1, 1)
+}, {crossingGruenberg})
 local gruenbergGleis2ToBlock2Gl1 = AkRoute.new(4, trainDirection.WST, gruenbergGleis2, block2Gl1,
-        { AkFsSignal.new(42, S.Hp2, S.Hp0), },
-        { AkFsSwitch.new(65, 2, 2), })
+                                               {AkFsSignal.new(42, S.Hp2, S.Hp0)}, {AkFsSwitch.new(65, 2, 2)})
 local gruenbergGleis3ToBlock2Gl1 = AkRoute.new(5, trainDirection.WST, gruenbergGleis3, block2Gl1,
-        { AkFsSignal.new(41, S.Hp2, S.Hp0), },
-        { AkFsSwitch.new(65, 2, 2), AkFsSwitch.new(63, 1, 2), })
+                                               {AkFsSignal.new(41, S.Hp2, S.Hp0)},
+                                               {AkFsSwitch.new(65, 2, 2), AkFsSwitch.new(63, 1, 2)})
 local gruenbergGleis4ToBlock2Gl1 = AkRoute.new(6, trainDirection.WST, gruenbergGleis4, block2Gl1,
-        { AkFsSignal.new(40, S.Hp2, S.Hp0), },
-        { AkFsSwitch.new(65, 2, 2), AkFsSwitch.new(63, 1, 2), AkFsSwitch.new(6, 3, 2) })
+                                               {AkFsSignal.new(40, S.Hp2, S.Hp0)}, {
+    AkFsSwitch.new(65, 2, 2), AkFsSwitch.new(63, 1, 2), AkFsSwitch.new(6, 3, 2)
+})
 local block2Gl1ToNeustadtGleis2 = AkRoute.new(8, trainDirection.WST, block2Gl1, neustadtGleis2,
-        { AkFsSignal.new(281, S.Hp2, S.Hp0), },
-        { AkFsSwitch.new(226, 2, 1), AkFsSwitch.new(224, 1, 1), },
-        { crossingNeustadt })
+                                              {AkFsSignal.new(281, S.Hp2, S.Hp0)},
+                                              {AkFsSwitch.new(226, 2, 1), AkFsSwitch.new(224, 1, 1)},
+                                              {crossingNeustadt})
 local block2Gl1ToNeustadtGleis1 = AkRoute.new(7, trainDirection.WST, block2Gl1, neustadtGleis1,
-        { AkFsSignal.new(281, S.Hp2, S.Hp0), },
-        { AkFsSwitch.new(226, 2, 1), AkFsSwitch.new(224, 2, 1), },
-        { crossingNeustadt })
+                                              {AkFsSignal.new(281, S.Hp2, S.Hp0)},
+                                              {AkFsSwitch.new(226, 2, 1), AkFsSwitch.new(224, 2, 1)},
+                                              {crossingNeustadt})
 local block2Gl1ToNeustadtGleis4 = AkRoute.new(9, trainDirection.WST, block2Gl1, neustadtGleis4,
-        { AkFsSignal.new(281, S.Hp2, S.Hp0), },
-        { AkFsSwitch.new(226, 1, 1), AkFsSwitch.new(233, 4, 2), AkFsSwitch.new(5, 1, 1), },
-        { crossingNeustadt })
+                                              {AkFsSignal.new(281, S.Hp2, S.Hp0)}, {
+    AkFsSwitch.new(226, 1, 1), AkFsSwitch.new(233, 4, 2), AkFsSwitch.new(5, 1, 1)
+}, {crossingNeustadt})
 local block2Gl1ToNeustadtGleis5 = AkRoute.new(10, trainDirection.WST, block2Gl1, neustadtGleis5,
-        { AkFsSignal.new(281, S.Hp2, S.Hp0), },
-        { AkFsSwitch.new(226, 1, 1), AkFsSwitch.new(233, 4, 2), AkFsSwitch.new(5, 4, 1), AkFsSwitch.new(235, 2, 1), },
-        { crossingNeustadt })
+                                              {AkFsSignal.new(281, S.Hp2, S.Hp0)}, {
+    AkFsSwitch.new(226, 1, 1), AkFsSwitch.new(233, 4, 2), AkFsSwitch.new(5, 4, 1), AkFsSwitch.new(235, 2, 1)
+}, {crossingNeustadt})
 local neustadtGleis1ToBlock3Gl1 = AkRoute.new(11, trainDirection.WST, neustadtGleis1, block3Gl1,
-        { AkFsSignal.new(270, S.Hp2, S.Hp0), },
-        { AkFsSwitch.new(217, 1, 1), AkFsSwitch.new(557, 1, 1), })
+                                              {AkFsSignal.new(270, S.Hp2, S.Hp0)},
+                                              {AkFsSwitch.new(217, 1, 1), AkFsSwitch.new(557, 1, 1)})
 local neustadtGleis2ToBlock3Gl1 = AkRoute.new(12, trainDirection.WST, neustadtGleis2, block3Gl1,
-        { AkFsSignal.new(269, S.Hp2, S.Hp0), },
-        { AkFsSwitch.new(217, 2, 1), AkFsSwitch.new(557, 1, 1), })
+                                              {AkFsSignal.new(269, S.Hp2, S.Hp0)},
+                                              {AkFsSwitch.new(217, 2, 1), AkFsSwitch.new(557, 1, 1)})
 local neustadtGleis4ToBlock3Gl1 = AkRoute.new(13, trainDirection.WST, neustadtGleis4, block3Gl1,
-        { AkFsSignal.new(267, S.Hp2, S.Hp0), },
-        { AkFsSwitch.new(232, 2, 1), AkFsSwitch.new(221, 1, 1), AkFsSwitch.new(264, 2, 1), AkFsSwitch.new(556, 2, 2), AkFsSwitch.new(557, 2, 1), })
+                                              {AkFsSignal.new(267, S.Hp2, S.Hp0)}, {
+    AkFsSwitch.new(232, 2, 1), AkFsSwitch.new(221, 1, 1), AkFsSwitch.new(264, 2, 1), AkFsSwitch.new(556, 2, 2),
+    AkFsSwitch.new(557, 2, 1)
+})
 local neustadtGleis5ToBlock3Gl1 = AkRoute.new(14, trainDirection.WST, neustadtGleis5, block3Gl1,
-        { AkFsSignal.new(268, S.Hp2, S.Hp0), },
-        { AkFsSwitch.new(12, 1, 1), AkFsSwitch.new(221, 2, 1), AkFsSwitch.new(264, 2, 1), AkFsSwitch.new(556, 2, 2), AkFsSwitch.new(557, 2, 1), })
+                                              {AkFsSignal.new(268, S.Hp2, S.Hp0)}, {
+    AkFsSwitch.new(12, 1, 1), AkFsSwitch.new(221, 2, 1), AkFsSwitch.new(264, 2, 1), AkFsSwitch.new(556, 2, 2),
+    AkFsSwitch.new(557, 2, 1)
+})
 local block3Gl1ToBlockSbWst = AkRoute.new(15, trainDirection.WST, block3Gl1, blockSbWst,
-        { AkFsSignal.new(347, S.Hp2, S.Hp0), },
-        {})
+                                          {AkFsSignal.new(347, S.Hp2, S.Hp0)}, {})
 
 -- Fahrstrassen Hauptstrecke Richtung Osten
 local block4Gl2ToBlock3Gl2 = AkRoute.new(20, trainDirection.OST, block4Gl2, block3Gl2,
-        { AkFsSignal.new(344, S.Hp2, S.Hp0), },
-        {})
+                                         {AkFsSignal.new(344, S.Hp2, S.Hp0)}, {})
 local block3Gl2ToNeustadtGleis3 = AkRoute.new(21, trainDirection.OST, block3Gl2, neustadtGleis3,
-        { AkFsSignal.new(263, S.Hp2, S.Hp0), },
-        { AkFsSwitch.new(555, 1, 1), AkFsSwitch.new(218, 2, 1), })
+                                              {AkFsSignal.new(263, S.Hp2, S.Hp0)},
+                                              {AkFsSwitch.new(555, 1, 1), AkFsSwitch.new(218, 2, 1)})
 local block3Gl2ToNeustadtGleis4 = AkRoute.new(22, trainDirection.OST, block3Gl2, neustadtGleis4,
-        { AkFsSignal.new(263, S.Hp2, S.Hp0), },
-        { AkFsSwitch.new(555, 1, 1), AkFsSwitch.new(218, 1, 1), AkFsSwitch.new(220, 1, 1), AkFsSwitch.new(232, 1, 1) })
---local block3Gl2ToNeustadtGleis5 = AkRoute.new(24, trainDirection.OST, block3Gl2, neustadtGleis5,
+                                              {AkFsSignal.new(263, S.Hp2, S.Hp0)}, {
+    AkFsSwitch.new(555, 1, 1), AkFsSwitch.new(218, 1, 1), AkFsSwitch.new(220, 1, 1), AkFsSwitch.new(232, 1, 1)
+})
+-- local block3Gl2ToNeustadtGleis5 = AkRoute.new(24, trainDirection.OST, block3Gl2, neustadtGleis5,
 --    { AkFsSignal.new(263, S.Hp2, S.Hp0), },
 --    { AkFsSwitch.new(555, 1, 1), AkFsSwitch.new(264, 2, 1), AkFsSwitch.new(221, 2, 1), AkFsSwitch.new(12, 2, 1), AkFsSwitch.new(243, 2, 1) })
 local neustadtGleis3ToBlock2Gl2 = AkRoute.new(25, trainDirection.OST, neustadtGleis3, block2Gl2,
-        { AkFsSignal.new(266, S.Hp2, S.Hp0), },
-        { AkFsSwitch.new(233, 2, 2) },
-        { crossingNeustadt })
+                                              {AkFsSignal.new(266, S.Hp2, S.Hp0)}, {AkFsSwitch.new(233, 2, 2)},
+                                              {crossingNeustadt})
 local neustadtGleis4ToBlock2Gl2 = AkRoute.new(26, trainDirection.OST, neustadtGleis4, block2Gl2,
-        { AkFsSignal.new(262, S.Hp2, S.Hp0), },
-        { AkFsSwitch.new(233, 1, 2), AkFsSwitch.new(5, 1, 1) },
-        { crossingNeustadt })
---local neustadtGleis5ToBlock2Gl2 = AkRoute.new(27, trainDirection.OST, neustadtGleis5, block2Gl2,
+                                              {AkFsSignal.new(262, S.Hp2, S.Hp0)},
+                                              {AkFsSwitch.new(233, 1, 2), AkFsSwitch.new(5, 1, 1)}, {crossingNeustadt})
+-- local neustadtGleis5ToBlock2Gl2 = AkRoute.new(27, trainDirection.OST, neustadtGleis5, block2Gl2,
 --    { AkFsSignal.new(265, S.Hp2, S.Hp0), },
 --    { AkFsSwitch.new(233, 1, 1), AkFsSwitch.new(5, 4, 1), AkFsSwitch.new(235, 2, 1) })
---local neustadtGleis6ToBlock2Gl2 = AkRoute.new(24, trainDirection.OST, neustadtGleis6, block2Gl2,
+-- local neustadtGleis6ToBlock2Gl2 = AkRoute.new(24, trainDirection.OST, neustadtGleis6, block2Gl2,
 --    { AkFsSignal.new(265, S.Hp2, S.Hp0), },
 --    { AkFsSwitch.new(555, 1, 1), AkFsSwitch.new(264, 2, 1), AkFsSwitch.new(221, 2, 1), AkFsSwitch.new(12, 2, 1), AkFsSwitch.new(243, 2, 1) })
---local neustadtGleis7ToBlock2Gl2 = AkRoute.new(24, trainDirection.OST, neustadtGleis7, block2Gl2,
+-- local neustadtGleis7ToBlock2Gl2 = AkRoute.new(24, trainDirection.OST, neustadtGleis7, block2Gl2,
 --    { AkFsSignal.new(265, S.Hp2, S.Hp0), },
 --    { AkFsSwitch.new(555, 1, 1), AkFsSwitch.new(264, 2, 1), AkFsSwitch.new(221, 2, 1), AkFsSwitch.new(12, 2, 1), AkFsSwitch.new(243, 2, 1) })
 local block2Gl2ToGruenbergGleis1 = AkRoute.new(28, trainDirection.OST, block2Gl2, gruenbergGleis1,
-        { AkFsSignal.new(27, S.Hp2, S.Hp0), },
-        { AkFsSwitch.new(13, 1, 1), },
-        { crossingGruenberg })
+                                               {AkFsSignal.new(27, S.Hp2, S.Hp0)}, {AkFsSwitch.new(13, 1, 1)},
+                                               {crossingGruenberg})
 block2Gl2ToGruenbergGleis1:addShortTrainStopMarker(AkFsSignal.new(257, S.Fahrt, S.Halt), eepRoute.Pers_Nah_Kurz)
 block2Gl2ToGruenbergGleis1:addShortTrainStopMarker(AkFsSignal.new(257, S.Fahrt, S.Halt), eepRoute.Pers_Frn_Kurz)
 block2Gl2ToGruenbergGleis1:addShortTrainStopMarker(AkFsSignal.new(255, S.Fahrt, S.Halt), eepRoute.Pers_Frn_Norm)
 
 local block2Gl2ToGruenbergGleis3 = AkRoute.new(29, trainDirection.OST, block2Gl2, gruenbergGleis3,
-        { AkFsSignal.new(27, S.Hp2, S.Hp0), },
-        { AkFsSwitch.new(13, 2, 1), AkFsSwitch.new(65, 4, 2), AkFsSwitch.new(63, 1, 1) })
+                                               {AkFsSignal.new(27, S.Hp2, S.Hp0)}, {
+    AkFsSwitch.new(13, 2, 1), AkFsSwitch.new(65, 4, 2), AkFsSwitch.new(63, 1, 1)
+})
 block2Gl2ToGruenbergGleis3:addShortTrainStopMarker(AkFsSignal.new(259, S.Fahrt, S.Halt), eepRoute.Pers_Nah_Kurz)
 block2Gl2ToGruenbergGleis3:addShortTrainStopMarker(AkFsSignal.new(259, S.Fahrt, S.Halt), eepRoute.Pers_Frn_Kurz)
 block2Gl2ToGruenbergGleis3:addShortTrainStopMarker(AkFsSignal.new(260, S.Fahrt, S.Halt), eepRoute.Pers_Frn_Norm)
 
 local block2Gl2ToGruenbergGleis4 = AkRoute.new(30, trainDirection.OST, block2Gl2, gruenbergGleis4,
-        { AkFsSignal.new(27, S.Hp2, S.Hp0), },
-        { AkFsSwitch.new(13, 2, 1), AkFsSwitch.new(65, 4, 2), AkFsSwitch.new(6, 3, 1), AkFsSwitch.new(63, 4, 1) })
+                                               {AkFsSignal.new(27, S.Hp2, S.Hp0)}, {
+    AkFsSwitch.new(13, 2, 1), AkFsSwitch.new(65, 4, 2), AkFsSwitch.new(6, 3, 1), AkFsSwitch.new(63, 4, 1)
+})
 local gruenbergGleis1ToBlock1Gl2 = AkRoute.new(31, trainDirection.OST, gruenbergGleis1, block1Gl2,
-        { AkFsSignal.new(35, S.Hp2, S.Hp0), },
-        { AkFsSwitch.new(2, 2, 2), })
+                                               {AkFsSignal.new(35, S.Hp2, S.Hp0)}, {AkFsSwitch.new(2, 2, 2)})
 local gruenbergGleis3ToBlock1Gl2 = AkRoute.new(32, trainDirection.OST, gruenbergGleis3, block1Gl2,
-        { AkFsSignal.new(33, S.Hp2, S.Hp0), },
-        { AkFsSwitch.new(2, 1, 2), AkFsSwitch.new(62, 2, 1), AkFsSwitch.new(10, 2, 1), AkFsSwitch.new(4, 1, 1), AkFsSwitch.new(9, 1, 1) },
-        { crossingGruenberg })
+                                               {AkFsSignal.new(33, S.Hp2, S.Hp0)}, {
+    AkFsSwitch.new(2, 1, 2), AkFsSwitch.new(62, 2, 1), AkFsSwitch.new(10, 2, 1), AkFsSwitch.new(4, 1, 1),
+    AkFsSwitch.new(9, 1, 1)
+}, {crossingGruenberg})
 local gruenbergGleis4ToBlock1Gl2 = AkRoute.new(33, trainDirection.OST, gruenbergGleis4, block1Gl2,
-        { AkFsSignal.new(36, S.Hp2, S.Hp0), },
-        { AkFsSwitch.new(2, 1, 2), AkFsSwitch.new(62, 2, 1), AkFsSwitch.new(10, 2, 1), AkFsSwitch.new(4, 1, 1), AkFsSwitch.new(9, 1, 1), AkFsSwitch.new(8, 1, 1) },
-        { crossingGruenberg })
+                                               {AkFsSignal.new(36, S.Hp2, S.Hp0)}, {
+    AkFsSwitch.new(2, 1, 2), AkFsSwitch.new(62, 2, 1), AkFsSwitch.new(10, 2, 1), AkFsSwitch.new(4, 1, 1),
+    AkFsSwitch.new(9, 1, 1), AkFsSwitch.new(8, 1, 1)
+}, {crossingGruenberg})
 local block1Gl2ToBlockSbOst = AkRoute.new(34, trainDirection.OST, block1Gl2, blockSbOst,
-        { AkFsSignal.new(361, S.Hp2, S.Hp0), },
-        {})
-
+                                          {AkFsSignal.new(361, S.Hp2, S.Hp0)}, {})
 
 -- Bahnhof Gruenberg
 local bahnhofGruenberg = AkStation.new("Gruenberg")
@@ -292,168 +289,105 @@ blockStelle34:addInfoStructure("#11455_Nossen_Posten_68_Wohnhaus")
 -------------------------------------------------------------------
 -- Kontaktpunkt-Funktionen - Von Osten nach Westen (Hauptstrecke)
 -------------------------------------------------------------------
-function B_BL1_1_WST(trainName)
-    AkTrainControl.requestRoute(trainName, block1Gl1, trainDirection.WST)
-end
+function B_BL1_1_WST(trainName) AkTrainControl.requestRoute(trainName, block1Gl1, trainDirection.WST) end
 
-function V_BL1_1_GBG_GL_2_WST(trainName)
-    AkTrainControl.clearRoutes(trainName, { block1Gl1ToGruenbergGleis2 })
-end
+function V_BL1_1_GBG_GL_2_WST(trainName) AkTrainControl.clearRoutes(trainName, {block1Gl1ToGruenbergGleis2}) end
 
-function V_BL1_1_GBG_GL_3_WST(trainName)
-    AkTrainControl.clearRoutes(trainName, { block1Gl1ToGruenbergGleis3 })
-end
+function V_BL1_1_GBG_GL_3_WST(trainName) AkTrainControl.clearRoutes(trainName, {block1Gl1ToGruenbergGleis3}) end
 
-function V_BL1_1_GBG_GL_4_WST(trainName)
-    AkTrainControl.clearRoutes(trainName, { block1Gl1ToGruenbergGleis4 })
-end
+function V_BL1_1_GBG_GL_4_WST(trainName) AkTrainControl.clearRoutes(trainName, {block1Gl1ToGruenbergGleis4}) end
 
-function B_GBG_GL_2_WST(trainName)
-    AkTrainControl.requestRoute(trainName, gruenbergGleis2, trainDirection.WST)
-end
+function B_GBG_GL_2_WST(trainName) AkTrainControl.requestRoute(trainName, gruenbergGleis2, trainDirection.WST) end
 
-function B_GBG_GL_3_WST(trainName)
-    AkTrainControl.requestRoute(trainName, gruenbergGleis3, trainDirection.WST)
-end
+function B_GBG_GL_3_WST(trainName) AkTrainControl.requestRoute(trainName, gruenbergGleis3, trainDirection.WST) end
 
-function B_GBG_GL_4_WST(trainName)
-    AkTrainControl.requestRoute(trainName, gruenbergGleis4, trainDirection.WST)
-end
+function B_GBG_GL_4_WST(trainName) AkTrainControl.requestRoute(trainName, gruenbergGleis4, trainDirection.WST) end
 
 function V_GBG_GL_X_WST(trainName)
-    AkTrainControl.clearRoutes(trainName, { gruenbergGleis2ToBlock2Gl1, gruenbergGleis3ToBlock2Gl1, gruenbergGleis4ToBlock2Gl1 })
+    AkTrainControl.clearRoutes(trainName,
+                               {gruenbergGleis2ToBlock2Gl1, gruenbergGleis3ToBlock2Gl1, gruenbergGleis4ToBlock2Gl1})
 end
 
-function B_BL2_1_WST(trainName)
-    AkTrainControl.requestRoute(trainName, block2Gl1, trainDirection.WST)
-end
+function B_BL2_1_WST(trainName) AkTrainControl.requestRoute(trainName, block2Gl1, trainDirection.WST) end
 
-function V_BL2_1_NST_GL_1_WST(trainName)
-    AkTrainControl.clearRoutes(trainName, { block2Gl1ToNeustadtGleis1 })
-end
+function V_BL2_1_NST_GL_1_WST(trainName) AkTrainControl.clearRoutes(trainName, {block2Gl1ToNeustadtGleis1}) end
 
-function V_BL2_1_NST_GL_2_WST(trainName)
-    AkTrainControl.clearRoutes(trainName, { block2Gl1ToNeustadtGleis2 })
-end
+function V_BL2_1_NST_GL_2_WST(trainName) AkTrainControl.clearRoutes(trainName, {block2Gl1ToNeustadtGleis2}) end
 
-function V_BL2_1_NST_GL_4_WST(trainName)
-    AkTrainControl.clearRoutes(trainName, { block2Gl1ToNeustadtGleis4 })
-end
+function V_BL2_1_NST_GL_4_WST(trainName) AkTrainControl.clearRoutes(trainName, {block2Gl1ToNeustadtGleis4}) end
 
-function V_BL2_1_NST_GL_5_WST(trainName)
-    AkTrainControl.clearRoutes(trainName, { block2Gl1ToNeustadtGleis5 })
-end
+function V_BL2_1_NST_GL_5_WST(trainName) AkTrainControl.clearRoutes(trainName, {block2Gl1ToNeustadtGleis5}) end
 
-function B_NST_GL_1_WST(trainName)
-    AkTrainControl.requestRoute(trainName, neustadtGleis1, trainDirection.WST)
-end
+function B_NST_GL_1_WST(trainName) AkTrainControl.requestRoute(trainName, neustadtGleis1, trainDirection.WST) end
 
-function B_NST_GL_2_WST(trainName)
-    AkTrainControl.requestRoute(trainName, neustadtGleis2, trainDirection.WST)
-end
+function B_NST_GL_2_WST(trainName) AkTrainControl.requestRoute(trainName, neustadtGleis2, trainDirection.WST) end
 
-function B_NST_GL_4_WST(trainName)
-    AkTrainControl.requestRoute(trainName, neustadtGleis4, trainDirection.WST)
-end
+function B_NST_GL_4_WST(trainName) AkTrainControl.requestRoute(trainName, neustadtGleis4, trainDirection.WST) end
 
-function B_NST_GL_5_WST(trainName)
-    AkTrainControl.requestRoute(trainName, neustadtGleis5, trainDirection.WST)
-end
+function B_NST_GL_5_WST(trainName) AkTrainControl.requestRoute(trainName, neustadtGleis5, trainDirection.WST) end
 
 function V_NST_GL_X_WST(trainName)
-    AkTrainControl.clearRoutes(trainName, { neustadtGleis1ToBlock3Gl1, neustadtGleis2ToBlock3Gl1, neustadtGleis4ToBlock3Gl1, neustadtGleis5ToBlock3Gl1 })
+    AkTrainControl.clearRoutes(trainName, {
+        neustadtGleis1ToBlock3Gl1, neustadtGleis2ToBlock3Gl1, neustadtGleis4ToBlock3Gl1, neustadtGleis5ToBlock3Gl1
+    })
 end
 
-function B_BL3_1_WST(trainName)
-    AkTrainControl.requestRoute(trainName, block3Gl1, trainDirection.WST)
-end
+function B_BL3_1_WST(trainName) AkTrainControl.requestRoute(trainName, block3Gl1, trainDirection.WST) end
 
-function V_BL3_1_WST(trainName)
-    AkTrainControl.clearRoutes(trainName, { block3Gl1ToBlockSbWst })
-end
+function V_BL3_1_WST(trainName) AkTrainControl.clearRoutes(trainName, {block3Gl1ToBlockSbWst}) end
 
-function B_BL4_1_WST(trainName)
-    AkTrainControl.requestRoute(trainName, blockSbWst, trainDirection.WST)
-end
+function B_BL4_1_WST(trainName) AkTrainControl.requestRoute(trainName, blockSbWst, trainDirection.WST) end
 
 -------------------------------------------------------------------
 -- Kontaktpunkt-Funktionen - Von Westen nach Osten (Hauptstrecke)
 -------------------------------------------------------------------
-function B_BL4_2_OST(trainName)
-    AkTrainControl.requestRoute(trainName, block4Gl2, trainDirection.OST)
-end
+function B_BL4_2_OST(trainName) AkTrainControl.requestRoute(trainName, block4Gl2, trainDirection.OST) end
 
-function V_BL4_2_OST(trainName)
-    AkTrainControl.clearRoutes(trainName, { block4Gl2ToBlock3Gl2 })
-end
+function V_BL4_2_OST(trainName) AkTrainControl.clearRoutes(trainName, {block4Gl2ToBlock3Gl2}) end
 
-function B_BL3_2_OST(trainName)
-    AkTrainControl.requestRoute(trainName, block3Gl2, trainDirection.OST)
-end
+function B_BL3_2_OST(trainName) AkTrainControl.requestRoute(trainName, block3Gl2, trainDirection.OST) end
 
-function V_BL3_2_NST_GL_3_OST(trainName)
-    AkTrainControl.clearRoutes(trainName, { block3Gl2ToNeustadtGleis3 })
-end
+function V_BL3_2_NST_GL_3_OST(trainName) AkTrainControl.clearRoutes(trainName, {block3Gl2ToNeustadtGleis3}) end
 
-function V_BL3_2_NST_GL_4_OST(trainName)
-    AkTrainControl.clearRoutes(trainName, { block3Gl2ToNeustadtGleis4 })
-end
+function V_BL3_2_NST_GL_4_OST(trainName) AkTrainControl.clearRoutes(trainName, {block3Gl2ToNeustadtGleis4}) end
 
-function B_NST_GL_3_OST(trainName)
-    AkTrainControl.requestRoute(trainName, neustadtGleis3, trainDirection.OST)
-end
+function B_NST_GL_3_OST(trainName) AkTrainControl.requestRoute(trainName, neustadtGleis3, trainDirection.OST) end
 
-function B_NST_GL_4_OST(trainName)
-    AkTrainControl.requestRoute(trainName, neustadtGleis4, trainDirection.OST)
-end
+function B_NST_GL_4_OST(trainName) AkTrainControl.requestRoute(trainName, neustadtGleis4, trainDirection.OST) end
 
 function V_NST_GL_X_OST(trainName)
-    AkTrainControl.clearRoutes(trainName, { neustadtGleis3ToBlock2Gl2, neustadtGleis4ToBlock2Gl2 })
+    AkTrainControl.clearRoutes(trainName, {neustadtGleis3ToBlock2Gl2, neustadtGleis4ToBlock2Gl2})
 end
 
-function B_BL2_2_OST(trainName)
-    AkTrainControl.requestRoute(trainName, block2Gl2, trainDirection.OST)
-end
+function B_BL2_2_OST(trainName) AkTrainControl.requestRoute(trainName, block2Gl2, trainDirection.OST) end
 
-function V_BL2_2_GBG_GL_1_OST(trainName)
-    AkTrainControl.clearRoutes(trainName, { block2Gl2ToGruenbergGleis1 })
-end
+function V_BL2_2_GBG_GL_1_OST(trainName) AkTrainControl.clearRoutes(trainName, {block2Gl2ToGruenbergGleis1}) end
 
-function V_BL2_2_GBG_GL_3_OST(trainName)
-    AkTrainControl.clearRoutes(trainName, { block2Gl2ToGruenbergGleis3 })
-end
+function V_BL2_2_GBG_GL_3_OST(trainName) AkTrainControl.clearRoutes(trainName, {block2Gl2ToGruenbergGleis3}) end
 
-function V_BL2_2_GBG_GL_4_OST(trainName)
-    AkTrainControl.clearRoutes(trainName, { block2Gl2ToGruenbergGleis4 })
-end
+function V_BL2_2_GBG_GL_4_OST(trainName) AkTrainControl.clearRoutes(trainName, {block2Gl2ToGruenbergGleis4}) end
 
-function B_GBG_GL_1_OST(trainName)
-    AkTrainControl.requestRoute(trainName, gruenbergGleis1, trainDirection.OST)
-end
+function B_GBG_GL_1_OST(trainName) AkTrainControl.requestRoute(trainName, gruenbergGleis1, trainDirection.OST) end
 
-function B_GBG_GL_3_OST(trainName)
-    AkTrainControl.requestRoute(trainName, gruenbergGleis3, trainDirection.OST)
-end
+function B_GBG_GL_3_OST(trainName) AkTrainControl.requestRoute(trainName, gruenbergGleis3, trainDirection.OST) end
 
-function B_GBG_GL_4_OST(trainName)
-    AkTrainControl.requestRoute(trainName, gruenbergGleis4, trainDirection.OST)
-end
+function B_GBG_GL_4_OST(trainName) AkTrainControl.requestRoute(trainName, gruenbergGleis4, trainDirection.OST) end
 
 function V_GBG_GL_X_OST(trainName)
-    AkTrainControl.clearRoutes(trainName, { gruenbergGleis1ToBlock1Gl2, gruenbergGleis3ToBlock1Gl2, gruenbergGleis4ToBlock1Gl2 })
+    AkTrainControl.clearRoutes(trainName,
+                               {gruenbergGleis1ToBlock1Gl2, gruenbergGleis3ToBlock1Gl2, gruenbergGleis4ToBlock1Gl2})
 end
 
-function B_BL1_2_OST(trainName)
-    AkTrainControl.requestRoute(trainName, block1Gl2, trainDirection.OST)
-end
+function B_BL1_2_OST(trainName) AkTrainControl.requestRoute(trainName, block1Gl2, trainDirection.OST) end
 
-function V_BL1_2_OST(trainName)
-    AkTrainControl.clearRoutes(trainName, { block1Gl2ToBlockSbOst })
-end
+function V_BL1_2_OST(trainName) AkTrainControl.clearRoutes(trainName, {block1Gl2ToBlockSbOst}) end
 
-function B_BL_SB_OST(trainName)
-    AkTrainControl.clearRoutes(trainName, { block1Gl2ToBlockSbOst })
-end
+function B_BL_SB_OST(trainName) AkTrainControl.clearRoutes(trainName, {block1Gl2ToBlockSbOst}) end
+
+function KRZ_001_OST_EIN(trainName) end
+function KRZ_001_OST_AUS(trainName) end
+function KRZ_001_WEST_EIN(trainName) end
+function KRZ_001_WEST_AUS(trainName) end
 
 local i = -1
 --- Wird alle 200 ms aufgerufen, muss 1 zurueckgeben
@@ -476,22 +410,16 @@ EEPRegisterSignal(241)
 local stellung = EEPGetSignal(241)
 dbg.fs_schaltung = stellung == 2
 EEPChangeInfoSignal(241, "<c>Debug Fahrstrassenschaltung\n<j>Gruen: an, Rot: aus")
-function EEPOnSignal_241(stellung)
-    dbg.fs_schaltung = stellung == 2
-end
+function EEPOnSignal_241(stellung) dbg.fs_schaltung = stellung == 2 end
 
 EEPRegisterSignal(242)
 local stellung = EEPGetSignal(242)
 dbg.fs_pruefung = stellung == 2
 EEPChangeInfoSignal(242, "<c>Debug Fahrstrassenpruefung\n<j>Gruen: an, Rot: aus")
-function EEPOnSignal_242(stellung)
-    dbg.fs_pruefung = stellung == 2
-end
+function EEPOnSignal_242(stellung) dbg.fs_pruefung = stellung == 2 end
 
 EEPRegisterSignal(243)
 local stellung = EEPGetSignal(243)
 dbg.anforderung = stellung == 2
 EEPChangeInfoSignal(243, "<c>Debug Anforderungen\n<j>Gruen: an, Rot: aus")
-function EEPOnSignal_243(stellung)
-    dbg.anforderung = stellung == 2
-end
+function EEPOnSignal_243(stellung) dbg.anforderung = stellung == 2 end

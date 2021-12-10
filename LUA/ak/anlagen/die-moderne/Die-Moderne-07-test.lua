@@ -8,7 +8,6 @@ local CrossingSequence = require("ak.road.CrossingSequence")
 -- Speicher
 local StorageUtility = require("ak.storage.StorageUtility")
 local fmt = require("ak.core.eep.TippTextFormatter")
-local Destinations = require("ak.road.station.Destinations")
 
 EepSimulator.setzeZugAufGleis(5, "Tuff Tuff Zug")
 EepSimulator.setzeZugAufGleis(7, "Zoom Zoom Zug")
@@ -16,6 +15,7 @@ EepSimulator.setzeZugAufStrasse(3, "Tatütata")
 EepSimulator.setzeZugAufStrasse(4, "Tram")
 EepSimulator.setzeZugAufStrasse(5, "Tram")
 EepSimulator.setzeZugAufStrasse(6, "Tram")
+EepSimulator.addTrain(Zugname, "RollingStock A", "RollingStock B")
 
 -- endregion
 
@@ -77,7 +77,7 @@ Crossing.zeigeSchaltungAlsInfo = true
 Crossing.initSequences()
 enterLane(Zugname, c1Lane8)
 enterLane(Zugname, c1Lane8)
-assert(c1Lane8.vehicleCount == 2, c1Lane8.anzahlFahrzeuge)
+assert(c1Lane8.vehicleCount == 2, c1Lane8.vehicleCount)
 Crossing.resetVehicles()
 assert(c1Lane8.vehicleCount == 0)
 -------------------------------------------------------------------
@@ -95,18 +95,21 @@ local function k1Print()
 end
 
 for i = 1, 10 do
+    changeDestination(Zugname, sMesseDresden)
+    stationLeft(Zugname, sMesseDresden)
     print("Betritt Block")
     enterLane(Zugname, c1Lane8)
-    stationArrivalPlanned(Zugname, sMainStation, 5)
+    stationArrivalPlanned(Zugname, sHauptbahnhof, 5)
     run()
-    stationArrivalPlanned(Zugname, sMainStation, 4)
+    stationArrivalPlanned(Zugname, sHauptbahnhof, 4)
     run()
-    stationArrivalPlanned(Zugname, sMainStation, 3)
-    Destinations.changeFor(Zugname, "MainStation")
+    stationArrivalPlanned(Zugname, sHauptbahnhof, 3)
     run()
     run()
     print("Verlasse Block")
-    leaveLane(Zugname, c1Lane8, true)
-    stationLeft(Zugname, sMainStation)
+    leaveLane(Zugname, c1Lane8)
+    stationLeft(Zugname, sHauptbahnhof)
+    changeDestination(Zugname, sStriesen)
+    stationLeft(Zugname, sStriesen)
     run()
 end

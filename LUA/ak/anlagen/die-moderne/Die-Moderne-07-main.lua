@@ -1,6 +1,9 @@
 --------------------------------
 -- Lade Funktionen fuer Ampeln
 --------------------------------
+local BetterContacts = require("ak.third-party.BetterContacts_BH2")
+BetterContacts.setOptions({varname = "Zugname", varnameTrackID = "trackId"})
+
 -- Strasse
 local TramSwitch = require("ak.road.TramSwitch")
 local TrafficLightModel = require("ak.road.TrafficLightModel")
@@ -10,9 +13,11 @@ local TrafficLight = require("ak.road.TrafficLight")
 local Lane = require("ak.road.Lane")
 local Crossing = require("ak.road.Crossing")
 local CrossingSequence = require("ak.road.CrossingSequence")
-local RoadStation = require("ak.road.line.RoadStation")
-local RoadStationDisplayModel = require("ak.road.station.RoadStationDisplayModel")
-local Destinations = require("ak.road.station.Destinations")
+
+-- Linienführung
+local Line = require("ak.roadline.Line")
+local RoadStation = require("ak.roadline.RoadStation")
+local RoadStationDisplayModel = require("ak.roadline.RoadStationDisplayModel")
 
 -- Speicher
 local StorageUtility = require("ak.storage.StorageUtility")
@@ -20,7 +25,8 @@ local fmt = require("ak.core.eep.TippTextFormatter")
 
 local ModuleRegistry = require("ak.core.ModuleRegistry")
 ModuleRegistry.registerModules(require("ak.core.CoreLuaModule"), require("ak.data.DataLuaModule"),
-                               require("ak.road.CrossingLuaModul"))
+                               require("ak.road.CrossingLuaModul"),
+                               require("ak.public-transport.PublicTransportLuaModule"))
 ModuleRegistry.useDlls(true)
 Crossing.loadSettingsFromSlot(22)
 
@@ -29,27 +35,6 @@ function EEPMain()
     ModuleRegistry.runTasks(1)
     return 1
 end
-
-------------------------------------------------
--- Damit kommt wird die Variable "Zugname" automatisch durch EEP belegt
--- http://emaps-eep.de/lua/code-schnipsel
-------------------------------------------------
-setmetatable(_ENV, {
-    __index = function(_, k)
-        local p = load(k)
-        if p then
-            local f = function(z)
-                local s = Zugname
-                Zugname = z
-                p()
-                Zugname = s
-            end
-            _ENV[k] = f
-            return f
-        end
-        return nil
-    end
-})
 
 --------------------------------------------
 -- Definiere Funktionen fuer Kontaktpunkte
@@ -87,8 +72,8 @@ do
     local S2 = TrafficLight:new("S2", -1, TrafficLightModel.NONE, "#5435_Straba Signal Halt",
                                 "#5521_Straba Signal geradeaus", "#5520_Straba Signal anhalten",
                                 "#5518_Straba Signal A")
-    local S3 = TrafficLight:new("S3", -1, TrafficLightModel.NONE, "#5523_Straba Signal Halt", "#5434_Straba Signal links",
-                                "#5522_Straba Signal anhalten", "#5433_Straba Signal A")
+    local S3 = TrafficLight:new("S3", -1, TrafficLightModel.NONE, "#5523_Straba Signal Halt",
+                                "#5434_Straba Signal links", "#5522_Straba Signal anhalten", "#5433_Straba Signal A")
     local S4 = TrafficLight:new("S4", 95, TrafficLightModel.Unsichtbar_2er, "#5525_Straba Signal Halt",
                                 "#5436_Straba Signal rechts", "#5526_Straba Signal anhalten", "#5524_Straba Signal A")
     local lane4Sig = TrafficLight:new("lane4Sig", 89, TrafficLightModel.Unsichtbar_2er)
@@ -107,7 +92,7 @@ do
     c1Lane1 = Lane:new("K1 - Fahrspur 1", 1, K1, {Lane.Directions.STRAIGHT})
     c1Lane2 = Lane:new("K1 - Fahrspur 2", 2, K2, {Lane.Directions.LEFT})
     c1Lane3 = Lane:new("K1 - Fahrspur 3", 3, S1, {Lane.Directions.STRAIGHT}, Lane.Type.TRAM):setFahrzeugMultiplikator(
-                  15)
+              15)
     c1Lane4 = Lane:new("K1 - Fahrspur 4", 4, lane4Sig, {Lane.Directions.STRAIGHT, Lane.Directions.RIGHT})
     c1Lane5 = Lane:new("K1 - Fahrspur 5", 5, K6, {Lane.Directions.LEFT})
     c1Lane5a = Lane:new("K1 - Fahrspur 5a", 19, K7, {Lane.Directions.LEFT})
@@ -127,12 +112,12 @@ do
 
     K4:applyToLane(c1Lane4)
     K5:applyToLane(c1Lane4)
-    S2:applyToLane(c1Lane8, "Strabalinie 10")
-    S3:applyToLane(c1Lane8, "Strabalinie 04")
+    S2:applyToLane(c1Lane8, "Tram 10 Messe Dresden")
+    S3:applyToLane(c1Lane8, "Tram 04 Radebeul West")
 
     c1Lane3:showRequestsOn(S1)
-    c1Lane8:showRequestsOn(S2, "Strabalinie 10")
-    c1Lane8:showRequestsOn(S3, "Strabalinie 04")
+    c1Lane8:showRequestsOn(S2, "Tram 10 Messe Dresden")
+    c1Lane8:showRequestsOn(S3, "Tram 04 Radebeul West")
     c1Lane11:showRequestsOn(S4)
 
     do
@@ -240,9 +225,9 @@ do
                                 "#5536_Straba Signal rechts", "#5534_Straba Signal anhalten", "#5533_Straba Signal A")
 
     local F1 = TrafficLight:new("F1", 101, TrafficLightModel.JS2_2er_nur_FG):addAxisStructure(
-                   "#5816_Warnblink Fußgänger rechts", "Blinklicht", 0, nil, nil, nil, 50)
+               "#5816_Warnblink Fußgänger rechts", "Blinklicht", 0, nil, nil, nil, 50)
     local F2 = TrafficLight:new("F2", 102, TrafficLightModel.JS2_2er_nur_FG):addAxisStructure(
-                   "#5815_Warnblink Fußgänger links", "Blinklicht", 0, nil, nil, nil, 50)
+               "#5815_Warnblink Fußgänger links", "Blinklicht", 0, nil, nil, nil, 50)
     local F3 = K7
     local F4 = K9
     local F5 = K4
@@ -258,7 +243,7 @@ do
     c2Lane4 = Lane:new("K2 - Fahrspur 4", 20, K5, {Lane.Directions.STRAIGHT})
     c2Lane5 = Lane:new("K2 - Fahrspur 5", 15, S1, {Lane.Directions.LEFT}, Lane.Type.TRAM):setFahrzeugMultiplikator(15)
     c2Lane6 = Lane:new("K2 - Fahrspur 6", 16, S2, {Lane.Directions.RIGHT}, Lane.Type.TRAM)
-                  :setFahrzeugMultiplikator(15)
+              :setFahrzeugMultiplikator(15)
     c2Lane7 = Lane:new("K2 - Fahrspur 7", 17, K7, {Lane.Directions.STRAIGHT})
     c2Lane7a = Lane:new("K2 - Fahrspur 7a", 21, K8, {Lane.Directions.STRAIGHT})
     c2Lane8 = Lane:new("K2 - Fahrspur 8", 18, K9, {Lane.Directions.LEFT})
@@ -330,7 +315,11 @@ end
 ---@param trainName string
 ---@param station RoadStation
 function stationLeft(trainName, station)
-    station:trainLeft(trainName)
+    assert(type(trainName) == "string", "Provide 'trainName' as 'string' was " .. type(trainName))
+    assert(type(station) == "table", "Provide 'station' as 'table' was " .. type(station))
+    assert(station.type == "RoadStation", "Provide 'station' as 'RoadStation'")
+
+    Line.trainDeparted(trainName, station)
 end
 
 -- Kontaktpunktfunktion für "Das Fahrzeug erreicht die Haltestelle in X minuten"
@@ -338,43 +327,94 @@ end
 ---@param station RoadStation
 ---@param timeInMinutes number
 function stationArrivalPlanned(trainName, station, timeInMinutes)
-    station:stationArrivalPlanned(trainName, timeInMinutes)
+    assert(type(trainName) == "string", "Provide 'trainName' as 'string' was " .. type(trainName))
+    assert(type(station) == "table", "Provide 'station' as 'table' was " .. type(station))
+    assert(station.type == "RoadStation", "Provide 'station' as 'RoadStation'")
+    assert(type(timeInMinutes) == "number", "Provide 'timeInMinutes' as 'number' was " .. type(timeInMinutes))
+
+    Line.scheduleDeparture(trainName, station, timeInMinutes)
 end
-
--- Haltestelle Hauptbahnhof
-sMainStation = RoadStation:new("Hauptbahnhof", -1)
-sMainStation:setPlatform(04, "Laubegast", 1)      -- Bahnsteig 1 wird genutzt von Line  4 Richtung Laubegast
-sMainStation:setPlatform(10, "Striesen", 1)       -- Bahnsteig 1 wird genutzt von Line 10 Richtung Striesen
-sMainStation:setPlatform(04, "Radebeul West", 2)  -- Bahnsteig 1 wird genutzt von Line  4 Richtung Radebeul West
-sMainStation:setPlatform(10, "Messe Dresden", 2)  -- Bahnsteig 1 wird genutzt von Line 10 Richtung Messe Dresden
-sMainStation:addDisplay("#207_Tram Schild Gelb DL1", RoadStationDisplayModel.Tram_Schild_DL1, 1) -- Display für Steig 1
-sMainStation:addDisplay("#155_Tram Schild Gelb DL1", RoadStationDisplayModel.Tram_Schild_DL1, 2) -- Display für Steig 2
-
-sMesseStation = RoadStation:new("Messe Dresden", -1)
-
--- Haltestelle Feuerwehrgasse
-sFeuerwehrgasse = RoadStation:new("Feuerwehrgasse", -1)
-sFeuerwehrgasse:setPlatform(10, "Striesen", 1)
-sFeuerwehrgasse:setPlatform(10, "Messe Dresden", 2)
-sFeuerwehrgasse:addDisplay("#273_BusHSdfi_RG3", RoadStationDisplayModel.BusHSdfi_RG3, 2)
--- sMainStation:addDisplay("#273_BusHSdfi_RG3", RoadStationDisplayModel.BusHSdfi_RG3, 1)
-
-
--- Geplante Linienaenderungen, wenn eine Linie die Kontaktpunktfunktion "changeDestination" aufruft
--- 1. Parameter: Stationsname an dem der Wechsel durchgeführt wird
--- 2. Parameter: Route für die das Ziel geändert werden soll
--- 3. Parameter: neue Zielhaltestelle
--- 4. Parameter: neue Liniennummer
--- 5. Parameter: WIRD ENTFALLEN MÜSSEN, WEIL FAHRZEUGBEZOGEN - Achse für den Wechsel der Fahrtanzeige
--- 6. Parameter: WIRD ENTFALLEN MÜSSEN, WEIL FAHRZEUGBEZOGEN - Achsstellung für den Wechsel der Fahrtanzeige
-Destinations.changeOn("MainStation", "Strabalinie 04", "Radebeul West", 04, "Zielanzeige", 0)
-Destinations.changeOn("MainStation", "Strabalinie 10", "Messe Dresden", 10, "Zielanzeige", 0)
-Destinations.changeOn("Laubegast", "Strabalinie 04", "Laubegast", 04, "Zielanzeige", 40)
-Destinations.changeOn("Messe Dresden", "Strabalinie 10", "Striesen", 10, "Zielanzeige", 40)
 
 -- Kontaktpunktfunktion
 -- 1. Parameter: Zugname aus Bennys EEP-Schnipsel
 -- 2. Parameter: Stationsname wie in Destinations.changeOn() hinterlegt
-function changeDestination(trainName, station)
-    Destinations.changeFor(trainName, station)
+-- 3. Parameter: Abfahrtszeit in Minuten (optional)
+function changeDestination(trainName, station, departureTime)
+    assert(type(trainName) == "string", "Provide 'trainName' as 'string' was " .. type(trainName))
+    assert(type(station) == "table", "Provide 'station' as 'table' was " .. type(station))
+    assert(station.type == "RoadStation", "Provide 'station' as 'RoadStation'")
+    if departureTime then
+        assert(type(departureTime) == "number", "Provide 'departureTime' as 'number' was " .. type(departureTime))
+    end
+
+    Line.changeRoute(trainName, station, departureTime)
 end
+
+-- Line 10
+local l10 = Line:new({nr = "10"})
+local l10Striesen = l10:newRoute("Tram 10 Striesen")
+local l10MesseDresden = l10:newRoute("Tram 10 Messe Dresden")
+
+-- Linie 04
+local l04 = Line:new({nr = "4"})
+local l04Striesen = l04:newRoute("Tram 04 Striesen")
+local l04RadebeulWest = l04:newRoute("Tram 04 Radebeul West")
+
+-- Haltestelle Striesen
+sStriesen = RoadStation:new("Striesen", -1)
+
+-- Haltestelle Hauptbahnhof
+sHauptbahnhof = RoadStation:new("Hauptbahnhof", -1)
+sHauptbahnhof:setPlatform(l04Striesen, 1) -- Bahnsteig 1 wird genutzt von Line  4 Richtung Laubegast
+sHauptbahnhof:setPlatform(l10Striesen, 1) -- Bahnsteig 1 wird genutzt von Line 10 Richtung Striesen
+sHauptbahnhof:setPlatform(l04RadebeulWest, 2) -- Bahnsteig 1 wird genutzt von Line  4 Richtung Radebeul West
+sHauptbahnhof:setPlatform(l10MesseDresden, 2) -- Bahnsteig 1 wird genutzt von Line 10 Richtung Messe Dresden
+sHauptbahnhof:addDisplay("#207_Tram Schild Gelb DL1", RoadStationDisplayModel.Tram_Schild_DL1, 1) -- Display für Steig 1
+sHauptbahnhof:addDisplay("#155_Tram Schild Gelb DL1", RoadStationDisplayModel.Tram_Schild_DL1, 2) -- Display für Steig 2
+
+sMesseStation = RoadStation:new("Messe Dresden", -1)
+
+-- Haltestelle Feuerwehrgasse
+sFeuerwehrGasse = RoadStation:new("Feuerwehrgasse", -1)
+sFeuerwehrGasse:setPlatform(l10Striesen, 1)
+sFeuerwehrGasse:setPlatform(l10MesseDresden, 2)
+sFeuerwehrGasse:addDisplay("#273_BusHSdfi_RG3", RoadStationDisplayModel.BusHSdfi_RG3, 2)
+-- sMainStation:addDisplay("#273_BusHSdfi_RG3", RoadStationDisplayModel.BusHSdfi_RG3, 1)
+
+-- Haltestelle Messe Dresden
+sMesseDresden = RoadStation:new("MesseDresden", -1)
+
+-- Haltestelle Radebeul West
+sRadebeulWest = RoadStation:new("Radebeul West", -1)
+
+-- Linie 10 Richtung Striesen
+l10Striesen:addStation(sMesseDresden, 1)
+l10Striesen:addStation(sFeuerwehrGasse, 1, 2)
+l10Striesen:addStation(sHauptbahnhof, 1, 2)
+l10Striesen:addStation(sStriesen, 1, 3)
+
+-- Linie 10 Richtung Messe Dresden
+l10MesseDresden:addStation(sStriesen, 2, 0)
+l10MesseDresden:addStation(sHauptbahnhof, 2, 3)
+l10MesseDresden:addStation(sFeuerwehrGasse, 2, 2)
+l10MesseDresden:addStation(sMesseDresden, 2)
+
+-- Linie 4 Richtung Striesen
+l04Striesen:addStation(sRadebeulWest, 1)
+l04Striesen:addStation(sHauptbahnhof, 1, 2)
+l04Striesen:addStation(sStriesen, 1, 3)
+
+-- Linie 4 Richtung Radebeul West
+l04RadebeulWest:addStation(sStriesen, 2, 0)
+l04RadebeulWest:addStation(sHauptbahnhof, 2, 3)
+l04RadebeulWest:addStation(sRadebeulWest, 2)
+
+-- Geplante Linienaenderungen, wenn eine Linie die Kontaktpunktfunktion "changeDestination" aufruft
+-- 1. Parameter: RoadStation, an der der Wechsel durchgeführt werden soll
+-- 2. Parameter: Route - alte Fahrplan Route
+-- 3. Parameter: Route - neue Fahrplan Route
+-- 4. Parameter: Line - neue Linie
+Line.addRouteChange(sStriesen, l10Striesen, l10MesseDresden, l10)
+Line.addRouteChange(sStriesen, l04Striesen, l04RadebeulWest, l04)
+Line.addRouteChange(sMesseDresden, l10MesseDresden, l10Striesen, l10)
+Line.addRouteChange(sRadebeulWest, l04RadebeulWest, l04Striesen, l04)
