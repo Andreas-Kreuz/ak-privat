@@ -14,4 +14,5 @@ Eine Anlage, welche die Zeit der DR zu Zeiten der DDR repräsentiert.
 
 Verlinke die privaten Anlagen in den EEP-Ordner
 
-mklink /D C:\Spiele\GitHub\ak-lua-bibliothek-fuer-eep\lua\LUA\ak\anlagen C:\Spiele\GitHub\ak-privat\lua\LUA\ak\anlagen
+- `mklink /D C:\Spiele\GitHub\ak-lua-bibliothek-fuer-eep\lua\LUA\ak\anlagen C:\Spiele\GitHub\ak-privat\lua\LUA\ak\anlagen`
+- `mklink /D C:\Spiele\GitHub\ak-lua-bibliothek-fuer-eep\scripts\private\ C:\Spiele\GitHub\ak-privat\scripts\private`
