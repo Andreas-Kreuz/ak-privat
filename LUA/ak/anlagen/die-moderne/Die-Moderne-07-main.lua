@@ -15,9 +15,10 @@ local Crossing = require("ak.road.Crossing")
 local CrossingSequence = require("ak.road.CrossingSequence")
 
 -- Linienführung
-local Line = require("ak.roadline.Line")
-local RoadStation = require("ak.roadline.RoadStation")
-local RoadStationDisplayModel = require("ak.roadline.RoadStationDisplayModel")
+local Line = require("ak.public-transport.Line")
+local RoadStation = require("ak.public-transport.RoadStation")
+local RoadStationDisplayModel = require("ak.public-transport.RoadStationDisplayModel")
+local TrainRegistry = require("ak.train.TrainRegistry")
 
 -- Speicher
 local StorageUtility = require("ak.storage.StorageUtility")
@@ -49,6 +50,62 @@ end
 function leaveLane(trainName, lane)
     assert(lane, "richtung darf nicht nil sein. Richtige Lua-Funktion im Kontaktpunkt?")
     lane:vehicleLeft(trainName)
+end
+
+-- Kontaktpunktfunktion für "Türen öffnen"
+---@param trainName string
+function openDoors(trainName)
+    assert(type(trainName) == "string", "Provide 'trainName' as 'string' was " .. type(trainName))
+
+    TrainRegistry.forName(trainName):openDoors()
+end
+
+-- Kontaktpunktfunktion für "Türen öffnen"
+---@param trainName string
+function closeDoors(trainName)
+    assert(type(trainName) == "string", "Provide 'trainName' as 'string' was " .. type(trainName))
+
+    TrainRegistry.forName(trainName):closeDoors()
+end
+
+-- Kontaktpunktfunktion für "Das Fahrzeug hat die Haltestelle verlassen"
+---@param trainName string
+---@param station RoadStation
+function stationLeft(trainName, station)
+    assert(type(trainName) == "string", "Provide 'trainName' as 'string' was " .. type(trainName))
+    assert(type(station) == "table", "Provide 'station' as 'table' was " .. type(station))
+    assert(station.type == "RoadStation", "Provide 'station' as 'RoadStation'")
+
+    Line.trainDeparted(trainName, station)
+end
+
+-- Kontaktpunktfunktion für "Das Fahrzeug erreicht die Haltestelle in X minuten"
+---@param trainName string
+---@param station RoadStation
+---@param timeInMinutes number
+function stationArrivalPlanned(trainName, station, timeInMinutes)
+    assert(type(trainName) == "string", "Provide 'trainName' as 'string' was " .. type(trainName))
+    assert(type(station) == "table", "Provide 'station' as 'table' was " .. type(station))
+    assert(station.type == "RoadStation", "Provide 'station' as 'RoadStation'")
+    assert(type(timeInMinutes) == "number", "Provide 'timeInMinutes' as 'number' was " .. type(timeInMinutes))
+
+    Line.scheduleDeparture(trainName, station, timeInMinutes)
+end
+
+-- Kontaktpunktfunktion für "Türen öffnen"
+---@param trainName string
+function openDoors(trainName)
+    assert(type(trainName) == "string", "Provide 'trainName' as 'string' was " .. type(trainName))
+
+    TrainRegistry.forName(trainName):openDoors()
+end
+
+-- Kontaktpunktfunktion für "Türen öffnen"
+---@param trainName string
+function closeDoors(trainName)
+    assert(type(trainName) == "string", "Provide 'trainName' as 'string' was " .. type(trainName))
+
+    TrainRegistry.forName(trainName):closeDoors()
 end
 
 do
@@ -311,30 +368,7 @@ do
 end
 -- endregion
 
--- Kontaktpunktfunktion für "Das Fahrzeug hat die Haltestelle verlassen"
----@param trainName string
----@param station RoadStation
-function stationLeft(trainName, station)
-    assert(type(trainName) == "string", "Provide 'trainName' as 'string' was " .. type(trainName))
-    assert(type(station) == "table", "Provide 'station' as 'table' was " .. type(station))
-    assert(station.type == "RoadStation", "Provide 'station' as 'RoadStation'")
-
-    Line.trainDeparted(trainName, station)
-end
-
--- Kontaktpunktfunktion für "Das Fahrzeug erreicht die Haltestelle in X minuten"
----@param trainName string
----@param station RoadStation
----@param timeInMinutes number
-function stationArrivalPlanned(trainName, station, timeInMinutes)
-    assert(type(trainName) == "string", "Provide 'trainName' as 'string' was " .. type(trainName))
-    assert(type(station) == "table", "Provide 'station' as 'table' was " .. type(station))
-    assert(station.type == "RoadStation", "Provide 'station' as 'RoadStation'")
-    assert(type(timeInMinutes) == "number", "Provide 'timeInMinutes' as 'number' was " .. type(timeInMinutes))
-
-    Line.scheduleDeparture(trainName, station, timeInMinutes)
-end
-
+-- !DELETEME
 -- Kontaktpunktfunktion
 -- 1. Parameter: Zugname aus Bennys EEP-Schnipsel
 -- 2. Parameter: Stationsname wie in Destinations.changeOn() hinterlegt
@@ -347,18 +381,18 @@ function changeDestination(trainName, station, departureTime)
         assert(type(departureTime) == "number", "Provide 'departureTime' as 'number' was " .. type(departureTime))
     end
 
-    Line.changeRoute(trainName, station, departureTime)
+    -- THIS METHOD IS OBSOLETE - use Line.scheduleDeparture(...)
 end
 
 -- Line 10
 local l10 = Line:new({nr = "10"})
-local l10Striesen = l10:newRoute("Tram 10 Striesen")
-local l10MesseDresden = l10:newRoute("Tram 10 Messe Dresden")
+local l10Striesen = l10:addSection("Tram 10 Striesen", "Striesen")
+local l10MesseDresden = l10:addSection("Tram 10 Messe Dresden", "Dresden")
 
 -- Linie 04
 local l04 = Line:new({nr = "4"})
-local l04Striesen = l04:newRoute("Tram 04 Striesen")
-local l04RadebeulWest = l04:newRoute("Tram 04 Radebeul West")
+local l04Striesen = l04:addSection("Tram 04 Striesen", "Striesen")
+local l04RadebeulWest = l04:addSection("Tram 04 Radebeul West", "West")
 
 -- Haltestelle Striesen
 sStriesen = RoadStation:new("Striesen", -1)
@@ -388,33 +422,29 @@ sMesseDresden = RoadStation:new("MesseDresden", -1)
 sRadebeulWest = RoadStation:new("Radebeul West", -1)
 
 -- Linie 10 Richtung Striesen
-l10Striesen:addStation(sMesseDresden, 1)
-l10Striesen:addStation(sFeuerwehrGasse, 1, 2)
-l10Striesen:addStation(sHauptbahnhof, 1, 2)
-l10Striesen:addStation(sStriesen, 1, 3)
+l10Striesen:addStop(sMesseDresden:platform(1))
+l10Striesen:addStop(sFeuerwehrGasse:platform(1), 2)
+l10Striesen:addStop(sHauptbahnhof:platform(1), 2)
+l10Striesen:addStop(sStriesen:platform(1), 3)
 
 -- Linie 10 Richtung Messe Dresden
-l10MesseDresden:addStation(sStriesen, 2, 0)
-l10MesseDresden:addStation(sHauptbahnhof, 2, 3)
-l10MesseDresden:addStation(sFeuerwehrGasse, 2, 2)
-l10MesseDresden:addStation(sMesseDresden, 2)
+l10MesseDresden:addStop(sStriesen:platform(2), 0)
+l10MesseDresden:addStop(sHauptbahnhof:platform(2), 3)
+l10MesseDresden:addStop(sFeuerwehrGasse:platform(2), 2)
+l10MesseDresden:addStop(sMesseDresden:platform(2))
 
 -- Linie 4 Richtung Striesen
-l04Striesen:addStation(sRadebeulWest, 1)
-l04Striesen:addStation(sHauptbahnhof, 1, 2)
-l04Striesen:addStation(sStriesen, 1, 3)
+l04Striesen:addStop(sRadebeulWest:platform(1))
+l04Striesen:addStop(sHauptbahnhof:platform(1), 2)
+l04Striesen:addStop(sStriesen:platform(1), 3)
 
 -- Linie 4 Richtung Radebeul West
-l04RadebeulWest:addStation(sStriesen, 2, 0)
-l04RadebeulWest:addStation(sHauptbahnhof, 2, 3)
-l04RadebeulWest:addStation(sRadebeulWest, 2)
+l04RadebeulWest:addStop(sStriesen:platform(2), 0)
+l04RadebeulWest:addStop(sHauptbahnhof:platform(2), 3)
+l04RadebeulWest:addStop(sRadebeulWest:platform(2))
 
 -- Geplante Linienaenderungen, wenn eine Linie die Kontaktpunktfunktion "changeDestination" aufruft
--- 1. Parameter: RoadStation, an der der Wechsel durchgeführt werden soll
--- 2. Parameter: Route - alte Fahrplan Route
--- 3. Parameter: Route - neue Fahrplan Route
--- 4. Parameter: Line - neue Linie
-Line.addRouteChange(sStriesen, l10Striesen, l10MesseDresden, l10)
-Line.addRouteChange(sStriesen, l04Striesen, l04RadebeulWest, l04)
-Line.addRouteChange(sMesseDresden, l10MesseDresden, l10Striesen, l10)
-Line.addRouteChange(sRadebeulWest, l04RadebeulWest, l04Striesen, l04)
+l10Striesen:setNextSection(l10MesseDresden, 2)
+l04Striesen:setNextSection(l04RadebeulWest, 2)
+l10MesseDresden:setNextSection(l10Striesen, 2)
+l04RadebeulWest:setNextSection(l04Striesen, 2)

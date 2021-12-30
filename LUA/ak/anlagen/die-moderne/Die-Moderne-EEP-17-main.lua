@@ -19,6 +19,8 @@ local Line = require("ak.public-transport.Line")
 local RoadStation = require("ak.public-transport.RoadStation")
 local RSDM = require("ak.public-transport.RoadStationDisplayModel")
 
+local TrainRegistry = require("ak.train.TrainRegistry")
+
 -- Speicher
 local StorageUtility = require("ak.storage.StorageUtility")
 local fmt = require("ak.core.eep.TippTextFormatter")
@@ -50,6 +52,22 @@ end
 function leaveLane(trainName, lane)
     assert(lane, "richtung darf nicht nil sein. Richtige Lua-Funktion im Kontaktpunkt?")
     lane:vehicleLeft(trainName)
+end
+
+-- Kontaktpunktfunktion für "Türen öffnen"
+---@param trainName string
+function openDoors(trainName)
+    assert(type(trainName) == "string", "Provide 'trainName' as 'string' was " .. type(trainName))
+
+    TrainRegistry.forName(trainName):openDoors()
+end
+
+-- Kontaktpunktfunktion für "Türen öffnen"
+---@param trainName string
+function closeDoors(trainName)
+    assert(type(trainName) == "string", "Provide 'trainName' as 'string' was " .. type(trainName))
+
+    TrainRegistry.forName(trainName):closeDoors()
 end
 
 do
@@ -91,19 +109,29 @@ do
 
     -- region K1-Richtungen
     c1Lane1 = Lane:new("K1 - Fahrspur 1", 1, K1, {Lane.Directions.STRAIGHT})
+    -- :setHighLightingTracks(272, 283, 472, 156)
     c1Lane2 = Lane:new("K1 - Fahrspur 2", 2, K2, {Lane.Directions.LEFT})
-    c1Lane3 = Lane:new("K1 - Fahrspur 3", 3, S1, {Lane.Directions.STRAIGHT}, Lane.Type.TRAM):setFahrzeugMultiplikator(
-              15)
+    -- :setHighLightingTracks(270, 282, 248, 30)
+    c1Lane3 = Lane:new("K1 - Fahrspur 3", 3, S1, {Lane.Directions.STRAIGHT}, Lane.Type.TRAM)
+    -- :setHighLightingTracks(271, 280, 247, 265):setFahrzeugMultiplikator(15)
     c1Lane4 = Lane:new("K1 - Fahrspur 4", 4, lane4Sig, {Lane.Directions.STRAIGHT, Lane.Directions.RIGHT})
+    -- :setHighLightingTracks(569, 568, 567, 566, 565, 564, 563, 562, 561, 166, 257, 199)
     c1Lane5 = Lane:new("K1 - Fahrspur 5", 5, K6, {Lane.Directions.LEFT})
+    -- :setHighLightingTracks(549, 548, 547, 546, 545, 357, 543, 542, 521, 541, 585, 584)
     c1Lane5a = Lane:new("K1 - Fahrspur 5a", 19, K7, {Lane.Directions.LEFT})
+    -- :setHighLightingTracks(520, 530, 529, 528, 527, 526, 525, 524, 523, 522, 216, 582, 210)
     c1Lane6 = Lane:new("K1 - Fahrspur 6", 6, K9, {Lane.Directions.RIGHT})
+    -- :setHighLightingTracks(211, 34, 76, 143, 140)
     c1Lane7 = Lane:new("K1 - Fahrspur 7", 7, K10, {Lane.Directions.STRAIGHT})
+    -- :setHighLightingTracks(208, 209)
     c1Lane8 = Lane:new("K1 - Fahrspur 8", 8, lane8sig, {Lane.Directions.LEFT, Lane.Directions.STRAIGHT},
                        Lane.Type.TRAM):setFahrzeugMultiplikator(15)
+    -- :setHighLightingTracks(127, 141, 410)
     c1Lane10 = Lane:new("K1 - Fahrspur 10", 10, K12,
                         {Lane.Directions.LEFT, Lane.Directions.STRAIGHT, Lane.Directions.RIGHT})
+    -- :setHighLightingTracks(670, 363, 403)
     c1Lane11 = Lane:new("K1 - Fahrspur 11", 11, S4, {Lane.Directions.RIGHT}, Lane.Type.TRAM)
+    -- :setHighLightingTracks(622, 110, 406)
 
     -- endregion
     -- region K1-Schaltungen
@@ -301,18 +329,18 @@ function changeDestination(trainName, station, departureTime)
         assert(type(departureTime) == "number", "Provide 'departureTime' as 'number' was " .. type(departureTime))
     end
 
-    Line.changeRoute(trainName, station, departureTime)
+    -- THIS METHOD IS OBSOLETE - use Line.scheduleDeparture(...)
 end
 
 -- Line 10
 local l10 = Line:new({nr = "10"})
-local l10Striesen = l10:newRoute("Tram 10 Striesen")
-local l10MesseDresden = l10:newRoute("Tram 10 Messe Dresden")
+local l10Striesen = l10:addSection("Tram 10 Striesen", "Striesen")
+local l10MesseDresden = l10:addSection("Tram 10 Messe Dresden", "Messe Dresden")
 
 -- Linie 04
 local l04 = Line:new({nr = "4"})
-local l04Striesen = l04:newRoute("Tram 04 Striesen")
-local l04RadebeulWest = l04:newRoute("Tram 04 Radebeul West")
+local l04Striesen = l04:addSection("Tram 04 Striesen", "Striesen")
+local l04RadebeulWest = l04:addSection("Tram 04 Radebeul West", "Radebeul West")
 
 -- Haltestelle Striesen
 sStriesen = RoadStation:new("Striesen", -1)
@@ -353,36 +381,36 @@ sMesseDresden = RoadStation:new("Messe Dresden", -1)
 sRadebeulWest = RoadStation:new("Radebeul West", -1)
 
 -- Linie 10 Richtung Striesen
-l10Striesen:addStation(sMesseDresden, 1)
-l10Striesen:addStation(sFeuerwehrGasse, 1, 2)
-l10Striesen:addStation(sHauptbahnhof, 1, 2)
-l10Striesen:addStation(sStriesen, 1, 3)
+l10Striesen:addStop(sMesseDresden:platform(1), 0)
+l10Striesen:addStop(sFeuerwehrGasse:platform(1), 2)
+l10Striesen:addStop(sHauptbahnhof:platform(1), 2)
+l10Striesen:addStop(sStriesen:platform(1), 3)
 
 -- Linie 10 Richtung Messe Dresden
-l10MesseDresden:addStation(sStriesen, 2, 0)
-l10MesseDresden:addStation(sHauptbahnhof, 2, 3)
-l10MesseDresden:addStation(sFeuerwehrGasse, 2, 2)
-l10MesseDresden:addStation(sMesseDresden, 2)
+l10MesseDresden:addStop(sStriesen:platform(2), 0)
+l10MesseDresden:addStop(sHauptbahnhof:platform(2), 3)
+l10MesseDresden:addStop(sFeuerwehrGasse:platform(2), 2)
+l10MesseDresden:addStop(sMesseDresden:platform(2))
 
 -- Linie 4 Richtung Striesen
-l04Striesen:addStation(sRadebeulWest, 1)
-l04Striesen:addStation(sAmAltenMarkt, 2, 2)
-l04Striesen:addStation(sHauptbahnhof, 1, 2)
-l04Striesen:addStation(sStriesen, 1, 3)
+l04Striesen:addStop(sRadebeulWest:platform(1), 0)
+l04Striesen:addStop(sAmAltenMarkt:platform(2), 2)
+l04Striesen:addStop(sHauptbahnhof:platform(1), 2)
+l04Striesen:addStop(sStriesen:platform(1), 3)
 
 -- Linie 4 Richtung Radebeul West
-l04RadebeulWest:addStation(sStriesen, 2, 0)
-l04RadebeulWest:addStation(sHauptbahnhof, 2, 3)
-l04RadebeulWest:addStation(sAmAltenMarkt, 1, 2)
-l04RadebeulWest:addStation(sRadebeulWest, 2)
+l04RadebeulWest:addStop(sStriesen:platform(2), 0)
+l04RadebeulWest:addStop(sHauptbahnhof:platform(2), 3)
+l04RadebeulWest:addStop(sAmAltenMarkt:platform(1), 2)
+l04RadebeulWest:addStop(sRadebeulWest:platform(2))
 
 -- Geplante Linienaenderungen, wenn eine Linie die Kontaktpunktfunktion "changeDestination" aufruft
 -- 1. Parameter: RoadStation, an der der Wechsel durchgeführt werden soll
 -- 2. Parameter: Route - alte Fahrplan Route
 -- 3. Parameter: Route - neue Fahrplan Route
 -- 4. Parameter: Line - neue Linie
-Line.addRouteChange(sStriesen, l10Striesen, l10MesseDresden, l10)
-Line.addRouteChange(sStriesen, l04Striesen, l04RadebeulWest, l04)
-Line.addRouteChange(sMesseDresden, l10MesseDresden, l10Striesen, l10)
-Line.addRouteChange(sRadebeulWest, l04RadebeulWest, l04Striesen, l04)
+l10Striesen:setNextSection(l10MesseDresden, 2)
+l04Striesen:setNextSection(l04RadebeulWest, 2)
+l10MesseDresden:setNextSection(l10Striesen, 2)
+l04RadebeulWest:setNextSection(l04Striesen, 2)
 
