@@ -1,7 +1,7 @@
 require("ak.core.eep.EepSimulator")
 require("ak.anlagen.gruenberg-neustadt.Gruenberg-Neustadt-DR-main")
 
-print("############## Gruenberg-Neutstadt-DR-test-Haltesignale.lua ##############")
+print("[#Test] ############## Gruenberg-Neutstadt-DR-test-Haltesignale.lua ##############")
 EEPTime = 0
 i = -1
 local trainName1 = "#DDR-Zug-1"
@@ -131,4 +131,4 @@ run()
 assert(S.Halt == EEPGetSignal(253))
 assert(S.Halt == EEPGetSignal(118))
 
-print("Test bestanden!")
+print("[#Test] Test bestanden!")

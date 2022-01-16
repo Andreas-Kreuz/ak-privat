@@ -32,7 +32,7 @@ ModuleRegistry.useDlls(true)
 Crossing.loadSettingsFromSlot(22)
 
 function EEPMain()
-    -- print("Speicher: " .. collectgarbage("count"))
+    -- print("[#Anlage] Speicher: " .. collectgarbage("count"))
     ModuleRegistry.runTasks(1)
     return 1
 end

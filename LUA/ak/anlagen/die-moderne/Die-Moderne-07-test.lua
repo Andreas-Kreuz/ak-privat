@@ -54,7 +54,7 @@ EEPStructureSetLight("#5533_Straba Signal A", false)
 --------------------------------------------------------------------
 -- Zeigt erweiterte Informationen waehrend der erste Schitte an   --
 --------------------------------------------------------------------
-if AkDebugLoad then print("Loading ak.anlagen.die-moderne.Die-Moderne-07-main ...") end
+if AkDebugLoad then print("[#Test] Loading ak.anlagen.die-moderne.Die-Moderne-07-main ...") end
 require("ak.anlagen.die-moderne.Die-Moderne-07-main")
 
 --------------------------------------------------------------------
@@ -91,13 +91,15 @@ local function k1Print()
     for k, v in pairs(k1:getSequences()) do table.insert(list, k) end
     table.sort(list, CrossingSequence.sequencePriorityComparator)
 
-    for k, v in ipairs(list) do print(k .. ": " .. v:getName() .. " - Prio: " .. v:calculatePriority()) end
+    for k, v in ipairs(list) do
+        print("[#Test] " .. k .. ": " .. v:getName() .. " - Prio: " .. v:calculatePriority())
+    end
 end
 
 for i = 1, 10 do
     changeDestination(Zugname, sMesseDresden)
     stationLeft(Zugname, sMesseDresden)
-    print("Betritt Block")
+    print("[#Test] Betritt Block")
     enterLane(Zugname, c1Lane8)
     stationArrivalPlanned(Zugname, sHauptbahnhof, 5)
     run()
@@ -106,7 +108,7 @@ for i = 1, 10 do
     stationArrivalPlanned(Zugname, sHauptbahnhof, 3)
     run()
     run()
-    print("Verlasse Block")
+    print("[#Test] Verlasse Block")
     leaveLane(Zugname, c1Lane8)
     stationLeft(Zugname, sHauptbahnhof)
     changeDestination(Zugname, sStriesen)

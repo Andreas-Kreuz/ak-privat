@@ -34,7 +34,7 @@ Line.loadSettingsFromSlot(23)
 -- ModuleRegistry.useDlls(true)
 
 function EEPMain()
-    -- print("Speicher: " .. collectgarbage("count"))
+    -- print("[#Anlage] Speicher: " .. collectgarbage("count"))
     ModuleRegistry.runTasks(1)
     return 1
 end

@@ -1,7 +1,7 @@
 require("ak.core.eep.EepSimulator")
 require("ak.anlagen.gruenberg-neustadt.Gruenberg-Neustadt-DR-main")
 
-print("############## Gruenberg-Neutstadt-DR-test-Blockabfolge.lua ##############")
+print("[#Test] ############## Gruenberg-Neutstadt-DR-test-Blockabfolge.lua ##############")
 EEPTime = 0
 i = -1
 local trainName1 = "#DDR-Zug-1"
@@ -142,4 +142,4 @@ assert(neustadtGleis2.trainName == nil)
 assert(neustadtGleis3.trainName == trainName2)
 assert(neustadtGleis4.trainName == nil)
 
-print("Test bestanden!")
+print("[#Test] Test bestanden!")
