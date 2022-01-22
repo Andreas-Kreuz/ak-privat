@@ -25,6 +25,9 @@ local TrainRegistry = require("ak.train.TrainRegistry")
 local StorageUtility = require("ak.storage.StorageUtility")
 local fmt = require("ak.core.eep.TippTextFormatter")
 
+local Scheduler = require("ak.scheduler.Scheduler")
+local Task = require("ak.scheduler.Task")
+
 local ModuleRegistry = require("ak.core.ModuleRegistry")
 ModuleRegistry.registerModules(require("ak.core.CoreLuaModule"), require("ak.data.DataLuaModule"),
                                require("ak.road.CrossingLuaModul"),
@@ -414,3 +417,60 @@ l04Striesen:setNextSection(l04RadebeulWest, 2)
 l10MesseDresden:setNextSection(l10Striesen, 2)
 l04RadebeulWest:setNextSection(l04Striesen, 2)
 
+feuerwehr = {}
+function feuerwehr.loeschzug1Ausfahrt(route)
+    local torStrasse = Task:new(function()
+        -- Straßentor
+        EEPStructureAnimateAxis("#1067_IndZaun_Rolltor_l_AE1", "Rolltor", 100)
+    end, "Tor öffnen")
+    local torEinsatzLeitung = Task:new(function()
+        EEPStructureAnimateAxis("#365_FWK_Falttor_V02_DL1", "Antrieb", 100)
+    end, "Tor Einsatzleitung öffnen")
+    local torFeuerwehr = Task:new(function()
+        EEPStructureAnimateAxis("#360_FWK_Falttor_V01_DL1", "Antrieb", 100)
+        EEPStructureAnimateAxis("#359_FWK_Falttor_V02_DL1", "Antrieb", 100)
+    end, "Tor Einsatzleitung öffnen")
+    local torDrehleiter = Task:new(function() EEPStructureAnimateAxis("#384_FWK_Falttor_V02_DL1", "Antrieb", 100) end,
+                                   "Tor DLK öffnen")
+    local einSatzleitungStart = Task:new(function() EEPSetSignal(157, 1) end, "Einsatzleitung Start")
+    local dlk3801Start = Task:new(function() EEPSetSignal(156, 1) end, "DLK 3801 Start")
+    local mlf3802Start = Task:new(function() EEPSetSignal(154, 1) end, "MLF 3802 Start")
+    local hfl3803Start = Task:new(function() EEPSetSignal(155, 1) end, "HFL 3803 Start")
+
+    Scheduler:scheduleTask(0, torStrasse)
+    Scheduler:scheduleTask(2, torEinsatzLeitung, torStrasse)
+    Scheduler:scheduleTask(4, torFeuerwehr, torStrasse)
+    Scheduler:scheduleTask(6, torDrehleiter, torStrasse)
+    Scheduler:scheduleTask(8, einSatzleitungStart, torEinsatzLeitung)
+    Scheduler:scheduleTask(2, hfl3803Start, einSatzleitungStart)
+    Scheduler:scheduleTask(3, mlf3802Start, hfl3803Start)
+    Scheduler:scheduleTask(3, dlk3801Start, mlf3802Start)
+
+    -- Verkehr anhalten
+    local stopTrafficWestYellow = Task:new(function()
+        EEPSetSignal(188, 2)
+        EEPSetSignal(189, 2)
+    end, "Ampel auf Gelb")
+    local stopTrafficWestRed = Task:new(function()
+        EEPSetSignal(188, 1)
+        EEPSetSignal(189, 1)
+    end, "Ampel auf Rot")
+    local startTrafficWest = Task:new(function()
+        EEPStructureAnimateAxis("#1067_IndZaun_Rolltor_l_AE1", "Rolltor", -100)
+        EEPSetSignal(188, 3)
+        EEPSetSignal(189, 3)
+    end, "Ampel auf Rot")
+
+    Scheduler:scheduleTask(8, stopTrafficWestYellow)
+    Scheduler:scheduleTask(2, stopTrafficWestRed, stopTrafficWestYellow)
+    Scheduler:scheduleTask(12, startTrafficWest, dlk3801Start)
+end
+
+EEPRegisterSignal(187)
+function EEPOnSignal_187()
+    local s = EEPGetSignal(187)
+    if s == 1 then
+        feuerwehr.loeschzug1Ausfahrt("")
+        EEPSetSignal(187, 2)
+    end
+end
